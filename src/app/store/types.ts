@@ -29,7 +29,8 @@ export type AppAction =
   | { type: 'GAIN_POWER_CELLS'; amount: number }
   | { type: 'UPGRADE_MODULE'; moduleId: ModuleId }
   | { type: 'ASSIGN_CREW'; crewId: CrewMemberId; slot: AssignmentSlotId }
-  | { type: 'RECHARGE_ENERGY_EMERGENCY' };
+  | { type: 'RECHARGE_ENERGY_EMERGENCY' }
+  | { type: 'SCRAP_JOB' };
 
 export interface StoreSnapshot extends GameState {
   currentDraft: TacticCard[];

@@ -1,6 +1,7 @@
 import { SaveManager, SaveData } from '../save/save-manager';
 import { GameState, MetaState, createEmptyGame } from '../types/state';
 import { SHIP_DEFS } from '../content/ships';
+import { MAX_ENERGY, EMERGENCY_RECHARGE_COST, BAILOUT_CREDITS, BAILOUT_ENERGY } from '../config/constants';
 
 export const SAVE_KEY = 'sector_scavengers_v3';
 // Previous keys — kept for migration chaining
@@ -204,7 +205,8 @@ export function loadSave(): LoadResult {
         currentRun: gameState.currentRun ?? null,
       };
       state.meta = ensureShips(state.meta, defaults.meta);
-      return { state, wasReset: false };
+      const bailed = applyBailoutIfNeeded(state);
+      return { state: bailed, wasReset: false };
     }
 
     // No v3 save — check for a v2 save to migrate
@@ -213,8 +215,9 @@ export function loadSave(): LoadResult {
       try {
         const parsed = JSON.parse(v2Raw) as unknown;
         const migrated = migrateFromV2(parsed);
-        serialize(migrated);
-        return { state: migrated, wasReset: false };
+        const bailed = applyBailoutIfNeeded(migrated);
+        serialize(bailed);
+        return { state: bailed, wasReset: false };
       } catch {
         // v2 parse failed — fall through
       }
@@ -226,8 +229,9 @@ export function loadSave(): LoadResult {
       try {
         const parsed = JSON.parse(v1Raw) as unknown;
         const migrated = migrateFromV1(parsed);
-        serialize(migrated);
-        return { state: migrated, wasReset: false };
+        const bailed = applyBailoutIfNeeded(migrated);
+        serialize(bailed);
+        return { state: bailed, wasReset: false };
       } catch {
         // v1 parse failed — fall through to fresh game
       }
@@ -247,6 +251,36 @@ export function clearSave(): void {
   manager.delete();
   localStorage.removeItem(SAVE_KEY_V2);
   localStorage.removeItem(SAVE_KEY_V1);
+}
+
+// ── Bailout ───────────────────────────────────────────────────────────────
+
+/**
+ * Detect a deadlocked save (energy=0, no credits for emergency recharge,
+ * no sellable salvage, and scrap job already spent) and inject recovery
+ * resources. Safe to call on every load — no-ops if not deadlocked.
+ */
+function applyBailoutIfNeeded(state: GameState): GameState {
+  const { meta } = state;
+  const hasSellableSalvage = meta.hubInventory.some((e) => e.quantity > 0);
+  const deadlocked =
+    meta.energy === 0 &&
+    meta.credits < EMERGENCY_RECHARGE_COST &&
+    !hasSellableSalvage &&
+    !meta.scrapJobAvailable;
+
+  if (!deadlocked) return state;
+
+  console.warn('Bailout applied to deadlocked save');
+  return {
+    ...state,
+    meta: {
+      ...meta,
+      credits: meta.credits + BAILOUT_CREDITS,
+      energy: Math.min(meta.energy + BAILOUT_ENERGY, MAX_ENERGY),
+      scrapJobAvailable: true,
+    },
+  };
 }
 
 // ── Internal helpers ──────────────────────────────────────────────────────

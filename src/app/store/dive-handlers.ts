@@ -6,7 +6,9 @@ import { getPurchasedTiersForBranch } from '../../content/void-communion';
 import { getCurrentTier } from '../../content/death-lessons';
 import { computeCrewEffects, CrewMemberId } from '../../content/crew';
 import { computeHardwareEffects } from '../hardware-effects';
+import { computeModuleEffects } from '../module-effects';
 import { computeCrewAssignmentEffects } from '../crew-assignment-effects';
+import { MAX_ENERGY } from '../../config/constants';
 
 export function handleStartDive(state: GameState): GameState | null {
   if (state.meta.energy < 1) return null;
@@ -30,6 +32,9 @@ export function handleStartDive(state: GameState): GameState | null {
   );
 
   const hw = computeHardwareEffects(state.meta.equippedItems);
+  const modFx = computeModuleEffects(state.meta.moduleLevels);
+  const effectiveCap = MAX_ENERGY + modFx.energyCapBonus;
+  const energyAfterBonus = Math.min(effectiveCap, state.meta.energy + hw.startingEnergyBonus);
   const startingHull = Math.min(150, 100 + hw.hullMaxBonus);
 
   const startAwakeIds: CrewMemberId[] = [
@@ -47,7 +52,7 @@ export function handleStartDive(state: GameState): GameState | null {
 
   return {
     ...state,
-    meta: { ...state.meta, energy: state.meta.energy - 1 },
+    meta: { ...state.meta, energy: energyAfterBonus - 1 },
     currentRun: runWithBonuses,
   };
 }

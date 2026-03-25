@@ -1,11 +1,11 @@
 // Handlers for salvage sales, debt, energy recharge, and power cells.
 
 import { GameState } from '../../types/state';
-import { SalvageTier } from '../../content/salvage';
+import { SalvageTier, addSalvage, createSalvageEntry } from '../../content/salvage';
 import { CrewMemberId } from '../../content/crew';
 import { computeModuleEffects } from '../module-effects';
 import { computeCrewAssignmentEffects } from '../crew-assignment-effects';
-import { MAX_ENERGY, RECHARGE_COST, EMERGENCY_RECHARGE_COST } from '../../config/constants';
+import { MAX_ENERGY, RECHARGE_COST, EMERGENCY_RECHARGE_COST, SCRAP_JOB_CREDIT_REWARD, SCRAP_JOB_SCRAP_QUANTITY } from '../../config/constants';
 
 function awakeIds(meta: GameState['meta']): CrewMemberId[] {
   return [
@@ -99,6 +99,26 @@ export function handleRechargeEnergyEmergency(state: GameState): GameState {
       ...meta,
       credits: meta.credits - EMERGENCY_RECHARGE_COST,
       energy: meta.energy + 1,
+    },
+  };
+}
+
+export function handleScrapJob(state: GameState): GameState {
+  const { meta } = state;
+  if (!meta.scrapJobAvailable) return state;
+
+  const updatedInventory = addSalvage(
+    meta.hubInventory,
+    createSalvageEntry('scrap', SCRAP_JOB_SCRAP_QUANTITY),
+  );
+
+  return {
+    ...state,
+    meta: {
+      ...meta,
+      credits: meta.credits + SCRAP_JOB_CREDIT_REWARD,
+      hubInventory: updatedInventory,
+      scrapJobAvailable: false,
     },
   };
 }

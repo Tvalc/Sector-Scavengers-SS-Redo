@@ -15,9 +15,8 @@ export interface HardwareEffects {
   hullMaxBonus: number;
   /** Extra shield charges at the start of each dive. */
   shieldStartBonus: number;
-  // Note: starting_energy_bonus is intentionally excluded here — it is
-  // applied at the meta level during START_DIVE in game-store.ts, not
-  // aggregated into run-level effects.
+  /** Extra energy added to the pool before spending 1 for the dive cost. */
+  startingEnergyBonus: number;
 }
 
 const ZERO_EFFECTS: HardwareEffects = {
@@ -26,6 +25,7 @@ const ZERO_EFFECTS: HardwareEffects = {
   scavengeBonusFlat:     0,
   hullMaxBonus:          0,
   shieldStartBonus:      0,
+  startingEnergyBonus:   0,
 };
 
 /**
@@ -62,7 +62,7 @@ export function computeHardwareEffects(
         result.shieldStartBonus += e.amount;
         break;
       case 'starting_energy_bonus':
-        // Handled separately at START_DIVE; not aggregated here.
+        result.startingEnergyBonus += e.amount;
         break;
     }
   }

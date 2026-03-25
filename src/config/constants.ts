@@ -21,3 +21,15 @@ export const BILLING_MISSED_PENALTY_RATE = 0.1;
 
 /** Maximum hull integrity for a ship during a dive. */
 export const MAX_HULL = 100;
+
+/** Credits earned from a scrap job (zero-cost escape-hatch action). */
+export const SCRAP_JOB_CREDIT_REWARD = 80;
+
+/** Scrap units added to hub inventory from a scrap job. */
+export const SCRAP_JOB_SCRAP_QUANTITY = 2;
+
+/** Credits injected by load-time bailout when a save is deadlocked. */
+export const BAILOUT_CREDITS = 150;
+
+/** Energy injected by load-time bailout when a save is deadlocked. */
+export const BAILOUT_ENERGY = 1;

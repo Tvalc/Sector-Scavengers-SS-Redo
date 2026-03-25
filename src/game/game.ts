@@ -1,9 +1,9 @@
 import { MakkoEngine } from '@makko/engine';
-import { RunState } from '../types/state';
+import { RunState, MetaState } from '../types/state';
 import { GameStore } from '../app/game-store';
 import { serialize } from '../persist/save';
 import { OPENING_PATH_CONFIG, OPENING_PATH_ORDER, OpeningPathId } from '../content/opening-paths';
-import { renderHub, HubAction } from '../ui/hub-renderer';
+import { renderHub, HubAction, HubTab } from '../ui/hub-renderer';
 import { renderDive } from '../ui/dive-renderer';
 import { renderResult } from '../ui/result-renderer';
 import { renderVoidCommunion, isBackButtonPressed } from '../ui/void-communion-panel';
@@ -87,6 +87,12 @@ export class Game {
   // Path-select press tracking
   private pressedPathIndex = -1;
 
+  // Hub tab state
+  private hubTab: HubTab = 'overview';
+
+  // Pre-run meta snapshot for result screen delta
+  private preRunMeta: MetaState | null = null;
+
   // Toast
   private toastText = '';
   private toastExpiry = 0;
@@ -163,16 +169,22 @@ export class Game {
     }
 
     if (action === 'START_DIVE') {
+      this.preRunMeta = { ...this.store.getState().meta };
       this.store.dispatch({ type: 'START_DIVE' });
       const snap = this.store.getState();
       if (snap.currentRun !== null) {
         this.runLog = [];
         this.screenState = 'dive';
+      } else {
+        // Dive didn't start (no energy) — discard snapshot
+        this.preRunMeta = null;
       }
     } else if (action === 'RECHARGE_ENERGY') {
       this.store.dispatch({ type: 'RECHARGE_ENERGY' });
     } else if (action === 'RECHARGE_ENERGY_EMERGENCY') {
       this.store.dispatch({ type: 'RECHARGE_ENERGY_EMERGENCY' });
+    } else if (action === 'SCRAP_JOB') {
+      this.store.dispatch({ type: 'SCRAP_JOB' });
     } else if (action === 'OPEN_VOID_COMMUNION') {
       this.screenState = 'void-communion';
     } else if (action === 'OPEN_SALVAGE_MARKET') {
@@ -315,7 +327,8 @@ export class Game {
       this.renderPathSelectScreen(mx, my);
 
     } else if (this.screenState === 'hub') {
-      const hubAction = renderHub(meta, mx, my);
+      const { action: hubAction, tabClicked } = renderHub(meta, this.hubTab, mx, my);
+      if (tabClicked !== null) this.hubTab = tabClicked;
       this.handleHub(hubAction);
 
     } else if (this.screenState === 'dive' && currentRun !== null) {
@@ -327,6 +340,12 @@ export class Game {
       this.handleDive(diveAction ? diveAction.cardId : null);
 
     } else if (this.screenState === 'result' && this.lastRun !== null) {
+      const delta = this.preRunMeta !== null ? {
+        creditsBefore: this.preRunMeta.credits,
+        debtBefore:    this.preRunMeta.debt,
+        voidBefore:    this.preRunMeta.voidEcho,
+        inventoryCountBefore: this.preRunMeta.hubInventory.reduce((s, e) => s + e.quantity, 0),
+      } : null;
       const resultAction = renderResult(
         this.lastRun,
         this.lastRunCredits,
@@ -335,8 +354,10 @@ export class Game {
         this.store.lastEndedRun?.itemsFound ?? [],
         mx,
         my,
+        delta,
       );
       if (resultAction === 'CONTINUE') {
+        this.preRunMeta = null;
         this.screenState = 'hub';
         this.showRunReturnToast();
       }

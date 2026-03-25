@@ -22,7 +22,7 @@ import { mergeRunIntoMeta, applyRepairProgress, applyDoctrineUnlocks, applyDeath
 import { AppAction, StoreSnapshot } from './types';
 import { handleStartDive, handleDiveEvent } from './dive-handlers';
 import { handleChooseOpeningPath, handleBuyVoidTier, handleBuyVoidShopCard } from './void-handlers';
-import { handleSellSalvage, handleSellAllLowTier, handlePayDebt, handleRechargeEnergy, handleRechargeEnergyEmergency, handleGainPowerCells } from './economy-handlers';
+import { handleSellSalvage, handleSellAllLowTier, handlePayDebt, handleRechargeEnergy, handleRechargeEnergyEmergency, handleGainPowerCells, handleScrapJob } from './economy-handlers';
 import { handleEquipItem, handleUnequipItem, handleWakeCrew, handleSendToCryo, handleAssignCrew } from './crew-handlers';
 import { handleCompleteTutorial, handleAdvanceTutorialStep, handleSetActiveRepair, handleUpgradeModule } from './meta-handlers';
 import { applyPlayCard } from './play-card';
@@ -96,6 +96,11 @@ export class GameStore {
       }
       case 'RECHARGE_ENERGY_EMERGENCY': {
         this.state = handleRechargeEnergyEmergency(this.state);
+        serialize(this.state);
+        break;
+      }
+      case 'SCRAP_JOB': {
+        this.state = handleScrapJob(this.state);
         serialize(this.state);
         break;
       }
@@ -226,6 +231,8 @@ export class GameStore {
     const afterDeath   = applyDeathLessonUnlocks(afterDoc);
     const afterUnlocks = checkAndUnlock(afterDeath);
     this.state = { ...this.state, meta: afterUnlocks, currentRun: null };
+    // Reset scrap job cooldown after each run
+    this.state = { ...this.state, meta: { ...this.state.meta, scrapJobAvailable: true } };
     this.currentDraft = [];
     serialize(this.state);
   }

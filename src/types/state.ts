@@ -81,6 +81,8 @@ export interface MetaState {
   moduleLevels: Record<ModuleId, number>;
   /** Job slot assigned to each awake crew member (omitted = idle). */
   crewAssignments: Partial<Record<CrewMemberId, AssignmentSlotId>>;
+  /** Whether the zero-cost scrap job action is available (reset to true after each run). */
+  scrapJobAvailable: boolean;
 }
 
 export interface GameState {
@@ -135,6 +137,7 @@ export function createEmptyGame(): GameState {
         market_node:   0,
       },
       crewAssignments: {},
+      scrapJobAvailable: true,
     },
     currentRun: null,
     saveVersion: 3,
