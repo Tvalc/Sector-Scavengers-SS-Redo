@@ -26,7 +26,7 @@ export function renderSpeakerBadge(display: typeof MakkoEngine.display, speaker:
     lineWidth: 2,
   });
 
-  const label = speaker === 'VALU' ? 'V.A.L.U.' : 'JAX';
+  const label = speaker === 'VALU' ? 'V.A.L.U.' : 'PLAYER';
   display.drawText(label, SPEAKER_BADGE_X + SPEAKER_BADGE_W / 2, SPEAKER_BADGE_Y + SPEAKER_BADGE_H / 2, {
     font: 'bold 18px monospace',
     fill: colors.text,

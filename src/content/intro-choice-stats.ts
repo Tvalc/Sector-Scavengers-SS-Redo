@@ -28,6 +28,7 @@ const SALVAGE_BONUSES: Record<string, number> = {
 
 const CHOICE_LABELS: Record<string, string> = {
   escape_scavenge_hard: 'Strip & Go',
+  escape_extract_now: 'Extract Now',
   escape_save_some: 'Partial Evac',
   repair_extract_with_jax: 'Balanced Extract',
   repair_full_save: 'Full Commitment',

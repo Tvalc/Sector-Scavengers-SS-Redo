@@ -1,9 +1,10 @@
 /**
- * Choices Renderer - Card-based choice display
+ * Choices Renderer - Card-based choice display with TacticCard face
  */
 
 import { MakkoEngine } from '@makko/engine';
 import { IntroChoice } from '../../content/intro-narrative';
+import { CORE_CARDS, TacticCard } from '../../content/cards';
 import { getIntroChoiceStats } from '../../content/intro-choice-stats';
 import { wrapText } from './text-utils';
 import { CHOICE_CARD_W, CHOICE_CARD_H, CHOICE_CARD_Y, CHOICE_CARD_GAP } from './layout';
@@ -13,6 +14,10 @@ const PRESSURE_COLORS: Record<string, string> = {
   medium: '#f6ad55',
   high: '#e53e3e',
 };
+
+function getCardById(cardId: string): TacticCard | undefined {
+  return CORE_CARDS.find(c => c.id === cardId);
+}
 
 export function getChoiceCardRects(count: number): Array<{ x: number; y: number; w: number; h: number }> {
   const totalW = count * CHOICE_CARD_W + (count - 1) * CHOICE_CARD_GAP;
@@ -33,14 +38,6 @@ export function renderChoicesPanel(
 ): void {
   const rects = getChoiceCardRects(choices.length);
 
-  // Prompt
-  display.drawText('Choose your path:', 960, 220, {
-    font: '22px monospace',
-    fill: '#718096',
-    align: 'center',
-    baseline: 'middle',
-  });
-
   for (let i = 0; i < choices.length; i++) {
     renderChoiceCard(display, choices[i], rects[i], hoveredChoice === i, mouseDownOnChoice === i);
   }
@@ -53,60 +50,74 @@ function renderChoiceCard(
   isHovered: boolean,
   isPressed: boolean
 ): void {
-  // Card background + border
+  // 1. Card background + border
   display.drawRect(rect.x, rect.y, rect.w, rect.h, {
     fill: '#1e2433',
     stroke: isPressed ? '#63b3ed' : isHovered ? '#90cdf4' : '#4a5568',
     lineWidth: isHovered || isPressed ? 2 : 1,
   });
 
-  renderCardTitle(display, choice.label, rect, isHovered);
-  renderCardStats(display, choice.id, rect);
-}
+  const card = getCardById(choice.cardId);
+  const cardName = card?.name ?? choice.label;
 
-function renderCardTitle(
-  display: typeof MakkoEngine.display,
-  label: string,
-  rect: { x: number; y: number; w: number; h: number },
-  isHovered: boolean
-): void {
-  const labelLines = wrapText(label, rect.w - 40, 'bold 28px monospace');
-  const titleY = rect.y + 40;
+  // 2. Card name
+  display.drawText(cardName, rect.x + rect.w / 2, rect.y + 44, {
+    font: 'bold 26px monospace',
+    fill: isHovered ? '#ffffff' : '#e2e8f0',
+    align: 'center',
+    baseline: 'middle',
+  });
 
-  for (let l = 0; l < labelLines.length; l++) {
-    display.drawText(labelLines[l], rect.x + rect.w / 2, titleY + l * 36, {
-      font: 'bold 28px monospace',
-      fill: isHovered ? '#ffffff' : '#e2e8f0',
-      align: 'center',
-      baseline: 'middle',
-    });
-  }
+  // 3. Card type tag
+  display.drawText('[ TACTIC CARD ]', rect.x + rect.w / 2, rect.y + 80, {
+    font: '14px monospace',
+    fill: '#4ecdc4',
+    align: 'center',
+    baseline: 'middle',
+  });
 
-  // Divider below title
-  const dividerY = rect.y + 60;
-  display.drawLine(rect.x + 20, dividerY, rect.x + rect.w - 20, dividerY, {
+  // 4. First divider
+  const divider1Y = rect.y + 100;
+  display.drawLine(rect.x + 20, divider1Y, rect.x + rect.w - 20, divider1Y, {
     stroke: '#2d3a4a',
     lineWidth: 1,
   });
-}
 
-function renderCardStats(
-  display: typeof MakkoEngine.display,
-  choiceId: string,
-  rect: { x: number; y: number; w: number; h: number }
-): void {
-  const stats = getIntroChoiceStats(choiceId);
+  // 5. Card description
+  const description = card?.description ?? '';
+  const descLines = wrapText(description, rect.w - 40, '19px monospace');
+  const descStartY = rect.y + 120;
+  const lineHeight = 26;
+
+  for (let l = 0; l < descLines.length; l++) {
+    display.drawText(descLines[l], rect.x + 20, descStartY + l * lineHeight, {
+      font: '19px monospace',
+      fill: '#a0aec0',
+      align: 'left',
+      baseline: 'top',
+    });
+  }
+
+  // 6. Second divider
+  const divider2Y = rect.y + 240;
+  display.drawLine(rect.x + 20, divider2Y, rect.x + rect.w - 20, divider2Y, {
+    stroke: '#2d3a4a',
+    lineWidth: 1,
+  });
+
+  // 7. Consequence preview (condensed)
+  const stats = getIntroChoiceStats(choice.id);
   if (!stats) return;
 
-  const statsStartY = rect.y + 90;
-  const rowSpacing = 32;
+  const statsStartY = rect.y + 260;
+  const rowSpacing = 28;
   const textX = rect.x + 24;
   let row = 0;
 
   // Credits
   const creditsColor = stats.credits > 500 ? '#68d391' : '#e2e8f0';
   display.drawText(`₡${stats.credits}`, textX, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
+    font: '17px monospace',
     fill: creditsColor,
     align: 'left',
     baseline: 'top',
@@ -115,59 +126,20 @@ function renderCardStats(
 
   // Void Echo
   display.drawText(`+${stats.voidEcho} Void Echo`, textX, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
+    font: '17px monospace',
     fill: '#4ecdc4',
     align: 'left',
     baseline: 'top',
   });
   row++;
 
-  // Energy
-  display.drawText(`${stats.energy} Energy`, textX, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
-    fill: '#e2e8f0',
-    align: 'left',
-    baseline: 'top',
-  });
-  row++;
-
-  // Debt with pressure
+  // Debt pressure
   const pressureLabel = stats.debtPressure.toUpperCase();
   const pressureColor = PRESSURE_COLORS[stats.debtPressure] ?? '#e2e8f0';
-  display.drawText(`₡${stats.debt} Debt — `, textX, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
-    fill: '#e2e8f0',
-    align: 'left',
-    baseline: 'top',
-  });
-  const debtLabelWidth = display.measureText(`₡${stats.debt} Debt — `, { font: '20px monospace' }).width;
-  display.drawText(pressureLabel, textX + debtLabelWidth, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
+  display.drawText(`Debt: ${pressureLabel}`, textX, statsStartY + row * rowSpacing, {
+    font: '17px monospace',
     fill: pressureColor,
     align: 'left',
     baseline: 'top',
   });
-  row++;
-
-  // Crew
-  const crewText = stats.crew.length > 0 ? stats.crew.join(', ') : 'Solo';
-  const crewColor = stats.crew.length > 0 ? '#f6ad55' : '#718096';
-  display.drawText(crewText, textX, statsStartY + row * rowSpacing, {
-    font: '20px monospace',
-    fill: crewColor,
-    align: 'left',
-    baseline: 'top',
-  });
-  row++;
-
-  // Ship State (only if not damaged)
-  if (stats.shipState !== 'damaged') {
-    const shipLabel = stats.shipState === 'partially_repaired' ? 'Partially Repaired' : 'Stabilized';
-    display.drawText(shipLabel, textX, statsStartY + row * rowSpacing, {
-      font: '20px monospace',
-      fill: '#e2e8f0',
-      align: 'left',
-      baseline: 'top',
-    });
-  }
 }

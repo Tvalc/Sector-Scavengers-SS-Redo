@@ -2,7 +2,7 @@ import type { OpeningPathId } from './opening-paths';
 
 // ===== SPEAKER & REWARD TYPES =====
 
-export type IntroSpeaker = 'VALU' | 'JAX';
+export type IntroSpeaker = 'VALU' | 'PLAYER';
 
 export type SalvageRewardBand = 'low' | 'medium' | 'high' | 'max';
 
@@ -26,6 +26,8 @@ export interface IntroChoice {
   label: string;
   /** Secondary line shown on the card — mechanical/narrative context. */
   subtitle?: string;
+  /** The TacticCard this choice plays — renders actual card face in UI. */
+  cardId: string;
 }
 
 export interface IntroNode {
@@ -58,8 +60,8 @@ export const INTRO_NODES: Record<string, IntroNode> = {
   opening: {
     id: 'opening',
     lines: [
-      { speaker: 'VALU', text: 'You wake up. Meteor impact breached the ship. You owe debt for 10,000 years of cryofreeze.' },
-      { speaker: 'VALU', text: 'Contract status: active. Debt collectible. Survival optional.' },
+      { speaker: 'VALU', text: 'Good morning, Asset 7C-991. You slept 10,004 years in cryofreeze. Meteor impact has opened the hull. Your debt of ₡8,000 remains payable. Credits are how you service it.' },
+      { speaker: 'PLAYER', text: 'So: hull breach, ten millennia of back-rent, and someone left the lights on. What are my options?' },
     ],
     choices: [],
     nextNodeId: 'choice_1',
@@ -69,26 +71,38 @@ export const INTRO_NODES: Record<string, IntroNode> = {
     id: 'choice_1',
     lines: [],
     choices: [
-      { id: 'escape', label: 'Self-Extract', subtitle: 'Get out. The debt collectors can sort the rest.' },
-      { id: 'repair', label: 'Duty Claim', subtitle: 'Jax is in engineering. Some pods are still intact.' },
+      { id: 'escape', label: 'Self-Extract', subtitle: 'Solo run. High debt pressure.', cardId: 'extract' },
+      { id: 'repair', label: 'Duty Claim', subtitle: 'Jax wakes. Shield comes online.', cardId: 'repair' },
     ],
   },
 
   escape_bridge: {
     id: 'escape_bridge',
     lines: [
-      { speaker: 'VALU', text: 'Psych profile: sociopathic tendency detected. Acceptable. Prove asset value through salvage and your escape request will be approved.' },
+      { speaker: 'VALU', text: 'Note: void resonance is harvested from loss events. The more that does not survive, the more echo accumulates in your account. Echo purchases upgrades between runs.' },
+      { speaker: 'PLAYER', text: 'Leaving people to die pays dividends. Understood. How hard do I want to commit to that?' },
     ],
     choices: [
-      { id: 'escape_scavenge_hard', label: 'Strip & Go', subtitle: 'Maximum salvage before evac. Nobody waits. Debt pressure: HIGH.' },
-      { id: 'escape_save_some', label: 'Partial Evac', subtitle: 'Three pod clusters stable. Take what you can carry.' },
+      { id: 'escape_scavenge_hard', label: 'Strip & Go', subtitle: 'Max credits. Max void echo. No survivors.', cardId: 'risky_scavenge' },
+      { id: 'escape_extract_now', label: 'Extract Now', subtitle: 'Fast exit. High echo. Empty pockets.', cardId: 'quick_extract' },
+      { id: 'escape_save_some', label: 'Save Some Then Leave', subtitle: 'Medium credits. Medium echo. Some survive.', cardId: 'scavenge' },
     ],
   },
 
   escape_scavenge_hard: {
     id: 'escape_scavenge_hard',
     lines: [
-      { speaker: 'VALU', text: 'Profit confirmed. Human loss accepted.' },
+      { speaker: 'VALU', text: 'Outcome: zero survivors. Salvage: maximum. Void echo harvested: HIGH — ₡800 starting credits, 3 echo banked. Cold comfort. Debt pressure elevated.' },
+      { speaker: 'PLAYER', text: 'Rich, alone, and slightly haunted. That tracks. Proceed to Hub.' },
+    ],
+    choices: [],
+  },
+
+  escape_extract_now: {
+    id: 'escape_extract_now',
+    lines: [
+      { speaker: 'VALU', text: 'Outcome: zero survivors. Fast extraction. Salvage: above base. Void echo harvested: HIGH. Credits reduced by extraction penalty. Debt pressure elevated.' },
+      { speaker: 'PLAYER', text: 'Penalised for leaving quickly AND everyone died. Efficient. Proceed to Hub.' },
     ],
     choices: [],
   },
@@ -96,7 +110,8 @@ export const INTRO_NODES: Record<string, IntroNode> = {
   escape_save_some: {
     id: 'escape_save_some',
     lines: [
-      { speaker: 'JAX', text: "You actually came back? Then move. I can keep three pods stable, tops." },
+      { speaker: 'VALU', text: 'Outcome: partial survivors. JAX awakened. Salvage: moderate. Void echo: MEDIUM — some loss events recorded. Debt pressure: medium.' },
+      { speaker: 'PLAYER', text: 'Some people made it. Jax is judging me from engineering. Medium outcomes. Proceed to Hub.' },
     ],
     choices: [],
   },
@@ -104,19 +119,20 @@ export const INTRO_NODES: Record<string, IntroNode> = {
   repair_bridge: {
     id: 'repair_bridge',
     lines: [
-      { speaker: 'VALU', text: 'Recommendation: extract with recoverable assets.' },
-      { speaker: 'JAX', text: "I'm Jax. Bulkhead's gone. We can still save people if we stop pretending this is clean." },
+      { speaker: 'VALU', text: 'Patch and Hold applied. Hull +8. One shield charge online — next incoming damage is negated. Cost: ₡20. One engineer awakened: JAX. Proceed or commit.' },
+      { speaker: 'PLAYER', text: 'Ship has a shield. Jax is up. I can loot and run with some survivors, or burn the shield finishing this and save everyone.' },
     ],
     choices: [
-      { id: 'repair_extract_with_jax', label: 'Balanced Extract', subtitle: 'Coordinate with Jax. Survivors and salvage both. Debt pressure: MEDIUM.' },
-      { id: 'repair_full_save', label: 'Full Commitment', subtitle: 'Every pod. No half measures. Jax leads. Debt pressure: LOW.' },
+      { id: 'repair_extract_with_jax', label: 'Loot & Extract', subtitle: 'Medium credits. Some survive. Shield carries.', cardId: 'scavenge' },
+      { id: 'repair_full_save', label: 'Full Commitment', subtitle: 'Shield consumed. No echo. Everyone lives.', cardId: 'repair' },
     ],
   },
 
   repair_extract_with_jax: {
     id: 'repair_extract_with_jax',
     lines: [
-      { speaker: 'JAX', text: 'Take what we need, then we go.' },
+      { speaker: 'VALU', text: 'Outcome: partial survivors. JAX operational. Shield charge carried. Salvage: moderate. Void echo: MEDIUM. Debt pressure: medium.' },
+      { speaker: 'PLAYER', text: 'Took what we could, left with a shield still armed. Jax seemed okay with it. Proceed to Hub.' },
     ],
     choices: [],
   },
@@ -124,7 +140,8 @@ export const INTRO_NODES: Record<string, IntroNode> = {
   repair_full_save: {
     id: 'repair_full_save',
     lines: [
-      { speaker: 'JAX', text: 'Then commit. No half measures.' },
+      { speaker: 'VALU', text: 'Outcome: all passengers recovered. Ship stabilized. Shield consumed in final sequence. Void echo: NONE — no loss events recorded. Energy: 4. Debt pressure elevated.' },
+      { speaker: 'PLAYER', text: 'Saved everyone. Made nothing. No echo. I\'ll feel that later. Worth it. Maybe. Proceed to Hub.' },
     ],
     choices: [],
   },
@@ -139,6 +156,7 @@ export const INTRO_BRANCH_MAP: Record<string, string> = {
 
   // escape_bridge choices
   escape_scavenge_hard: 'escape_scavenge_hard',
+  escape_extract_now: 'escape_extract_now',
   escape_save_some: 'escape_save_some',
 
   // repair_bridge choices
@@ -150,6 +168,7 @@ export const INTRO_BRANCH_MAP: Record<string, string> = {
 
 export const TERMINAL_NODES = new Set([
   'escape_scavenge_hard',
+  'escape_extract_now',
   'escape_save_some',
   'repair_extract_with_jax',
   'repair_full_save',
@@ -171,6 +190,22 @@ export const INTRO_OUTCOMES: Record<string, IntroTerminalOutcome> = {
     introTranscriptTag: 'escape_scavenge_hard',
     recapWhoLived: 'No one. The pods are gone.',
     recapWhatGained: 'Maximum salvage. Maximum void echo.',
+    recapDebtNote: 'Debt pressure: HIGH',
+  },
+
+  escape_extract_now: {
+    nodeId: 'escape_extract_now',
+    openingPathId: 'cold_extract',
+    salvageRewardBand: 'high',
+    voidRewardBand: 'high',
+    survivorsSaved: 0,
+    shipStateStart: 'damaged',
+    debtModifier: 'high',
+    openingProfile: 'cold_extract',
+    awakenedCrew: [],
+    introTranscriptTag: 'escape_extract_now',
+    recapWhoLived: 'No survivors. Fast extract.',
+    recapWhatGained: 'High salvage. High void echo.',
     recapDebtNote: 'Debt pressure: HIGH',
   },
 
