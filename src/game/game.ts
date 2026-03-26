@@ -2,7 +2,6 @@ import { MakkoEngine } from '@makko/engine';
 import { RunState, MetaState } from '../types/state';
 import { GameStore } from '../app/game-store';
 import { serialize } from '../persist/save';
-import { OPENING_PATH_CONFIG, OPENING_PATH_ORDER, OpeningPathId } from '../content/opening-paths';
 import { renderHub, HubAction, HubTab } from '../ui/hub-renderer';
 import { renderDive } from '../ui/dive-renderer';
 import { renderResult } from '../ui/result-renderer';
@@ -14,40 +13,10 @@ import { renderSalvageMarket } from '../ui/salvage-market-panel';
 import { renderHardwarePanel } from '../ui/hardware-panel';
 import { renderCryoPanel } from '../ui/cryo-panel';
 import { renderModulesPanel } from '../ui/modules-panel';
+import { renderResetConfirmOverlay } from '../ui/reset-confirm-overlay';
 
 // ── Types ────────────────────────────────────────────────────────────────────
-type ScreenState = 'path-select' | 'hub' | 'dive' | 'result' | 'void-communion' | 'salvage-market' | 'hardware' | 'cryo' | 'modules';
-
-// ── Layout constants (path-select only — other screens handled by renderers) ─
-const CARD_W = 440;
-const CARD_H = 240;
-const CARD_XS = [200, 720, 1240];
-const PATH_Y = 380;
-
-const CARD_FILL        = '#1e2433';
-const CARD_BORDER_IDLE = '#4a5568';
-const CARD_BORDER_HOVER = '#90cdf4';
-
-function wrapText(text: string, maxChars: number): string[] {
-  const words = text.split(' ');
-  const lines: string[] = [];
-  let line = '';
-  for (const word of words) {
-    const candidate = line ? `${line} ${word}` : word;
-    if (candidate.length > maxChars && line !== '') { lines.push(line); line = word; }
-    else { line = candidate; }
-  }
-  if (line) lines.push(line);
-  return lines;
-}
-
-function pathHitTest(mx: number, my: number): number {
-  for (let i = 0; i < CARD_XS.length; i++) {
-    const cx = CARD_XS[i];
-    if (mx >= cx && mx <= cx + CARD_W && my >= PATH_Y && my <= PATH_Y + CARD_H) return i;
-  }
-  return -1;
-}
+type ScreenState = 'hub' | 'dive' | 'result' | 'void-communion' | 'salvage-market' | 'hardware' | 'cryo' | 'modules';
 
 /* MANUAL TEST CHECKLIST — P25 integration checkpoint
  * Run at least 3 consecutive loops before shipping:
@@ -72,9 +41,20 @@ function pathHitTest(mx: number, my: number): number {
 
 // ── Game class ───────────────────────────────────────────────────────────────
 export class Game {
-  private running = false;
-  private store = new GameStore();
-  private tutorial = new TutorialController(this.store.getState().meta);
+  private store: GameStore;
+  private tutorial: TutorialController;
+
+  /**
+   * Set by update() when an in-game action needs a scene transition.
+   * GameScene checks this after each update() and calls switchTo().
+   * Always reset to null after reading.
+   */
+  pendingSceneSwitch: string | null = null;
+
+  constructor(store: GameStore) {
+    this.store = store;
+    this.tutorial = new TutorialController(this.store.getState().meta);
+  }
 
   private screenState: ScreenState = 'hub';
   private runLog: string[] = [];
@@ -83,9 +63,6 @@ export class Game {
   // so they include extraction bonuses and walker-tier echo multipliers.
   private lastRunCredits = 0;
   private lastRunEcho = 0;
-
-  // Path-select press tracking
-  private pressedPathIndex = -1;
 
   // Hub tab state
   private hubTab: HubTab = 'overview';
@@ -97,23 +74,26 @@ export class Game {
   private toastText = '';
   private toastExpiry = 0;
 
+  // Reset confirm overlay
+  private showResetConfirm = false;
+
   start(): void {
-    this.running = true;
+    // Reinitialise tutorial controller so it reflects the current (possibly
+    // reset) meta state rather than the state at construction time.
+    this.tutorial = new TutorialController(this.store.getState().meta);
 
-    const { loadResult } = this.store;
     const meta = this.store.getState().meta;
-    this.screenState = meta.openingPathChosen === false ? 'path-select' : 'hub';
+    this.screenState = 'hub';
 
-    if (loadResult.wasReset) {
+    if (this.store.loadResult.wasReset) {
       this.showToast('Save corrupted — starting fresh.');
-    } else if (loadResult.state.meta.totalRuns === 0 && !loadResult.state.meta.openingPathChosen) {
+    } else if (meta.totalRuns === 0 && !meta.openingPathChosen) {
       this.showToast('New game.');
     } else {
       this.showToast('Save loaded.');
     }
 
     MakkoEngine.input.capture(['KeyS', 'KeyR']);
-    requestAnimationFrame((t) => this.gameLoop(t));
   }
 
   private showToast(text: string): void {
@@ -142,22 +122,6 @@ export class Game {
   }
 
   // ── Input handling ─────────────────────────────────────────────────────────
-  private handlePathSelect(mx: number, my: number): void {
-    const input = MakkoEngine.input;
-
-    if (input.isMousePressed(0)) this.pressedPathIndex = pathHitTest(mx, my);
-
-    if (input.isMouseReleased(0) && this.pressedPathIndex !== -1) {
-      const released = pathHitTest(mx, my);
-      if (released === this.pressedPathIndex && released < OPENING_PATH_ORDER.length) {
-        const pathId = OPENING_PATH_ORDER[released] as OpeningPathId;
-        this.store.dispatch({ type: 'CHOOSE_OPENING_PATH', path: pathId });
-        this.screenState = 'hub';
-      }
-      this.pressedPathIndex = -1;
-    }
-  }
-
   private handleHub(action: HubAction | null): void {
     const input = MakkoEngine.input;
 
@@ -195,7 +159,7 @@ export class Game {
       this.screenState = 'cryo';
     } else if (action === 'OPEN_MODULES') {
       this.screenState = 'modules';
-    } else if (action !== null && typeof action === 'object' && action.type === 'SET_ACTIVE_REPAIR') {
+    } else if (action !== null && typeof action === 'object' && 'type' in action && action.type === 'SET_ACTIVE_REPAIR') {
       this.store.dispatch(action);
     }
   }
@@ -248,49 +212,10 @@ export class Game {
   }
 
   // ── Rendering ──────────────────────────────────────────────────────────────
-  private renderPathSelectScreen(mx: number, my: number): void {
-    const display = MakkoEngine.display;
-
-    display.drawText('CHOOSE YOUR OPENING PATH', 960, 200, {
-      font: 'bold 40px monospace', fill: '#e2e8f0', align: 'center', baseline: 'middle',
-    });
-    display.drawText('This choice shapes your starting conditions. It cannot be changed.', 960, 270, {
-      font: '22px monospace', fill: '#718096', align: 'center', baseline: 'middle',
-    });
-
-    for (let i = 0; i < OPENING_PATH_ORDER.length; i++) {
-      const cfg = OPENING_PATH_CONFIG[OPENING_PATH_ORDER[i]];
-      const cx = CARD_XS[i];
-      const hover = pathHitTest(mx, my) === i;
-
-      display.drawRect(cx, PATH_Y, CARD_W, CARD_H, {
-        fill: CARD_FILL,
-        stroke: hover ? CARD_BORDER_HOVER : CARD_BORDER_IDLE,
-        lineWidth: 2,
-      });
-
-      display.drawText(cfg.label, cx + CARD_W / 2, PATH_Y + 36, {
-        font: 'bold 26px monospace', fill: '#ffffff', align: 'center', baseline: 'top',
-      });
-
-      const descLines = wrapText(cfg.description, 36);
-      for (let l = 0; l < descLines.length; l++) {
-        display.drawText(descLines[l], cx + CARD_W / 2, PATH_Y + 86 + l * 26, {
-          font: '20px monospace', fill: '#a0aec0', align: 'center', baseline: 'top',
-        });
-      }
-
-      const statLine = `Energy:${cfg.energy}  Debt:\u20a1${cfg.debt}  Void:+${cfg.voidEchoBonus}`;
-      display.drawText(statLine, cx + CARD_W / 2, PATH_Y + CARD_H - 36, {
-        font: '18px monospace', fill: '#68d391', align: 'center', baseline: 'top',
-      });
-    }
-  }
 
   /** Maps ScreenState to TutorialScreen, or null for screens the tutorial ignores. */
   private asTutorialScreen(screen: ScreenState): TutorialScreen | null {
     if (
-      screen === 'path-select' ||
       screen === 'hub' ||
       screen === 'dive' ||
       screen === 'result'
@@ -308,9 +233,12 @@ export class Game {
   }
 
   // ── Game loop ──────────────────────────────────────────────────────────────
-  private gameLoop(currentTime: number): void {
-    if (!this.running) return;
 
+  /** Handle all input, state mutation, and drawing for this frame. Called by SceneManager loop.
+   *  Drawing happens here because the renderer functions both draw AND return actions in one call.
+   *  render() calls endFrame() to flush — always call update() before render() each frame.
+   */
+  update(_dt: number): void {
     const snap = this.store.getState();
     const { meta, currentRun, currentDraft } = snap;
     const input = MakkoEngine.input;
@@ -322,11 +250,7 @@ export class Game {
     display.clear('#101219');
 
     // ── Screen dispatch ────────────────────────────────────────────────────
-    if (this.screenState === 'path-select') {
-      this.handlePathSelect(mx, my);
-      this.renderPathSelectScreen(mx, my);
-
-    } else if (this.screenState === 'hub') {
+    if (this.screenState === 'hub') {
       const { action: hubAction, tabClicked } = renderHub(meta, this.hubTab, mx, my);
       if (tabClicked !== null) this.hubTab = tabClicked;
       this.handleHub(hubAction);
@@ -426,18 +350,15 @@ export class Game {
       }
     }
 
-    // ── Tutorial overlay ──────────────────────────────────────────────────
-    if (!meta.tutorialCompleted) {
-      // Only show on screens the tutorial covers
+    // ── Tutorial overlay (input portion) ──────────────────────────────────
+    if (!meta.tutorialCompleted && !this.showResetConfirm) {
       const tutorialScreen = this.asTutorialScreen(this.screenState);
       if (tutorialScreen !== null) {
-        // Auto-advance step when the player has moved past the trigger
         const currentStep = meta.tutorialStep === 0 ? 1 : meta.tutorialStep;
         if (currentStep < 6 && this.tutorial.shouldAdvance(currentStep, tutorialScreen, meta)) {
           this.store.dispatch({ type: 'ADVANCE_TUTORIAL_STEP' });
         }
 
-        // Determine what step to show (re-read after possible advance)
         const freshMeta = this.store.getState().meta;
         const activeStep = this.tutorial.getActiveStep(tutorialScreen, currentRun, freshMeta);
         if (activeStep !== null) {
@@ -449,12 +370,26 @@ export class Game {
       }
     }
 
-    // ── Toast overlay ──────────────────────────────────────────────────────
+    // ── Reset confirm overlay ─────────────────────────────────────────────
+    if (this.showResetConfirm) {
+      const resetAction = renderResetConfirmOverlay(mx, my);
+      if (resetAction === 'CANCEL') {
+        this.showResetConfirm = false;
+      } else if (resetAction === 'CONFIRM') {
+        this.store.resetToFreshGame();
+        this.pendingSceneSwitch = 'title_scene';
+      }
+    }
+
+    // ── Toast overlay ────────────────────────────────────────────────────
     this.renderToast();
+  }
 
-    display.endFrame();
-    MakkoEngine.input.endFrame();
-
-    requestAnimationFrame((t) => this.gameLoop(t));
+  /** Flush the drawn frame. Always call after update() — never call alone.
+   *  All drawing happens in update() since renderer functions draw + return actions.
+   *  This method only calls endFrame() to flush the WebGL batch.
+   */
+  render(): void {
+    MakkoEngine.display.endFrame();
   }
 }

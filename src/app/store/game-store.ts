@@ -13,7 +13,8 @@
 import { GameState, RunState } from '../../types/state';
 import { TacticCard, getAvailableCards } from '../../content/cards';
 import { drawThree } from '../../dive/draft';
-import { serialize, loadSave, LoadResult } from '../../persist/save';
+import { serialize, loadSave, clearSave, LoadResult } from '../../persist/save';
+import { createEmptyGame } from '../../types/state';
 import { checkAndUnlock } from '../../progression/unlocks';
 import { getPurchasedTiersForBranch } from '../../content/void-communion';
 import { computeCrewEffects } from '../../content/crew';
@@ -21,7 +22,7 @@ import { computeHardwareEffects } from '../hardware-effects';
 import { mergeRunIntoMeta, applyRepairProgress, applyDoctrineUnlocks, applyDeathLessonUnlocks } from '../run-end-handler';
 import { AppAction, StoreSnapshot } from './types';
 import { handleStartDive, handleDiveEvent } from './dive-handlers';
-import { handleChooseOpeningPath, handleBuyVoidTier, handleBuyVoidShopCard } from './void-handlers';
+import { handleChooseOpeningPath, handleBuyVoidTier, handleBuyVoidShopCard, handleApplyIntroOutcome } from './void-handlers';
 import { handleSellSalvage, handleSellAllLowTier, handlePayDebt, handleRechargeEnergy, handleRechargeEnergyEmergency, handleGainPowerCells, handleScrapJob } from './economy-handlers';
 import { handleEquipItem, handleUnequipItem, handleWakeCrew, handleSendToCryo, handleAssignCrew } from './crew-handlers';
 import { handleCompleteTutorial, handleAdvanceTutorialStep, handleSetActiveRepair, handleUpgradeModule } from './meta-handlers';
@@ -170,6 +171,11 @@ export class GameStore {
         serialize(this.state);
         break;
       }
+      case 'APPLY_INTRO_OUTCOME': {
+        this.state = handleApplyIntroOutcome(this.state, action.outcome);
+        serialize(this.state);
+        break;
+      }
     }
     this.notify();
   }
@@ -239,6 +245,21 @@ export class GameStore {
 
   private makeDraft(): TacticCard[] {
     return drawThree(getAvailableCards(this.state.meta.unlockedCards));
+  }
+
+  /**
+   * Wipe localStorage and reset all in-memory state to a fresh game.
+   * Use instead of window.location.reload() so the preview environment
+   * is not disrupted.
+   */
+  resetToFreshGame(): void {
+    clearSave();
+    this.state = createEmptyGame();
+    this.currentDraft = [];
+    this.lastEndedRun = null;
+    this.lastBankedCredits = 0;
+    this.lastEchoGained = 0;
+    this.notify();
   }
 
   private notify(): void {

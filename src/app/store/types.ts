@@ -7,6 +7,7 @@ import { ItemSlot } from '../../content/hardware';
 import { CrewMemberId } from '../../content/crew';
 import { ModuleId } from '../../content/modules';
 import { AssignmentSlotId } from '../../content/crew-assignments';
+import { IntroTerminalOutcome } from '../../content/intro-narrative';
 
 export type AppAction =
   | { type: 'START_DIVE' }
@@ -30,7 +31,8 @@ export type AppAction =
   | { type: 'UPGRADE_MODULE'; moduleId: ModuleId }
   | { type: 'ASSIGN_CREW'; crewId: CrewMemberId; slot: AssignmentSlotId }
   | { type: 'RECHARGE_ENERGY_EMERGENCY' }
-  | { type: 'SCRAP_JOB' };
+  | { type: 'SCRAP_JOB' }
+  | { type: 'APPLY_INTRO_OUTCOME'; outcome: IntroTerminalOutcome };
 
 export interface StoreSnapshot extends GameState {
   currentDraft: TacticCard[];

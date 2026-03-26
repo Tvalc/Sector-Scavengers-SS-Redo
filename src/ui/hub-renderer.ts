@@ -40,6 +40,10 @@ const RP_Y = 60;
 const RP_W = 1200;
 const RP_H = 960;
 
+// Contract banner (above tab bar)
+const BANNER_H = 48;
+const BANNER_GAP = 8;
+
 // Tab bar (top of right panel)
 const TAB_H = 56;
 const TAB_COUNT = 3;
@@ -101,6 +105,7 @@ function renderTabBar(
   activeTab: HubTab,
   mx: number,
   my: number,
+  bannerOffset: number = 0,
 ): HubTab | null {
   const display = MakkoEngine.display;
   let clicked: HubTab | null = null;
@@ -108,7 +113,7 @@ function renderTabBar(
   for (let i = 0; i < TAB_ORDER.length; i++) {
     const tab = TAB_ORDER[i];
     const tx = RP_X + i * TAB_W;
-    const ty = RP_Y;
+    const ty = RP_Y + bannerOffset;
     const isActive = tab === activeTab;
     const hover = isOver(mx, my, tx, ty, TAB_W, TAB_H);
 
@@ -299,14 +304,14 @@ function renderLeftColumn(
 
 // ── Right column: Overview tab ────────────────────────────────────────────────
 
-function renderOverviewTab(meta: MetaState): void {
+function renderOverviewTab(meta: MetaState, bannerOffset: number = 0): void {
   const display = MakkoEngine.display;
   const actions = getHubAvailableActions(meta);
   const modFx = computeModuleEffects(meta.moduleLevels);
   const effectiveRechargeCost = Math.floor(RECHARGE_COST * (1 - modFx.marketDiscountPct / 100));
 
   // Content starts below tab bar
-  const cY = RP_Y + TAB_H + 20;
+  const cY = RP_Y + TAB_H + 20 + bannerOffset;
 
   // "AVAILABLE ACTIONS" header
   display.drawText('AVAILABLE ACTIONS', RP_CONTENT_X, cY, {
@@ -421,12 +426,13 @@ function renderCrewModulesTab(
   meta: MetaState,
   mx: number,
   my: number,
+  bannerOffset: number = 0,
 ): HubAction | null {
   const display = MakkoEngine.display;
   const input = MakkoEngine.input;
   let clicked: HubAction | null = null;
 
-  const cY = RP_Y + TAB_H + 20;
+  const cY = RP_Y + TAB_H + 20 + bannerOffset;
 
   // ── Crew section ─────────────────────────────────────────────────────────
   display.drawText('CREW', RP_CONTENT_X, cY, {
@@ -572,12 +578,13 @@ function renderSecondaryTab(
   meta: MetaState,
   mx: number,
   my: number,
+  bannerOffset: number = 0,
 ): HubAction | null {
   const display = MakkoEngine.display;
   const input = MakkoEngine.input;
   let clicked: HubAction | null = null;
 
-  const cY = RP_Y + TAB_H + 20;
+  const cY = RP_Y + TAB_H + 20 + bannerOffset;
   const navW = 520;
   const navH = 52;
   const navGap = 12;
@@ -652,26 +659,46 @@ export function renderHub(
   activeTab: HubTab,
   mx: number,
   my: number,
+  showContractBanner: boolean = false,
 ): { action: HubAction | null; tabClicked: HubTab | null } {
   const display = MakkoEngine.display;
+  const bannerOffset = showContractBanner ? (BANNER_H + BANNER_GAP) : 0;
 
   // Right panel background
   display.drawRect(RP_X, RP_Y, RP_W, RP_H, { fill: '#0d1117', stroke: '#2d3748', lineWidth: 1 });
 
+  // Contract banner (if shown)
+  if (showContractBanner && meta.openingPathChosen !== false) {
+    const pathCfg = OPENING_PATH_CONFIG[meta.openingPathChosen];
+    const bannerText = `CONTRACT ACTIVE: ${pathCfg.label} — ${pathCfg.sidegrade}`;
+
+    display.drawRect(RP_X, RP_Y, RP_W, BANNER_H, {
+      fill: '#1e3a5f',
+      stroke: '#63b3ed',
+      lineWidth: 2,
+    });
+    display.drawText(bannerText, RP_X + RP_W / 2, RP_Y + BANNER_H / 2, {
+      font: 'bold 20px monospace',
+      fill: '#ffffff',
+      align: 'center',
+      baseline: 'middle',
+    });
+  }
+
   // Left column
   const leftAction = renderLeftColumn(meta, mx, my);
 
-  // Tab bar
-  const tabClicked = renderTabBar(activeTab, mx, my);
+  // Tab bar (pushed down if banner is shown)
+  const tabClicked = renderTabBar(activeTab, mx, my, bannerOffset);
 
-  // Right panel content
+  // Right panel content (pushed down if banner is shown)
   let rightAction: HubAction | null = null;
   if (activeTab === 'overview') {
-    renderOverviewTab(meta);
+    renderOverviewTab(meta, bannerOffset);
   } else if (activeTab === 'crew-modules') {
-    rightAction = renderCrewModulesTab(meta, mx, my);
+    rightAction = renderCrewModulesTab(meta, mx, my, bannerOffset);
   } else if (activeTab === 'secondary') {
-    rightAction = renderSecondaryTab(meta, mx, my);
+    rightAction = renderSecondaryTab(meta, mx, my, bannerOffset);
   }
 
   const action = leftAction ?? rightAction;

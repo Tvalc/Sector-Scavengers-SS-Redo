@@ -4,11 +4,11 @@
 import { MetaState, RunState } from '../types/state';
 
 /** Subset of ScreenState values the tutorial cares about. */
-export type TutorialScreen = 'path-select' | 'hub' | 'dive' | 'result';
+export type TutorialScreen = 'hub' | 'dive' | 'result';
 
 /** Human-readable guidance text for each step. */
 export const TUTORIAL_MESSAGES: Record<number, string> = {
-  1: 'Choose your opening path to begin.',
+  1: '[OBSOLETE] This step is handled by the intro scene.',
   2: "You're at the Hub. Press Start Dive to deploy.",
   3: 'Select a tactic card to take action this round.',
   4: 'Run complete. Extract banks credits. Collapse loses them.',
@@ -38,7 +38,10 @@ export class TutorialController {
 
     switch (step) {
       case 1:
-        return screen === 'path-select' ? 1 : null;
+        // Step 1 is obsolete (path-select removed) — intro scene handles this now
+        // This case should never be reached since tutorialStep starts at 0→1 and
+        // openingPathChosen is set by intro scene before hub is shown
+        return null;
 
       case 2:
         return screen === 'hub' && meta.totalRuns === 0 ? 2 : null;
@@ -69,8 +72,9 @@ export class TutorialController {
   ): boolean {
     switch (step) {
       case 1:
-        // Path has been chosen — move from path-select to hub
-        return meta.openingPathChosen !== false;
+        // Step 1 is obsolete — intro scene now handles path selection
+        // Auto-advance past it when intro is complete
+        return true;
 
       case 2:
         // A dive has started — screen will be 'dive' now

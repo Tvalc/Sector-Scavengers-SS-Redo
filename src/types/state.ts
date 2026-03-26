@@ -6,6 +6,7 @@ import type { SalvageEntry } from '../content/salvage';
 import type { ItemSlot } from '../content/hardware';
 import type { ModuleId } from '../content/modules';
 import type { AssignmentSlotId } from '../content/crew-assignments';
+import type { SalvageRewardBand, VoidRewardBand, SurvivorsSaved, ShipStateStart } from '../content/intro-narrative';
 
 export interface BillingResult {
   paid: boolean;
@@ -83,6 +84,13 @@ export interface MetaState {
   crewAssignments: Partial<Record<CrewMemberId, AssignmentSlotId>>;
   /** Whether the zero-cost scrap job action is available (reset to true after each run). */
   scrapJobAvailable: boolean;
+  /** Narrative outcome fields from intro sequence */
+  survivorsSaved: SurvivorsSaved;
+  shipStateStart: ShipStateStart;
+  awakenedCrew: string[];
+  introTranscriptTag: string;
+  salvageRewardBand: SalvageRewardBand;
+  voidRewardBand: VoidRewardBand;
 }
 
 export interface GameState {
@@ -138,6 +146,12 @@ export function createEmptyGame(): GameState {
       },
       crewAssignments: {},
       scrapJobAvailable: true,
+      survivorsSaved: 0,
+      shipStateStart: 'damaged',
+      awakenedCrew: [],
+      introTranscriptTag: '',
+      salvageRewardBand: 'medium',
+      voidRewardBand: 'medium',
     },
     currentRun: null,
     saveVersion: 3,
