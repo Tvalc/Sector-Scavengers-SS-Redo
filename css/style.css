@@ -23,9 +23,7 @@ html, body {
 
 #gameCanvas {
   display: block;
-  max-width: 100%;
-  max-height: 100%;
-  /* MakkoEngine.display handles width, height, and aspect-ratio */
+  /* Canvas is sized to window by MakkoEngine display - no CSS scaling */
 }
 
 /* Custom styles below */

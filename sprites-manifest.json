@@ -5,8 +5,8 @@
       "animations": {
         "space_scav_1_run_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/30cd09fa-856c-4a1d-8984-ba6b876b5400/space_scav_1_run_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/30cd09fa-856c-4a1d-8984-ba6b876b5400/space_scav_1_run_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/30cd09fa-856c-4a1d-8984-ba6b876b5400/space_scav_1_run_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/30cd09fa-856c-4a1d-8984-ba6b876b5400/space_scav_1_run_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 14,
           "spriteSheetId": "959b7fed-db92-4472-b216-5444edebbd5e",
@@ -30,8 +30,8 @@
         },
         "space_scav_1_walk_default": {
           "fps": 12,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6116b2a9-dace-434e-92b1-2561cfe97dd7/space_scav_1_walk_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6116b2a9-dace-434e-92b1-2561cfe97dd7/space_scav_1_walk_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6116b2a9-dace-434e-92b1-2561cfe97dd7/space_scav_1_walk_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6116b2a9-dace-434e-92b1-2561cfe97dd7/space_scav_1_walk_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 43,
           "spriteSheetId": "d8f2bfe2-ac1c-4358-bfbf-931483f6c538",
@@ -55,8 +55,8 @@
         },
         "space_scav_1_repair_default": {
           "fps": 12,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/09a9aa40-f089-4f11-a180-144268f9ee16/space_scav_1_repair_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/09a9aa40-f089-4f11-a180-144268f9ee16/space_scav_1_repair_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/09a9aa40-f089-4f11-a180-144268f9ee16/space_scav_1_repair_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/09a9aa40-f089-4f11-a180-144268f9ee16/space_scav_1_repair_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "9d7f259b-500e-4fc1-9371-6ff08ca47e95",
@@ -80,8 +80,8 @@
         },
         "space_scav_1_scared_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3b351ccc-43c0-47d0-8b22-6fc3a4499158/space_scav_1_scared_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3b351ccc-43c0-47d0-8b22-6fc3a4499158/space_scav_1_scared_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3b351ccc-43c0-47d0-8b22-6fc3a4499158/space_scav_1_scared_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3b351ccc-43c0-47d0-8b22-6fc3a4499158/space_scav_1_scared_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "2b774f4a-ac5a-4655-bdeb-b22896057c36",
@@ -105,8 +105,8 @@
         },
         "space_scav_1_ejected_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ac816b4d-5ea0-47a4-9805-e9c1f27c0ce9/space_scav_1_ejected_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ac816b4d-5ea0-47a4-9805-e9c1f27c0ce9/space_scav_1_ejected_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ac816b4d-5ea0-47a4-9805-e9c1f27c0ce9/space_scav_1_ejected_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ac816b4d-5ea0-47a4-9805-e9c1f27c0ce9/space_scav_1_ejected_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "137f0837-6c3b-4598-87cd-881e63064a40",
@@ -130,8 +130,8 @@
         },
         "space_scav_1_buckleup_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b96da0c-ce19-483c-96b6-555c2dbe3671/space_scav_1_buckleup_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b96da0c-ce19-483c-96b6-555c2dbe3671/space_scav_1_buckleup_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b96da0c-ce19-483c-96b6-555c2dbe3671/space_scav_1_buckleup_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b96da0c-ce19-483c-96b6-555c2dbe3671/space_scav_1_buckleup_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 39,
           "spriteSheetId": "7cc8deb5-5c3c-4302-8417-4881c44a80a9",
@@ -155,8 +155,8 @@
         },
         "space_scav_1_appearing_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d4dce0c4-75f1-49c4-a913-f69c3bcf7117/space_scav_1_appearing_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d4dce0c4-75f1-49c4-a913-f69c3bcf7117/space_scav_1_appearing_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d4dce0c4-75f1-49c4-a913-f69c3bcf7117/space_scav_1_appearing_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d4dce0c4-75f1-49c4-a913-f69c3bcf7117/space_scav_1_appearing_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 40,
           "spriteSheetId": "8e032e69-4f90-47f7-bf5f-8cf212f373db",
@@ -180,8 +180,8 @@
         },
         "space_scav_1_hud_check_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/396960c0-993b-4366-982b-225fe9f84b25/space_scav_1_hud_check_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/396960c0-993b-4366-982b-225fe9f84b25/space_scav_1_hud_check_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/396960c0-993b-4366-982b-225fe9f84b25/space_scav_1_hud_check_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/396960c0-993b-4366-982b-225fe9f84b25/space_scav_1_hud_check_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "10d29ada-48cd-4b69-bade-495b68f491d1",
@@ -205,8 +205,8 @@
         },
         "space_scav_1_rummaging_default": {
           "fps": 12,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d15b9328-fb8c-4924-a075-3b2182792e17/space_scav_1_rummaging_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d15b9328-fb8c-4924-a075-3b2182792e17/space_scav_1_rummaging_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d15b9328-fb8c-4924-a075-3b2182792e17/space_scav_1_rummaging_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d15b9328-fb8c-4924-a075-3b2182792e17/space_scav_1_rummaging_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "78d12b7e-62d0-4805-8bfb-a4902ad32cd4",
@@ -230,8 +230,8 @@
         },
         "space_scav_1_scavenging_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e768fe0-89ba-4cb3-96d7-7b112a731a61/space_scav_1_scavenging_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e768fe0-89ba-4cb3-96d7-7b112a731a61/space_scav_1_scavenging_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e768fe0-89ba-4cb3-96d7-7b112a731a61/space_scav_1_scavenging_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e768fe0-89ba-4cb3-96d7-7b112a731a61/space_scav_1_scavenging_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "2e792245-8907-4ce3-9312-1161509b6e19",
@@ -255,8 +255,8 @@
         },
         "space_scav_1_strappingin_default": {
           "fps": 12,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b11e3a3e-1536-471c-8735-45a805c6818b/space_scav_1_strappingin_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b11e3a3e-1536-471c-8735-45a805c6818b/space_scav_1_strappingin_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b11e3a3e-1536-471c-8735-45a805c6818b/space_scav_1_strappingin_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b11e3a3e-1536-471c-8735-45a805c6818b/space_scav_1_strappingin_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 19,
           "spriteSheetId": "bc8895d1-757f-40f7-b0e8-69496c4f4e2c",
@@ -280,8 +280,8 @@
         },
         "space_scav_1_talkingfast_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec0b1398-b058-47f8-a4ce-7b66f3b1d670/space_scav_1_talkingfast_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec0b1398-b058-47f8-a4ce-7b66f3b1d670/space_scav_1_talkingfast_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec0b1398-b058-47f8-a4ce-7b66f3b1d670/space_scav_1_talkingfast_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec0b1398-b058-47f8-a4ce-7b66f3b1d670/space_scav_1_talkingfast_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "0f12f806-c59e-47a8-8093-533906a1a350",
@@ -305,8 +305,8 @@
         },
         "space_scav_1_visor_break_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/f28a773f-7bfd-4631-ae45-6261b99212c3/space_scav_1_visor_break_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/f28a773f-7bfd-4631-ae45-6261b99212c3/space_scav_1_visor_break_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/f28a773f-7bfd-4631-ae45-6261b99212c3/space_scav_1_visor_break_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/f28a773f-7bfd-4631-ae45-6261b99212c3/space_scav_1_visor_break_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "d68afb59-ad76-4edb-b87e-9be5475dc590",
@@ -330,8 +330,8 @@
         },
         "space_scav_1_walkforward_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ff22e3c-7db5-4c09-9789-0b2f55ab5bad/space_scav_1_walkforward_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ff22e3c-7db5-4c09-9789-0b2f55ab5bad/space_scav_1_walkforward_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ff22e3c-7db5-4c09-9789-0b2f55ab5bad/space_scav_1_walkforward_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ff22e3c-7db5-4c09-9789-0b2f55ab5bad/space_scav_1_walkforward_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "f0a308ba-86c1-4798-96d8-17e02d090a2f",
@@ -355,8 +355,8 @@
         },
         "space_scav_1_victory_aura_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/71d24ad7-52f3-45ff-9caa-767664be7475/space_scav_1_victory_aura_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/71d24ad7-52f3-45ff-9caa-767664be7475/space_scav_1_victory_aura_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/71d24ad7-52f3-45ff-9caa-767664be7475/space_scav_1_victory_aura_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/71d24ad7-52f3-45ff-9caa-767664be7475/space_scav_1_victory_aura_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "61f10d2c-46a7-41a3-ba2c-86a4c351e06f",
@@ -380,8 +380,8 @@
         },
         "space_scav_1_idle_visor_hud_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/81782f40-2137-4535-8def-b01260c47b5f/space_scav_1_idle_visor_hud_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/81782f40-2137-4535-8def-b01260c47b5f/space_scav_1_idle_visor_hud_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/81782f40-2137-4535-8def-b01260c47b5f/space_scav_1_idle_visor_hud_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/81782f40-2137-4535-8def-b01260c47b5f/space_scav_1_idle_visor_hud_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "9aef4924-b1cc-4428-adca-e0881a3c2757",
@@ -405,8 +405,8 @@
         },
         "space_scav_1_idle_static_hud_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9d08f8e5-8f0e-4d92-8615-9f82532a825b/space_scav_1_idle_static_hud_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9d08f8e5-8f0e-4d92-8615-9f82532a825b/space_scav_1_idle_static_hud_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9d08f8e5-8f0e-4d92-8615-9f82532a825b/space_scav_1_idle_static_hud_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9d08f8e5-8f0e-4d92-8615-9f82532a825b/space_scav_1_idle_static_hud_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 61,
           "spriteSheetId": "6239db96-dab4-4d21-b49b-4c7557f65f79",
@@ -430,8 +430,8 @@
         },
         "space_scav_1_suckedbackwards_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d2a858e4-f098-45fb-8bc8-8430a55fca33/space_scav_1_suckedbackwards_default.json?t=1774472757175",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d2a858e4-f098-45fb-8bc8-8430a55fca33/space_scav_1_suckedbackwards_default.webp?t=1774472757175",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d2a858e4-f098-45fb-8bc8-8430a55fca33/space_scav_1_suckedbackwards_default.json?t=1774764315406",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/d2a858e4-f098-45fb-8bc8-8430a55fca33/space_scav_1_suckedbackwards_default.webp?t=1774764315406",
           "priority": "medium",
           "frameCount": 19,
           "spriteSheetId": "7f63adc9-b156-43cb-b810-38dda4b690c7",
@@ -460,10 +460,41 @@
     },
     "software_developer_devcore": {
       "animations": {
+        "software_developer_idle_default": {
+          "fps": 12,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0ccc4a97-03f6-402d-a03b-b85c88e317fd/software_developer_idle_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0ccc4a97-03f6-402d-a03b-b85c88e317fd/software_developer_idle_default.webp?t=1775084185152",
+          "priority": "medium",
+          "frameCount": 39,
+          "spriteSheetId": "4e5114a3-3397-4a54-abaa-598b3b52e7d6",
+          "animationLength": 3.25,
+          "metadata": {
+            "anchor": {
+              "x": 183,
+              "y": 523,
+              "strategy": "manual",
+              "normalized": {
+                "x": 0.5414201183431953,
+                "y": 1
+              }
+            },
+            "hitbox": {
+              "x": -144.424,
+              "y": -523,
+              "width": 288.84799999999996,
+              "height": 523
+            },
+            "scale": 0.25,
+            "dimensions": {
+              "width": 338,
+              "height": 523
+            }
+          }
+        },
         "software_developer_swarm_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e8aef14-bdfa-49b3-9367-b32290ab4134/software_developer_swarm_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e8aef14-bdfa-49b3-9367-b32290ab4134/software_developer_swarm_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e8aef14-bdfa-49b3-9367-b32290ab4134/software_developer_swarm_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/4e8aef14-bdfa-49b3-9367-b32290ab4134/software_developer_swarm_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 34,
           "spriteSheetId": "a4ced6c5-45ec-4d4b-92b9-f4b4d28645ec",
@@ -487,8 +518,8 @@
         },
         "software_developer_drowsy_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5356d7bc-feaf-4a2b-b64b-674e95fee24d/software_developer_drowsy_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5356d7bc-feaf-4a2b-b64b-674e95fee24d/software_developer_drowsy_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5356d7bc-feaf-4a2b-b64b-674e95fee24d/software_developer_drowsy_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5356d7bc-feaf-4a2b-b64b-674e95fee24d/software_developer_drowsy_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "a8ba546e-10a5-45ff-97ee-ca93fbdcc0cb",
@@ -512,8 +543,8 @@
         },
         "software_developer_scared_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/42848266-3d38-4e2e-9a4d-d952f3d455fa/software_developer_scared_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/42848266-3d38-4e2e-9a4d-d952f3d455fa/software_developer_scared_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/42848266-3d38-4e2e-9a4d-d952f3d455fa/software_developer_scared_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/42848266-3d38-4e2e-9a4d-d952f3d455fa/software_developer_scared_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "3f110914-11c5-4b07-8406-66adf1385bc9",
@@ -528,6 +559,12 @@
                 "y": 1
               }
             },
+            "hitbox": {
+              "x": -143,
+              "y": -522.808,
+              "width": 286,
+              "height": 522.808
+            },
             "scale": 0.25,
             "dimensions": {
               "width": 286,
@@ -537,8 +574,8 @@
         },
         "software_developer_shocked_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/bbe670a7-2572-4718-92fc-76f7fcae1496/software_developer_shocked_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/bbe670a7-2572-4718-92fc-76f7fcae1496/software_developer_shocked_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/bbe670a7-2572-4718-92fc-76f7fcae1496/software_developer_shocked_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/bbe670a7-2572-4718-92fc-76f7fcae1496/software_developer_shocked_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "8916a872-1a5f-460b-beed-6de89986b94e",
@@ -568,8 +605,8 @@
         },
         "software_developer_spaceshuttle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a1b89eb4-c0d6-4aee-9368-624e2218cfe8/software_developer_spaceshuttle_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a1b89eb4-c0d6-4aee-9368-624e2218cfe8/software_developer_spaceshuttle_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a1b89eb4-c0d6-4aee-9368-624e2218cfe8/software_developer_spaceshuttle_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a1b89eb4-c0d6-4aee-9368-624e2218cfe8/software_developer_spaceshuttle_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "6ef45bcd-a630-4192-b6e4-90d5767d2178",
@@ -593,8 +630,8 @@
         },
         "software_developer_talking_normal_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b7d4ed3-30a5-47a5-80e3-62806eda9c05/software_developer_talking_normal_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b7d4ed3-30a5-47a5-80e3-62806eda9c05/software_developer_talking_normal_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b7d4ed3-30a5-47a5-80e3-62806eda9c05/software_developer_talking_normal_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/5b7d4ed3-30a5-47a5-80e3-62806eda9c05/software_developer_talking_normal_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "10e5ab8c-eca7-4e43-b532-32d854abdf01",
@@ -618,8 +655,8 @@
         },
         "software_developer_headshottalking_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/89b84f09-43c9-40cb-9c95-61d2df8340a8/software_developer_headshottalking_default.json?t=1774472758306",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/89b84f09-43c9-40cb-9c95-61d2df8340a8/software_developer_headshottalking_default.webp?t=1774472758306",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/89b84f09-43c9-40cb-9c95-61d2df8340a8/software_developer_headshottalking_default.json?t=1775084185152",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/89b84f09-43c9-40cb-9c95-61d2df8340a8/software_developer_headshottalking_default.webp?t=1775084185152",
           "priority": "medium",
           "frameCount": 39,
           "spriteSheetId": "7e7b41db-8fe0-4c95-a570-ffd5cc37801d",
@@ -650,8 +687,8 @@
       "animations": {
         "single-man-scav_flying_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49f28951-0656-4092-bf19-cf87a4837bab/single-man-scav_flying_default.json?t=1774472999194",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49f28951-0656-4092-bf19-cf87a4837bab/single-man-scav_flying_default.webp?t=1774472999194",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49f28951-0656-4092-bf19-cf87a4837bab/single-man-scav_flying_default.json?t=1774764303942",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49f28951-0656-4092-bf19-cf87a4837bab/single-man-scav_flying_default.webp?t=1774764303942",
           "priority": "medium",
           "frameCount": 82,
           "spriteSheetId": "dca13170-7e35-46c6-99f2-17d1f7ca2fb4",
@@ -675,8 +712,8 @@
         },
         "single-man-scav_flying2_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/e31ee9d8-62ef-4c52-9ae5-800471060855/single-man-scav_flying2_default.json?t=1774472999194",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/e31ee9d8-62ef-4c52-9ae5-800471060855/single-man-scav_flying2_default.webp?t=1774472999194",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/e31ee9d8-62ef-4c52-9ae5-800471060855/single-man-scav_flying2_default.json?t=1774764303942",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/e31ee9d8-62ef-4c52-9ae5-800471060855/single-man-scav_flying2_default.webp?t=1774764303942",
           "priority": "medium",
           "frameCount": 40,
           "spriteSheetId": "3e9e1f99-4051-4411-80e3-5f30fd857245",
@@ -700,8 +737,8 @@
         },
         "single-man-scav_airlock2_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0d32dfb8-249d-4e51-a6e0-5707efd1c8a0/single-man-scav_airlock2_default.json?t=1774472999194",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0d32dfb8-249d-4e51-a6e0-5707efd1c8a0/single-man-scav_airlock2_default.webp?t=1774472999194",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0d32dfb8-249d-4e51-a6e0-5707efd1c8a0/single-man-scav_airlock2_default.json?t=1774764303942",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/0d32dfb8-249d-4e51-a6e0-5707efd1c8a0/single-man-scav_airlock2_default.webp?t=1774764303942",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "8446b628-4c13-4d0a-b55f-e582550efbe9",
@@ -725,8 +762,8 @@
         },
         "single-man-scav_powerpilot_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3dbab114-57b5-4360-b4f6-79413810f008/single-man-scav_powerpilot_default.json?t=1774472999194",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3dbab114-57b5-4360-b4f6-79413810f008/single-man-scav_powerpilot_default.webp?t=1774472999194",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3dbab114-57b5-4360-b4f6-79413810f008/single-man-scav_powerpilot_default.json?t=1774764303942",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3dbab114-57b5-4360-b4f6-79413810f008/single-man-scav_powerpilot_default.webp?t=1774764303942",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "dcf7d45f-3348-4a8d-a492-a82eb4d12e9c",
@@ -757,8 +794,8 @@
       "animations": {
         "ss-space-salvage-junker-1_talking_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/322e9f7e-470b-4470-b8fd-b13c5f4176a1/ss-space-salvage-junker-1_talking_default.json?t=1774473011591",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/322e9f7e-470b-4470-b8fd-b13c5f4176a1/ss-space-salvage-junker-1_talking_default.webp?t=1774473011591",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/322e9f7e-470b-4470-b8fd-b13c5f4176a1/ss-space-salvage-junker-1_talking_default.json?t=1774764321377",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/322e9f7e-470b-4470-b8fd-b13c5f4176a1/ss-space-salvage-junker-1_talking_default.webp?t=1774764321377",
           "priority": "medium",
           "frameCount": 25,
           "spriteSheetId": "0d21da38-d9c4-4fdd-bb82-2b7e047d7ae4",
@@ -782,8 +819,8 @@
         },
         "ss-space-salvage-junker-1_examining_default": {
           "fps": 12,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ca913e6-97a7-425d-a99b-c8270c30e48d/ss-space-salvage-junker-1_examining_default.json?t=1774473011591",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ca913e6-97a7-425d-a99b-c8270c30e48d/ss-space-salvage-junker-1_examining_default.webp?t=1774473011591",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ca913e6-97a7-425d-a99b-c8270c30e48d/ss-space-salvage-junker-1_examining_default.json?t=1774764321377",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/8ca913e6-97a7-425d-a99b-c8270c30e48d/ss-space-salvage-junker-1_examining_default.webp?t=1774764321377",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "652d1e74-660a-4c54-99e4-5af1d7291281",
@@ -807,8 +844,8 @@
         },
         "ss-space-salvage-junker-1_evaluating_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ebc83ee-9a57-4597-a276-7d5ed1e72594/ss-space-salvage-junker-1_evaluating_default.json?t=1774473011591",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ebc83ee-9a57-4597-a276-7d5ed1e72594/ss-space-salvage-junker-1_evaluating_default.webp?t=1774473011591",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ebc83ee-9a57-4597-a276-7d5ed1e72594/ss-space-salvage-junker-1_evaluating_default.json?t=1774764321377",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ebc83ee-9a57-4597-a276-7d5ed1e72594/ss-space-salvage-junker-1_evaluating_default.webp?t=1774764321377",
           "priority": "medium",
           "frameCount": 20,
           "spriteSheetId": "ddb3e4eb-b372-4c94-bd80-9896b11d4db0",
@@ -832,8 +869,8 @@
         },
         "ss-space-salvage-junker-1_largestack_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49c5daa6-ed63-4009-ad64-8b292673f96b/ss-space-salvage-junker-1_largestack_default.json?t=1774473011591",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49c5daa6-ed63-4009-ad64-8b292673f96b/ss-space-salvage-junker-1_largestack_default.webp?t=1774473011591",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49c5daa6-ed63-4009-ad64-8b292673f96b/ss-space-salvage-junker-1_largestack_default.json?t=1774764321377",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/49c5daa6-ed63-4009-ad64-8b292673f96b/ss-space-salvage-junker-1_largestack_default.webp?t=1774764321377",
           "priority": "medium",
           "frameCount": 44,
           "spriteSheetId": "def9238e-7210-4230-a83e-454a5d67ce13",
@@ -857,8 +894,8 @@
         },
         "ss-space-salvage-junker-1_smallstack_default": {
           "fps": 30,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6ac22cea-04b9-44a0-9526-a4db35dbe9d8/ss-space-salvage-junker-1_smallstack_default.json?t=1774473011591",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6ac22cea-04b9-44a0-9526-a4db35dbe9d8/ss-space-salvage-junker-1_smallstack_default.webp?t=1774473011591",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6ac22cea-04b9-44a0-9526-a4db35dbe9d8/ss-space-salvage-junker-1_smallstack_default.json?t=1774764321377",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/6ac22cea-04b9-44a0-9526-a4db35dbe9d8/ss-space-salvage-junker-1_smallstack_default.webp?t=1774764321377",
           "priority": "medium",
           "frameCount": 47,
           "spriteSheetId": "c95a9e47-0932-4d5a-bae3-7cb369062ec1",
@@ -1060,8 +1097,8 @@
       "animations": {
         "derelictcommon_idlerotation_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec8388e4-636e-4a3d-a34f-35b8f3d550c8/derelictcommon_idlerotation_default.json?t=1774473121493",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec8388e4-636e-4a3d-a34f-35b8f3d550c8/derelictcommon_idlerotation_default.webp?t=1774473121493",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec8388e4-636e-4a3d-a34f-35b8f3d550c8/derelictcommon_idlerotation_default.json?t=1774884900313",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/ec8388e4-636e-4a3d-a34f-35b8f3d550c8/derelictcommon_idlerotation_default.webp?t=1774884900313",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "c97be7b0-200e-408a-b41b-d913675e3877",
@@ -1092,8 +1129,8 @@
       "animations": {
         "information_drone_docking_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/70bffe37-916d-443b-9cd1-e81a744c9b71/information_drone_docking_default.json?t=1774473122178",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/70bffe37-916d-443b-9cd1-e81a744c9b71/information_drone_docking_default.webp?t=1774473122178",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/70bffe37-916d-443b-9cd1-e81a744c9b71/information_drone_docking_default.json?t=1774884902063",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/70bffe37-916d-443b-9cd1-e81a744c9b71/information_drone_docking_default.webp?t=1774884902063",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "46f624dc-815f-4b50-bcdc-a1d560961f34",
@@ -1124,8 +1161,8 @@
       "animations": {
         "derelict_shipping_freighter_rare_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ec95e3c-c34a-4786-84cb-d71f72df412b/derelict_shipping_freighter_rare_idle_default.json?t=1774473122900",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ec95e3c-c34a-4786-84cb-d71f72df412b/derelict_shipping_freighter_rare_idle_default.webp?t=1774473122900",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ec95e3c-c34a-4786-84cb-d71f72df412b/derelict_shipping_freighter_rare_idle_default.json?t=1774884903474",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/3ec95e3c-c34a-4786-84cb-d71f72df412b/derelict_shipping_freighter_rare_idle_default.webp?t=1774884903474",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "76a52a4a-ab8b-4881-b526-13327ea897e1",
@@ -1156,8 +1193,8 @@
       "animations": {
         "derelictuncommon2_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/691a98f6-0376-409f-b82b-2c06d9c1a0dc/derelictuncommon2_idle_default.json?t=1774473123993",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/691a98f6-0376-409f-b82b-2c06d9c1a0dc/derelictuncommon2_idle_default.webp?t=1774473123993",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/691a98f6-0376-409f-b82b-2c06d9c1a0dc/derelictuncommon2_idle_default.json?t=1774884904606",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/691a98f6-0376-409f-b82b-2c06d9c1a0dc/derelictuncommon2_idle_default.webp?t=1774884904606",
           "priority": "medium",
           "frameCount": 39,
           "spriteSheetId": "3867e0f5-bf6b-4137-aac8-17377199cc3f",
@@ -1188,8 +1225,8 @@
       "animations": {
         "derelictrare3_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7525e7f9-017c-4058-95a1-ae199280fd24/derelictrare3_idle_default.json?t=1774473125613",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7525e7f9-017c-4058-95a1-ae199280fd24/derelictrare3_idle_default.webp?t=1774473125613",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7525e7f9-017c-4058-95a1-ae199280fd24/derelictrare3_idle_default.json?t=1774884905096",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7525e7f9-017c-4058-95a1-ae199280fd24/derelictrare3_idle_default.webp?t=1774884905096",
           "priority": "medium",
           "frameCount": 48,
           "spriteSheetId": "7674dfab-494a-4204-b9c7-a4de29703586",
@@ -1220,8 +1257,8 @@
       "animations": {
         "derelictcommon2_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/c61fbfa3-e144-4dec-b865-70d6da57cb41/derelictcommon2_idle_default.json?t=1774473126295",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/c61fbfa3-e144-4dec-b865-70d6da57cb41/derelictcommon2_idle_default.webp?t=1774473126295",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/c61fbfa3-e144-4dec-b865-70d6da57cb41/derelictcommon2_idle_default.json?t=1774884905777",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/c61fbfa3-e144-4dec-b865-70d6da57cb41/derelictcommon2_idle_default.webp?t=1774884905777",
           "priority": "medium",
           "frameCount": 86,
           "spriteSheetId": "95c02cb0-8b48-46cc-a980-f2452358de0c",
@@ -1252,8 +1289,8 @@
       "animations": {
         "derelict_military_fighter_rare_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/01954414-31ad-48e0-9617-d91eb176f88c/derelict_military_fighter_rare_idle_default.json?t=1774473126963",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/01954414-31ad-48e0-9617-d91eb176f88c/derelict_military_fighter_rare_idle_default.webp?t=1774473126963",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/01954414-31ad-48e0-9617-d91eb176f88c/derelict_military_fighter_rare_idle_default.json?t=1774884910359",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/01954414-31ad-48e0-9617-d91eb176f88c/derelict_military_fighter_rare_idle_default.webp?t=1774884910359",
           "priority": "medium",
           "frameCount": 44,
           "spriteSheetId": "535a1205-50f9-466a-b230-797192d63fdd",
@@ -1284,8 +1321,8 @@
       "animations": {
         "derelict_military_fighter_epic_idle_default": {
           "fps": 24,
-          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/633f59d8-163b-4e8d-a8b0-9e24cf834d68/derelict_military_fighter_epic_idle_default.json?t=1774473127959",
-          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/633f59d8-163b-4e8d-a8b0-9e24cf834d68/derelict_military_fighter_epic_idle_default.webp?t=1774473127959",
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/633f59d8-163b-4e8d-a8b0-9e24cf834d68/derelict_military_fighter_epic_idle_default.json?t=1774884908466",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/633f59d8-163b-4e8d-a8b0-9e24cf834d68/derelict_military_fighter_epic_idle_default.webp?t=1774884908466",
           "priority": "medium",
           "frameCount": 96,
           "spriteSheetId": "438c4857-9b7c-4920-9346-3ebc493c1ba2",
@@ -1310,6 +1347,138 @@
       },
       "metadata": {
         "character_id": "08b54561-ff8e-4584-844f-01cf6d49b749"
+      }
+    },
+    "sci_fi_narrator_narratorcore": {
+      "animations": {
+        "sci_fi_narrator_artbutton_default": {
+          "fps": 30,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b86c8e64-6476-4734-90be-d255948a823e/sci_fi_narrator_artbutton_default.json?t=1774764283784",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/b86c8e64-6476-4734-90be-d255948a823e/sci_fi_narrator_artbutton_default.webp?t=1774764283784",
+          "priority": "medium",
+          "frameCount": 48,
+          "spriteSheetId": "f991db9b-4d6a-433a-a9cf-913c72e479f0",
+          "animationLength": 1.6,
+          "metadata": {
+            "anchor": {
+              "x": 206,
+              "y": 688,
+              "strategy": "manual",
+              "normalized": {
+                "x": 0.33225806451612905,
+                "y": 0.9971014492753624
+              }
+            },
+            "scale": 0.5,
+            "dimensions": {
+              "width": 620,
+              "height": 690
+            }
+          }
+        },
+        "sci_fi_narrator_artybutton_default": {
+          "fps": 12,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9ccaca03-99a9-4b82-b54f-07de2e0a08d9/sci_fi_narrator_artybutton_default.json?t=1774764283784",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/9ccaca03-99a9-4b82-b54f-07de2e0a08d9/sci_fi_narrator_artybutton_default.webp?t=1774764283784",
+          "priority": "medium",
+          "frameCount": 48,
+          "spriteSheetId": "7835c9d0-0ea8-4f5c-a73a-41a5befea256",
+          "animationLength": 4,
+          "metadata": {
+            "anchor": {
+              "x": 88,
+              "y": 605,
+              "strategy": "manual",
+              "normalized": {
+                "x": 0.22739018087855298,
+                "y": 0.9497645211930926
+              }
+            },
+            "scale": 0.5,
+            "dimensions": {
+              "width": 387,
+              "height": 637
+            }
+          }
+        },
+        "sci_fi_narrator_zoomnarrate_default": {
+          "fps": 12,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/63634539-26a6-4d71-af96-0b94ea0a8ff4/sci_fi_narrator_zoomnarrate_default.json?t=1774764283784",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/63634539-26a6-4d71-af96-0b94ea0a8ff4/sci_fi_narrator_zoomnarrate_default.webp?t=1774764283784",
+          "priority": "medium",
+          "frameCount": 94,
+          "spriteSheetId": "8d0a22d2-fa8b-41ca-85f2-33cf3349d070",
+          "animationLength": 7.833333333333333,
+          "metadata": {
+            "anchor": {
+              "x": 630,
+              "y": 692,
+              "strategy": "bottom-center",
+              "normalized": {
+                "x": 0.5,
+                "y": 1
+              }
+            },
+            "scale": 0.3,
+            "dimensions": {
+              "width": 1260,
+              "height": 692
+            }
+          }
+        },
+        "sci_fi_narrator_walkturnwave_default": {
+          "fps": 12,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7e2bbc73-8f16-4c08-9842-06dc8f94a926/sci_fi_narrator_walkturnwave_default.json?t=1774764283784",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/7e2bbc73-8f16-4c08-9842-06dc8f94a926/sci_fi_narrator_walkturnwave_default.webp?t=1774764283784",
+          "priority": "medium",
+          "frameCount": 48,
+          "spriteSheetId": "822fcda4-3569-4271-b153-546382429cd1",
+          "animationLength": 4,
+          "metadata": {
+            "anchor": {
+              "x": 145,
+              "y": 647,
+              "strategy": "bottom-center",
+              "normalized": {
+                "x": 0.5,
+                "y": 1
+              }
+            },
+            "scale": 0.5,
+            "dimensions": {
+              "width": 290,
+              "height": 647
+            }
+          }
+        },
+        "sci_fi_narrator_flyingheadhover_default": {
+          "fps": 12,
+          "json": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a919519c-3437-48ac-88ac-8888105d9e56/sci_fi_narrator_flyingheadhover_default.json?t=1774764283784",
+          "image": "https://api.makko.ai/storage/v1/object/public/sprite-sheets/a919519c-3437-48ac-88ac-8888105d9e56/sci_fi_narrator_flyingheadhover_default.webp?t=1774764283784",
+          "priority": "medium",
+          "frameCount": 70,
+          "spriteSheetId": "4dc03618-cb5a-490e-9e6c-61d12eec1ced",
+          "animationLength": 5.833333333333333,
+          "metadata": {
+            "anchor": {
+              "x": 314,
+              "y": 634,
+              "strategy": "manual",
+              "normalized": {
+                "x": 0.540447504302926,
+                "y": 0.9044222539229672
+              }
+            },
+            "scale": 0.5,
+            "dimensions": {
+              "width": 581,
+              "height": 701
+            }
+          }
+        }
+      },
+      "metadata": {
+        "character_id": "cfa3a674-5083-4f6d-8961-d9be2dc02dc7"
       }
     }
   }

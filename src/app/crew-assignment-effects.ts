@@ -10,6 +10,8 @@ export interface CrewAssignmentEffects {
   hullStartBonus: number;
   /** Extra percentage points added to salvage sale value multiplier. */
   saleBonusPct: number;
+  /** Research points bonus per dive. */
+  researchBonus: number;
 }
 
 const ZERO_EFFECTS: CrewAssignmentEffects = {
@@ -17,6 +19,7 @@ const ZERO_EFFECTS: CrewAssignmentEffects = {
   scavengeBonusFlat: 0,
   hullStartBonus: 0,
   saleBonusPct: 0,
+  researchBonus: 0,
 };
 
 export function computeCrewAssignmentEffects(
@@ -36,13 +39,16 @@ export function computeCrewAssignmentEffects(
         effects.repairBonus += 1;
         break;
       case 'scav_prep':
-        effects.scavengeBonusFlat += 10;
+        effects.scavengeBonusFlat += 500;
         break;
       case 'medbay':
         effects.hullStartBonus += 8;
         break;
       case 'market_ops':
         effects.saleBonusPct += 5;
+        break;
+      case 'research':
+        effects.researchBonus += 1;
         break;
     }
   }

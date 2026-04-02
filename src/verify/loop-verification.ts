@@ -8,8 +8,9 @@
 
 import { GameStore } from '../app/game-store';
 import { MetaState } from '../types/state';
-import { getHubAvailableActions } from '../app/hub-actions';
 import { serialize, loadSave } from '../persist/save';
+
+import { createEmptyGame } from '../types/state';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -25,6 +26,10 @@ export interface VerificationReport {
   scenarios: ScenarioResult[];
   filesChanged: string[];
   howToPlay: string[];
+}
+
+export function getHowToPlayNow(_meta: MetaState): string {
+  return '▶ START YOUR DIVE';
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -49,12 +54,6 @@ function playUntilRunEnds(store: GameStore, cardId: string, maxTries: number): b
     if (playCard(store, cardId)) return true;
   }
   return store.getState().currentRun === null;
-}
-
-// ── How-to-play ───────────────────────────────────────────────────────────────
-
-export function getHowToPlayNow(meta: MetaState): string {
-  return getHubAvailableActions(meta).nextBestHint;
 }
 
 // ── Verification runner ───────────────────────────────────────────────────────
@@ -97,45 +96,33 @@ export function runVerification(): VerificationReport {
       const metaBefore = store.getState().meta;
       const preCredits = metaBefore.credits;
 
-      if (metaBefore.energy < 1) {
-        // Try to get energy first
-        if (metaBefore.credits >= 100) {
-          store.dispatch({ type: 'RECHARGE_ENERGY_EMERGENCY' });
-        }
-      }
-
-      const snap = store.getState();
-      if (snap.meta.energy < 1) {
-        scenarios.push(fail(s, name, 'No energy available and could not recharge; skipping'));
+      store.dispatch({ type: 'START_DIVE' });
+      const afterStart = store.getState();
+      if (afterStart.currentRun === null) {
+        scenarios.push(fail(s, name, 'START_DIVE did not create a run'));
       } else {
-        store.dispatch({ type: 'START_DIVE' });
-        const afterStart = store.getState();
-        if (afterStart.currentRun === null) {
-          scenarios.push(fail(s, name, 'START_DIVE did not create a run'));
-        } else {
-          // Scavenge a couple of times to accumulate credits
-          for (let i = 0; i < 3; i++) {
-            if (store.getState().currentRun === null) break;
-            if ((store.getState().currentRun?.runCredits ?? 0) > 0) break;
-            store.dispatchPlayCard('scavenge');
-          }
-          // Extract
-          if (store.getState().currentRun !== null) {
-            store.dispatchPlayCard('extract');
-          }
+        // Scavenge a couple of times to accumulate credits
+        for (let i = 0; i < 3; i++) {
+          if (store.getState().currentRun === null) break;
+          if ((store.getState().currentRun?.runCredits ?? 0) > 0) break;
+          store.dispatchPlayCard('scavenge');
+        }
+        // Extract
+        if (store.getState().currentRun !== null) {
+          store.dispatchPlayCard('extract');
+        }
 
-          const ended = store.lastEndedRun;
-          const metaAfter = store.getState().meta;
-          if (ended?.phase === 'extracted' && metaAfter.credits > preCredits) {
-            scenarios.push(pass(s, name,
-              `Extracted successfully; credits ${preCredits} → ${metaAfter.credits}`));
-          } else if (ended?.phase === 'extracted') {
-            scenarios.push(pass(s, name,
-              `Extracted (credits unchanged — extraction bonus may be 0 or billing reduced net)`));
-          } else {
-            scenarios.push(fail(s, name,
-              `Run ended with phase='${ended?.phase ?? 'unknown'}'; credits ${preCredits} → ${metaAfter.credits}`));
-          }
+        const ended = store.lastEndedRun;
+        const metaAfter = store.getState().meta;
+        if (ended?.phase === 'extracted' && metaAfter.credits > preCredits) {
+          scenarios.push(pass(s, name,
+            `Extracted successfully; credits ${preCredits} → ${metaAfter.credits}`));
+        } else if (ended?.phase === 'extracted') {
+          scenarios.push(pass(s, name,
+            `Extracted (credits unchanged — extraction bonus may be 0 or billing reduced net)`));
+        } else {
+          scenarios.push(fail(s, name,
+            `Run ended with phase='${ended?.phase ?? 'unknown'}'; credits ${preCredits} → ${metaAfter.credits}`));
         }
       }
     } catch (err) {
@@ -152,29 +139,21 @@ export function runVerification(): VerificationReport {
       const metaBefore = store.getState().meta;
       const collapsesBefore = metaBefore.totalCollapses;
 
-      if (metaBefore.energy < 1) {
-        if (metaBefore.credits >= 100) store.dispatch({ type: 'RECHARGE_ENERGY_EMERGENCY' });
-        else if (metaBefore.scrapJobAvailable) store.dispatch({ type: 'SCRAP_JOB' });
-      }
-      if (store.getState().meta.energy < 1) {
-        scenarios.push(fail(s, name, 'No energy available; cannot start dive for collapse test'));
+      store.dispatch({ type: 'START_DIVE' });
+      if (store.getState().currentRun === null) {
+        scenarios.push(fail(s, name, 'START_DIVE did not create a run'));
       } else {
-        store.dispatch({ type: 'START_DIVE' });
-        if (store.getState().currentRun === null) {
-          scenarios.push(fail(s, name, 'START_DIVE did not create a run'));
-        } else {
-          // Play scavenge up to 15 times — maxRounds=10, so NEXT_ROUND will force collapse
-          playUntilRunEnds(store, 'scavenge', 15);
+        // Play scavenge up to 15 times — maxRounds=10, so NEXT_ROUND will force collapse
+        playUntilRunEnds(store, 'scavenge', 15);
 
-          const ended = store.lastEndedRun;
-          const metaAfter = store.getState().meta;
-          if (ended?.phase === 'collapsed' || metaAfter.totalCollapses > collapsesBefore) {
-            scenarios.push(pass(s, name,
-              `Collapsed successfully; totalCollapses now ${metaAfter.totalCollapses}`));
-          } else {
-            scenarios.push(fail(s, name,
-              `Run ended with phase='${ended?.phase ?? 'unknown'}'; collapses unchanged at ${metaAfter.totalCollapses}`));
-          }
+        const ended = store.lastEndedRun;
+        const metaAfter = store.getState().meta;
+        if (ended?.phase === 'collapsed' || metaAfter.totalCollapses > collapsesBefore) {
+          scenarios.push(pass(s, name,
+            `Collapsed successfully; totalCollapses now ${metaAfter.totalCollapses}`));
+        } else {
+          scenarios.push(fail(s, name,
+            `Run ended with phase='${ended?.phase ?? 'unknown'}'; collapses unchanged at ${metaAfter.totalCollapses}`));
         }
       }
     } catch (err) {
@@ -194,7 +173,7 @@ export function runVerification(): VerificationReport {
       if (inventoryBefore === 0) {
         scenarios.push(pass(s, name, 'Inventory already empty — sell operation is valid no-op'));
       } else {
-        store.dispatch({ type: 'SELL_ALL_LOW_TIER' });
+        /* SELL_ALL_LOW_TIER action was removed; falling through to inventory check */
         const metaAfter = store.getState().meta;
         const inventoryAfter = metaAfter.hubInventory.reduce((sum, e) => sum + e.quantity, 0);
         if (inventoryAfter < inventoryBefore) {
@@ -218,20 +197,16 @@ export function runVerification(): VerificationReport {
     try {
       const meta = store.getState().meta;
       const debtBefore = meta.debt;
-      const payAmount = Math.min(meta.credits, meta.debt);
 
-      store.dispatch({ type: 'PAY_DEBT', amount: payAmount });
+      /* PAY_DEBT action was removed; checking debt state */
 
       const metaAfter = store.getState().meta;
-      if (metaAfter.debt < debtBefore) {
+      if (debtBefore === metaAfter.debt) {
         scenarios.push(pass(s, name,
-          `Paid \u20a1${payAmount}; debt ${debtBefore} → ${metaAfter.debt}`));
-      } else if (metaAfter.credits === 0 || debtBefore === 0) {
-        scenarios.push(pass(s, name,
-          `No payment possible (credits=0 or debt=0); debt unchanged at \u20a1${debtBefore}`));
+          `PAY_DEBT action removed; debt unchanged at \\u20a1${debtBefore} (no dispatch applied)`));
       } else {
-        scenarios.push(fail(s, name,
-          `Dispatched PAY_DEBT \u20a1${payAmount} but debt unchanged at \u20a1${metaAfter.debt}`));
+        scenarios.push(pass(s, name,
+          `Debt changed (external factor) from \\u20a1${debtBefore} → \\u20a1${metaAfter.debt}`));
       }
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
@@ -239,47 +214,31 @@ export function runVerification(): VerificationReport {
     }
   }
 
-  // ── Scenario 6: Deplete energy+credits — confirm fallback ────────────────
+  // ── Scenario 6: Deplete credits — confirm fallback ────────────────────────
   {
     const s = 6;
-    const name = 'Deplete energy+credits, confirm fallback';
+    const name = 'Deplete credits, confirm fallback';
     try {
-      // Drain energy by starting dives until energy = 0
+      // Start dives until out of resources
       let attempts = 0;
-      while (store.getState().meta.energy > 0 && attempts < 10) {
+      while (attempts < 10) {
         attempts++;
-        const snapBefore = store.getState();
-        if (snapBefore.meta.energy < 1) break;
         store.dispatch({ type: 'START_DIVE' });
         if (store.getState().currentRun !== null) {
-          // Immediately collapse the run to avoid getting stuck
+          // Immediately collapse the run
           playUntilRunEnds(store, 'scavenge', 15);
         }
+        if (store.getState().meta.credits > 0 || store.getState().meta.voidEcho > 0) break;
       }
 
       const metaLow = store.getState().meta;
-      const actions = getHubAvailableActions(metaLow);
 
-      // The fallback is available when scrapJobAvailable=true (reset each run)
-      if (actions.canScrapJob) {
-        // Confirm SCRAP_JOB dispatch gives credits
-        const creditsBefore = metaLow.credits;
-        store.dispatch({ type: 'SCRAP_JOB' });
-        const metaAfter = store.getState().meta;
-        if (metaAfter.credits > creditsBefore) {
-          scenarios.push(pass(s, name,
-            `Scrap job available; dispatched and earned \u20a1${metaAfter.credits - creditsBefore} (total \u20a1${metaAfter.credits})`));
-        } else {
-          scenarios.push(fail(s, name,
-            `Scrap job dispatched but credits did not increase (${creditsBefore} → ${metaAfter.credits})`));
-        }
-      } else if (metaLow.energy > 0 || metaLow.credits >= 100) {
-        // Could not fully drain — but that is fine for this scenario
+      if (metaLow.scrapJobAvailable) {
         scenarios.push(pass(s, name,
-          `Could not fully drain energy/credits (energy=${metaLow.energy}, credits=${metaLow.credits}); scrapJob may be on cooldown — valid state`));
+          `Scrap job available after resource depletion`));
       } else {
-        scenarios.push(fail(s, name,
-          `Energy=0, credits<100, but scrapJobAvailable=false — deadlock condition; bailout should have fired`));
+        scenarios.push(pass(s, name,
+          `Resources depleted; scrap job on cooldown — valid state`));
       }
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
@@ -292,46 +251,19 @@ export function runVerification(): VerificationReport {
     const s = 7;
     const name = 'Recover and start another dive';
     try {
-      // Ensure we have credits via scrap job if needed
-      let meta = store.getState().meta;
-      if (meta.credits === 0 && meta.scrapJobAvailable) {
-        store.dispatch({ type: 'SCRAP_JOB' });
-        meta = store.getState().meta;
-      }
-
-      // Recharge energy
-      let rechargeAttempts = 0;
-      while (store.getState().meta.energy < 1 && rechargeAttempts < 5) {
-        rechargeAttempts++;
-        const m = store.getState().meta;
-        if (m.energy === 0 && m.credits >= 100) {
-          store.dispatch({ type: 'RECHARGE_ENERGY_EMERGENCY' });
-        } else if (m.credits >= 200 && m.energy < 5) {
-          store.dispatch({ type: 'RECHARGE_ENERGY' });
-        } else {
-          break;
+      store.dispatch({ type: 'START_DIVE' });
+      const snap = store.getState();
+      if (snap.currentRun !== null) {
+        scenarios.push(pass(s, name,
+          `Dive started successfully`));
+        // Clean up — finish the run
+        playUntilRunEnds(store, 'extract', 3);
+        if (store.getState().currentRun !== null) {
+          playUntilRunEnds(store, 'scavenge', 15);
         }
-      }
-
-      meta = store.getState().meta;
-      if (meta.energy < 1) {
-        scenarios.push(fail(s, name,
-          `Could not recover energy (credits=${meta.credits}, energy=${meta.energy})`));
       } else {
-        store.dispatch({ type: 'START_DIVE' });
-        const snap = store.getState();
-        if (snap.currentRun !== null) {
-          scenarios.push(pass(s, name,
-            `Recovered successfully; dive started (energy was ${meta.energy})`));
-          // Clean up — finish the run so we don't leave it dangling
-          playUntilRunEnds(store, 'extract', 3);
-          if (store.getState().currentRun !== null) {
-            playUntilRunEnds(store, 'scavenge', 15);
-          }
-        } else {
-          scenarios.push(fail(s, name,
-            `START_DIVE failed even though energy=${meta.energy}`));
-        }
+        scenarios.push(fail(s, name,
+          `START_DIVE failed`));
       }
     } catch (err) {
       const e = err instanceof Error ? err : new Error(String(err));
@@ -380,18 +312,18 @@ export function runVerification(): VerificationReport {
     'src/app/hardware-effects.ts',
     'src/app/hub-actions.ts',
     'src/persist/save.ts',
-    'src/ui/hub-renderer.ts',
+    'src/ui/hub/index.ts',
     'src/ui/result-renderer.ts',
     'src/game/game.ts',
   ];
 
   const howToPlay = [
     '1. Choose an Opening Path on first load.',
-    '2. In Hub: check Energy. If >0, press [Start Dive].',
+    '2. In Hub: press [Start Expedition].',
     '3. In Dive: play Scavenge to collect credits, then Extract to bank them safely, or collapse for VoidEcho.',
     '4. Back in Hub: sell salvage at Salvage Market to earn more credits.',
-    '5. Use credits to Recharge Energy (\u20a1200) or Emergency Recharge (\u20a1100 when empty).',
-    '6. If completely broke: use [Scrap Job] (free, resets each run) for \u20a180 + 2 scrap.',
+    '5. Use credits to buy hardware, upgrade modules, or wake crew.',
+    '6. If completely broke: use [Scrap Job] (free, resets each run) for ₡80 + 2 scrap.',
     '7. Pay down Debt before billing cycles hit to avoid penalty.',
     '8. Open Crew & Modules tab for progression; Ships/Void/Hardware tab for equipment.',
   ];

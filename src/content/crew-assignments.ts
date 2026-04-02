@@ -1,4 +1,4 @@
-export type AssignmentSlotId = 'idle' | 'repairs' | 'scav_prep' | 'medbay' | 'market_ops';
+export type AssignmentSlotId = 'idle' | 'repairs' | 'scav_prep' | 'medbay' | 'market_ops' | 'research';
 
 export interface AssignmentSlotDef {
   id: AssignmentSlotId;
@@ -24,7 +24,7 @@ export const ASSIGNMENT_SLOT_DEFS: Record<AssignmentSlotId, AssignmentSlotDef> =
     id: 'scav_prep',
     label: 'Scav Prep',
     desc: 'Prepares scavenging equipment before each dive.',
-    bonusDesc: '+10 ₡ scavenge bonus per dive.',
+    bonusDesc: '+₡500 scavenge bonus per dive.',
   },
   medbay: {
     id: 'medbay',
@@ -36,7 +36,13 @@ export const ASSIGNMENT_SLOT_DEFS: Record<AssignmentSlotId, AssignmentSlotDef> =
     id: 'market_ops',
     label: 'Market Ops',
     desc: 'Manages salvage appraisal and trade contacts.',
-    bonusDesc: '+5% salvage sale value.',
+    bonusDesc: '+5% salvage sale value. -₡100k starting debt.',
+  },
+  research: {
+    id: 'research',
+    label: 'Research Lab',
+    desc: 'Contributes to station research projects.',
+    bonusDesc: '+1 research point per dive. -₡50k starting debt.',
   },
 };
 
@@ -46,6 +52,7 @@ export const ASSIGNMENT_SLOT_ORDER: AssignmentSlotId[] = [
   'scav_prep',
   'medbay',
   'market_ops',
+  'research',
 ];
 
 export function getAssignmentSlotDef(id: AssignmentSlotId): AssignmentSlotDef {

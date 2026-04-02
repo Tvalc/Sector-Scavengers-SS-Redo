@@ -7,21 +7,19 @@ const W = 1920;
 const H = 1080;
 const CX = W / 2;
 
-const TITLE_Y = 320;
-const SUBTITLE_Y = 410;
-const DIVIDER_Y = 480;
-const DIVIDER_X1 = 660;
-const DIVIDER_X2 = 1260;
-const MENU_START_Y = 560;
-const MENU_SPACING = 80;
-const ITEM_HIT_W = 400;
-const ITEM_HIT_H = 50;
+// Button panel drawn size (source asset ss-prop-ui-panel-1 is 353×187)
+const BTN_W = 300;
+const BTN_H = 120;
+const BTN_GAP = 40;
+
+// Horizontal row sits well below the "Signal & Salvage" subtitle on the bg
+const BTN_ROW_Y = 765;
+
+// Hover glow pulse speed (cycles per second)
+const GLOW_SPEED = 2.5;
 
 // ── Colors ───────────────────────────────────────────────────────────────────
 const C_BG        = '#0a0d14';
-const C_TITLE     = '#4ecdc4';
-const C_SUBTITLE  = '#718096';
-const C_DIVIDER   = '#2d3a4a';
 const C_NORMAL    = '#e2e8f0';
 const C_HOVERED   = '#ffffff';
 const C_DISABLED  = '#4a5568';
@@ -59,6 +57,9 @@ export class TitleScene extends BaseScene {
   // at least once. Prevents keys held during page-load from firing immediately.
   private inputReady = false;
 
+  // Running clock for hover animations
+  private time = 0;
+
   constructor(store: GameStore) {
     super();
     this.store = store;
@@ -68,23 +69,17 @@ export class TitleScene extends BaseScene {
     const { meta } = this.store.getState();
     this.continueEnabled = meta.openingPathChosen !== false;
 
-    // Start keyboard cursor on first enabled item
     this.keyboardIndex = IDX_NEW_GAME;
-
-    // Clear any stale state
     this.hoveredIndex = -1;
     this.mouseDownIndex = -1;
     this.resetConfirmActive = false;
-
-    // Block input until all confirm keys are released — prevents keys held
-    // at page-load or preview-reload from immediately triggering an option.
     this.inputReady = false;
 
-    MakkoEngine.input.capture(['ArrowUp', 'ArrowDown', 'Enter', 'Space']);
+    MakkoEngine.input.capture(['ArrowLeft', 'ArrowRight', 'Enter', 'Space']);
   }
 
   exit(): void {
-    MakkoEngine.input.releaseCapture(['ArrowUp', 'ArrowDown', 'Enter', 'Space']);
+    MakkoEngine.input.releaseCapture(['ArrowLeft', 'ArrowRight', 'Enter', 'Space']);
   }
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
@@ -94,17 +89,18 @@ export class TitleScene extends BaseScene {
     return true;
   }
 
-  private itemY(index: number): number {
-    return MENU_START_Y + index * MENU_SPACING;
+  /** Center X of a button in the horizontal row. */
+  private btnCenterX(index: number): number {
+    const totalW = BTN_W * ITEM_COUNT + BTN_GAP * (ITEM_COUNT - 1);
+    const startX = CX - totalW / 2;
+    return startX + BTN_W / 2 + index * (BTN_W + BTN_GAP);
   }
 
   private hitTest(index: number, mx: number, my: number): boolean {
-    const y = this.itemY(index);
-    const left  = CX - ITEM_HIT_W / 2;
-    const right = CX + ITEM_HIT_W / 2;
-    const top    = y - ITEM_HIT_H / 2;
-    const bottom = y + ITEM_HIT_H / 2;
-    return mx >= left && mx <= right && my >= top && my <= bottom;
+    const cx = this.btnCenterX(index);
+    const left = cx - BTN_W / 2;
+    const top = BTN_ROW_Y - BTN_H / 2;
+    return mx >= left && mx <= left + BTN_W && my >= top && my <= top + BTN_H;
   }
 
   private nextEnabled(from: number, dir: 1 | -1): number {
@@ -113,7 +109,7 @@ export class TitleScene extends BaseScene {
       idx = (idx + dir + ITEM_COUNT) % ITEM_COUNT;
       if (this.isEnabled(idx)) return idx;
     }
-    return from; // no other enabled item
+    return from;
   }
 
   private expireResetConfirmIfNeeded(): void {
@@ -126,18 +122,13 @@ export class TitleScene extends BaseScene {
     if (!this.isEnabled(index)) return;
 
     if (index === IDX_NEW_GAME) {
-      // Reset in-memory store + wipe save, then go straight to intro.
-      // Never use window.location.reload() — it reloads the Studio shell.
       this.store.resetToFreshGame();
       this.switchTo('intro_wake_scene');
-
     } else if (index === IDX_CONTINUE) {
-      this.switchTo('game_scene');
-
+      this.switchTo('station_scene');
     } else if (index === IDX_RESET) {
       if (this.resetConfirmActive) {
         this.store.resetToFreshGame();
-        // Re-enter this same scene so continueEnabled refreshes to false
         this.switchTo('title_scene');
       } else {
         this.resetConfirmActive = true;
@@ -150,13 +141,13 @@ export class TitleScene extends BaseScene {
 
   update(dt: number): void {
     super.update(dt);
+    this.time += dt / 1000;
     this.expireResetConfirmIfNeeded();
 
     const input = MakkoEngine.input;
     const mx = input.mouseX;
     const my = input.mouseY;
 
-    // ── Mouse hover detection ──────────────────────────────────────────────
     this.hoveredIndex = -1;
     for (let i = 0; i < ITEM_COUNT; i++) {
       if (this.isEnabled(i) && this.hitTest(i, mx, my)) {
@@ -165,10 +156,6 @@ export class TitleScene extends BaseScene {
       }
     }
 
-    // ── Input readiness guard ──────────────────────────────────────────────
-    // Wait until Enter, Space, and mouse button are all released before
-    // accepting any confirmations. This prevents stale input from the
-    // previous page-load or preview-reload from firing an option instantly.
     if (!this.inputReady) {
       const confirmKeysHeld =
         input.isKeyDown('Enter') ||
@@ -177,11 +164,9 @@ export class TitleScene extends BaseScene {
       if (!confirmKeysHeld) {
         this.inputReady = true;
       }
-      // Consume any pressed/released events this frame without acting on them
       return;
     }
 
-    // ── Mouse click ────────────────────────────────────────────────────────
     if (input.isMousePressed(0)) {
       this.mouseDownIndex = this.hoveredIndex;
     }
@@ -192,11 +177,10 @@ export class TitleScene extends BaseScene {
       this.mouseDownIndex = -1;
     }
 
-    // ── Keyboard navigation ────────────────────────────────────────────────
-    if (input.isKeyPressed('ArrowUp')) {
+    if (input.isKeyPressed('ArrowLeft')) {
       this.keyboardIndex = this.nextEnabled(this.keyboardIndex, -1);
     }
-    if (input.isKeyPressed('ArrowDown')) {
+    if (input.isKeyPressed('ArrowRight')) {
       this.keyboardIndex = this.nextEnabled(this.keyboardIndex, 1);
     }
     if (input.isKeyPressed('Enter') || input.isKeyPressed('Space')) {
@@ -211,34 +195,20 @@ export class TitleScene extends BaseScene {
 
     const display = MakkoEngine.display;
     display.beginFrame();
-    display.clear(C_BG);
 
-    // Title
-    display.drawText('SECTOR SCAVENGERS', CX, TITLE_Y, {
-      font: 'bold 72px monospace',
-      fill: C_TITLE,
-      align: 'center',
-      baseline: 'middle',
-    });
+    // Background image (has title + subtitle baked in)
+    const bg = MakkoEngine.staticAsset('ss-background-main-capsule-3');
+    if (bg) {
+      display.drawImage(bg.image, 0, 0, bg.width, bg.height);
+    } else {
+      display.clear(C_BG);
+    }
 
-    // Subtitle
-    display.drawText('DEEP SALVAGE OPERATIONS', CX, SUBTITLE_Y, {
-      font: '24px monospace',
-      fill: C_SUBTITLE,
-      align: 'center',
-      baseline: 'middle',
-    });
-
-    // Divider
-    display.drawLine(DIVIDER_X1, DIVIDER_Y, DIVIDER_X2, DIVIDER_Y, {
-      stroke: C_DIVIDER,
-      lineWidth: 1,
-    });
-
-    // Menu items
-    this.renderMenuItem(IDX_NEW_GAME, 'NEW GAME');
-    this.renderMenuItem(IDX_CONTINUE, this.continueEnabled ? 'CONTINUE' : 'CONTINUE');
-    this.renderResetItem();
+    // Button row
+    const panel = MakkoEngine.staticAsset('ss-prop-ui-panel-1');
+    this.renderButtonItem(IDX_NEW_GAME, 'NEW GAME', panel);
+    this.renderButtonItem(IDX_CONTINUE, 'CONTINUE', panel);
+    this.renderButtonItem(IDX_RESET, this.resetConfirmActive ? 'CONFIRM?' : 'RESET', panel);
 
     display.endFrame();
   }
@@ -247,32 +217,53 @@ export class TitleScene extends BaseScene {
     return this.hoveredIndex === index || (this.hoveredIndex === -1 && this.keyboardIndex === index);
   }
 
-  private renderMenuItem(index: number, label: string): void {
+  private renderButtonItem(index: number, label: string, panel: unknown): void {
     const display = MakkoEngine.display;
-    const y = this.itemY(index);
+    const cx = this.btnCenterX(index);
+    const drawX = cx - BTN_W / 2;
+    const drawY = BTN_ROW_Y - BTN_H / 2;
     const enabled = this.isEnabled(index);
     const active = enabled && this.isActiveItem(index);
 
+    // Hover glow – pulsing cyan rectangle behind the panel
+    if (active) {
+      const pulse = 0.3 + 0.2 * Math.sin(this.time * GLOW_SPEED * Math.PI * 2);
+      const glowPad = 8;
+      const glowColor = index === IDX_RESET && this.resetConfirmActive
+        ? C_CONFIRM : C_CURSOR;
+      display.drawRoundRect(
+        drawX - glowPad, drawY - glowPad,
+        BTN_W + glowPad * 2, BTN_H + glowPad * 2,
+        16,
+        { fill: glowColor, alpha: pulse },
+      );
+    }
+
+    // Draw panel background
+    const asset = panel as { image: HTMLImageElement } | null;
+    if (asset?.image) {
+      display.drawImage(asset.image, drawX, drawY, BTN_W, BTN_H, {
+        alpha: enabled ? 1 : 0.4,
+      });
+    }
+
+    // Text color
     let color: string;
     if (!enabled) {
       color = C_DISABLED;
+    } else if (index === IDX_RESET && this.resetConfirmActive) {
+      color = C_CONFIRM;
+    } else if (index === IDX_RESET && active) {
+      color = C_RESET;
     } else if (active) {
       color = C_HOVERED;
     } else {
       color = C_NORMAL;
     }
 
-    if (active) {
-      display.drawText('▶', CX - 160, y, {
-        font: '28px monospace',
-        fill: C_CURSOR,
-        align: 'right',
-        baseline: 'middle',
-      });
-    }
-
-    display.drawText(label, CX, y, {
-      font: '28px monospace',
+    // Label
+    display.drawText(label, cx, BTN_ROW_Y, {
+      font: 'bold 24px monospace',
       fill: color,
       align: 'center',
       baseline: 'middle',
@@ -280,50 +271,12 @@ export class TitleScene extends BaseScene {
 
     // Disabled hint for CONTINUE
     if (index === IDX_CONTINUE && !enabled) {
-      display.drawText('no save found', CX, y + 28, {
-        font: '16px monospace',
+      display.drawText('no save found', cx, BTN_ROW_Y + 24, {
+        font: '14px monospace',
         fill: C_DISABLED,
         align: 'center',
         baseline: 'middle',
       });
     }
-
-  }
-
-  private renderResetItem(): void {
-    const display = MakkoEngine.display;
-    const index = IDX_RESET;
-    const y = this.itemY(index);
-    const active = this.isActiveItem(index);
-
-    let label: string;
-    let color: string;
-
-    if (this.resetConfirmActive) {
-      label = 'CONFIRM RESET? (press again)';
-      color = C_CONFIRM;
-    } else if (active) {
-      label = 'RESET ALL DATA';
-      color = C_RESET;
-    } else {
-      label = 'RESET ALL DATA';
-      color = C_NORMAL;
-    }
-
-    if (active) {
-      display.drawText('▶', CX - 160, y, {
-        font: '28px monospace',
-        fill: C_CURSOR,
-        align: 'right',
-        baseline: 'middle',
-      });
-    }
-
-    display.drawText(label, CX, y, {
-      font: '28px monospace',
-      fill: color,
-      align: 'center',
-      baseline: 'middle',
-    });
   }
 }

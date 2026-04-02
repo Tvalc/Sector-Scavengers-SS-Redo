@@ -2,7 +2,7 @@
   "version": "1.0",
   "assets": {
     "ss-prop-card-back-16": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-16_1774158101165.png?t=1774472769516",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-16_1774158101165.png?t=1774585393384",
       "name": "SS-Prop-Card-Back-16",
       "asset_type": "prop",
       "metadata": {
@@ -12,7 +12,7 @@
       }
     },
     "ss-prop-card-back-14": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-14_1774158094600.png?t=1774472774737",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-14_1774158094600.png?t=1774585396528",
       "name": "SS-Prop-Card-Back-14",
       "asset_type": "prop",
       "metadata": {
@@ -22,7 +22,7 @@
       }
     },
     "ss-prop-card-back-5": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-5_1774158033196.png?t=1774472783477",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-5_1774158033196.png?t=1774585407078",
       "name": "SS-Prop-Card-Back-5",
       "asset_type": "prop",
       "metadata": {
@@ -372,7 +372,7 @@
       }
     },
     "ss-background-main-capsule-3": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Main-Capsule-3_1773954791351.png?t=1774472906794",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Main-Capsule-3_1773954791351.png?t=1774761098702",
       "name": "SS-Background-Main-Capsule-3",
       "asset_type": "background",
       "metadata": {
@@ -392,7 +392,7 @@
       }
     },
     "ss-background-fixed-mess-hall-8": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-8_1773888231338.png?t=1774472939380",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-8_1773888231338.png?t=1775061189455",
       "name": "SS-Background-Fixed-Mess-Hall-8",
       "asset_type": "background",
       "metadata": {
@@ -402,7 +402,7 @@
       }
     },
     "ss-background-fixed-mess-hall-7": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-7_1773888224441.png?t=1774472940302",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-7_1773888224441.png?t=1775061190288",
       "name": "SS-Background-Fixed-Mess-Hall-7",
       "asset_type": "background",
       "metadata": {
@@ -412,7 +412,7 @@
       }
     },
     "ss-background-fixed-mess-hall-6": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-6_1773888219917.png?t=1774472940982",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-6_1773888219917.png?t=1775061191012",
       "name": "SS-Background-Fixed-Mess-Hall-6",
       "asset_type": "background",
       "metadata": {
@@ -422,7 +422,7 @@
       }
     },
     "ss-background-fixed-mess-hall-5": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-5_1773888215538.png?t=1774472941602",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-5_1773888215538.png?t=1775061192267",
       "name": "SS-Background-Fixed-Mess-Hall-5",
       "asset_type": "background",
       "metadata": {
@@ -432,7 +432,7 @@
       }
     },
     "ss-background-fixed-mess-hall-1": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-1_1773888185397.png?t=1774472943066",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-1_1773888185397.png?t=1775061195023",
       "name": "SS-Background-Fixed-Mess-Hall-1",
       "asset_type": "background",
       "metadata": {
@@ -442,7 +442,7 @@
       }
     },
     "ss-background-fixed-mess-hall-2": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-2_1773888200570.png?t=1774472943650",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-2_1773888200570.png?t=1775061194576",
       "name": "SS-Background-Fixed-Mess-Hall-2",
       "asset_type": "background",
       "metadata": {
@@ -452,7 +452,7 @@
       }
     },
     "ss-background-fixed-mess-hall-3": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-3_1773888204255.png?t=1774472944196",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-3_1773888204255.png?t=1775061193475",
       "name": "SS-Background-Fixed-Mess-Hall-3",
       "asset_type": "background",
       "metadata": {
@@ -462,7 +462,7 @@
       }
     },
     "ss-background-fixed-mess-hall-4": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-4_1773888209396.png?t=1774472945016",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Mess-Hall-4_1773888209396.png?t=1775061192884",
       "name": "SS-Background-Fixed-Mess-Hall-4",
       "asset_type": "background",
       "metadata": {
@@ -472,7 +472,7 @@
       }
     },
     "ss-background-fixed-med-bay-8": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-8_1773888127914.png?t=1774472946807",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-8_1773888127914.png?t=1775061195433",
       "name": "SS-Background-Fixed-Med-Bay-8",
       "asset_type": "background",
       "metadata": {
@@ -482,7 +482,7 @@
       }
     },
     "ss-background-fixed-med-bay-7": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-7_1773888122208.png?t=1774472947465",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-7_1773888122208.png?t=1775061196632",
       "name": "SS-Background-Fixed-Med-Bay-7",
       "asset_type": "background",
       "metadata": {
@@ -492,7 +492,7 @@
       }
     },
     "ss-background-fixed-med-bay-6": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-6_1773888118740.png?t=1774472948123",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-6_1773888118740.png?t=1775061197235",
       "name": "SS-Background-Fixed-Med-Bay-6",
       "asset_type": "background",
       "metadata": {
@@ -502,7 +502,7 @@
       }
     },
     "ss-background-fixed-med-bay-5": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-5_1773888115008.png?t=1774472948726",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-5_1773888115008.png?t=1775061198276",
       "name": "SS-Background-Fixed-Med-Bay-5",
       "asset_type": "background",
       "metadata": {
@@ -512,7 +512,7 @@
       }
     },
     "ss-background-fixed-bridge-4": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Bridge-4_1773888039923.png?t=1774472950832",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Bridge-4_1773888039923.png?t=1775061204099",
       "name": "SS-Background-Fixed-Bridge-4",
       "asset_type": "background",
       "metadata": {
@@ -522,7 +522,7 @@
       }
     },
     "ss-background-fixed-med-bay-1": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-1_1773888101891.png?t=1774472951475",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-1_1773888101891.png?t=1775061202300",
       "name": "SS-Background-Fixed-Med-Bay-1",
       "asset_type": "background",
       "metadata": {
@@ -531,18 +531,8 @@
         "format": "png"
       }
     },
-    "ss-background-fixed-med-bay-2": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-2_1773888105484.png?t=1774472952139",
-      "name": "SS-Background-Fixed-Med-Bay-2",
-      "asset_type": "background",
-      "metadata": {
-        "width": 1920,
-        "height": 1080,
-        "format": "png"
-      }
-    },
     "ss-background-fixed-med-bay-3": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-3_1773888108592.png?t=1774472952832",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Med-Bay-3_1773888108592.png?t=1775061200533",
       "name": "SS-Background-Fixed-Med-Bay-3",
       "asset_type": "background",
       "metadata": {
@@ -552,7 +542,7 @@
       }
     },
     "ss-background-fixed-bridge-3": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Bridge-3_1773888035385.png?t=1774472954339",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Bridge-3_1773888035385.png?t=1775061205363",
       "name": "SS-Background-Fixed-Bridge-3",
       "asset_type": "background",
       "metadata": {
@@ -562,7 +552,7 @@
       }
     },
     "ss-background-fixed-brig-6": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Brig-6_1773887980495.png?t=1774472964550",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Fixed-Brig-6_1773888021769.png?t=1775061206028",
       "name": "SS-Background-Fixed-Brig-6",
       "asset_type": "background",
       "metadata": {
@@ -1342,7 +1332,7 @@
       }
     },
     "spacefield2": {
-      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/1773170264883_background.png?t=1774473129753",
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/1773170264883_background.png?t=1774764324784",
       "name": "Spacefield2",
       "asset_type": "background",
       "metadata": {
@@ -1448,6 +1438,1076 @@
       "metadata": {
         "width": 909,
         "height": 281,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-6": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-6_1774566956179.png?t=1775061152688",
+      "name": "SS-Medbay-Front-Background-6",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-5_1774566945145.png?t=1775061153413",
+      "name": "SS-Medbay-Front-Background-5",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-4_1774566937594.png?t=1775061154082",
+      "name": "SS-Medbay-Front-Background-4",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-1_1774566919795.png?t=1775061156745",
+      "name": "SS-Medbay-Front-Background-1",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-2_1774566929132.png?t=1775061155615",
+      "name": "SS-Medbay-Front-Background-2",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-medbay-front-background-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Medbay-Front-Background-3_1774566933178.png?t=1775061155031",
+      "name": "SS-Medbay-Front-Background-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-bridge-front-background": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Bridge-Front-Background_1774566902617.png?t=1775061158243",
+      "name": "SS-Bridge-Front-Background",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-19": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-19_1774566890977.png?t=1775061158912",
+      "name": "SS-Hallway-Front-Background-19",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-mess-hall-front-background-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Mess-Hall-Front-Background-4_1774566874545.png?t=1775061159541",
+      "name": "SS-Mess-Hall-Front-Background-4",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-mess-hall-front-background-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Mess-Hall-Front-Background-1_1774566840997.png?t=1775061163064",
+      "name": "SS-Mess-Hall-Front-Background-1",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-mess-hall-front-background-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Mess-Hall-Front-Background-2_1774566852261.png?t=1775061161786",
+      "name": "SS-Mess-Hall-Front-Background-2",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-16": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-16_1774566810613.png?t=1775061163890",
+      "name": "SS-Hallway-Front-Background-16",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-17": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-17_1774566815109.png?t=1775061164715",
+      "name": "SS-Hallway-Front-Background-17",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-mess-hall-front-background": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Mess-Hall-Front-Background_1774566834443.png?t=1775061165466",
+      "name": "SS-Mess-Hall-Front-Background",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-15": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-15_1774566795710.png?t=1775061167078",
+      "name": "SS-Hallway-Front-Background-15",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-14": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-14_1774566791809.png?t=1775061167690",
+      "name": "SS-Hallway-Front-Background-14",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-13": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-13_1774566782825.png?t=1775061168411",
+      "name": "SS-Hallway-Front-Background-13",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-mess-hall-front-background-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Mess-Hall-Front-Background-3_1774566858563.png?t=1775061161152",
+      "name": "SS-Mess-Hall-Front-Background-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-11": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-11_1774566774542.png?t=1775061170787",
+      "name": "SS-Hallway-Front-Background-11",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-12": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-12_1774566778714.png?t=1775061171421",
+      "name": "SS-Hallway-Front-Background-12",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-9_1774566764926.png?t=1775061172609",
+      "name": "SS-Hallway-Front-Background-9",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-8": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-8_1774566757844.png?t=1775061173134",
+      "name": "SS-Hallway-Front-Background-8",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-1_1774566749892.png?t=1775061174190",
+      "name": "SS-Hallway-Front-Background-1",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-5_1774566738809.png?t=1775061175396",
+      "name": "SS-Hallway-Front-Background-5",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-6": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-6_1774566743276.png?t=1775061176002",
+      "name": "SS-Hallway-Front-Background-6",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-7": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-7_1774566749259.png?t=1775061177074",
+      "name": "SS-Hallway-Front-Background-7",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-4_1774566734392.png?t=1775061178397",
+      "name": "SS-Hallway-Front-Background-4",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-3_1774566730292.png?t=1775061179153",
+      "name": "SS-Hallway-Front-Background-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-2_1774566726692.png?t=1775061179935",
+      "name": "SS-Hallway-Front-Background-2",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background_1774566715009.png?t=1775061182148",
+      "name": "SS-Hallway-Front-Background",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-menu-hud-primary": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Menu-Hud-Primary_1774317264747.png?t=1774585375517",
+      "name": "SS-Menu-Hud-Primary",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-ui-large-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-UI-Large-1_1774308003792.png?t=1774585377978",
+      "name": "SS-UI-Large-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 370,
+        "height": 225,
+        "format": "png"
+      }
+    },
+    "ss-prop-ui-panel-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-UI-Panel-1_1774307780594.png?t=1774761944090",
+      "name": "SS-Prop-UI-Panel-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 353,
+        "height": 187,
+        "format": "png"
+      }
+    },
+    "ss-ui-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-UI-5_1774307896284.png?t=1774585385907",
+      "name": "SS-UI-5",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 288,
+        "height": 171,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-27": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-27_1774158147500.png?t=1774585387708",
+      "name": "SS-Prop-Card-Back-27",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 233,
+        "height": 339,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-26": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-26_1774158143664.png?t=1774585388283",
+      "name": "SS-Prop-Card-Back-26",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 228,
+        "height": 340,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-25": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-25_1774158139318.png?t=1774585388859",
+      "name": "SS-Prop-Card-Back-25",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 211,
+        "height": 317,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-20": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-20_1774158117132.png?t=1774585390996",
+      "name": "SS-Prop-Card-Back-20",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 212,
+        "height": 313,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-17": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-17_1774158104083.png?t=1774585394370",
+      "name": "SS-Prop-Card-Back-17",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 213,
+        "height": 315,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-15": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-15_1774158098342.png?t=1774585395931",
+      "name": "SS-Prop-Card-Back-15",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 255,
+        "height": 363,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-13": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-13_1774158090045.png?t=1774585398718",
+      "name": "SS-Prop-Card-Back-13",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 235,
+        "height": 349,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-11": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-11_1774158066176.png?t=1774585400747",
+      "name": "SS-Prop-Card-Back-11",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 206,
+        "height": 301,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-10": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-10_1774158057262.png?t=1774585402494",
+      "name": "SS-Prop-Card-Back-10",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 225,
+        "height": 330,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-7": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-7_1774158043654.png?t=1774585403792",
+      "name": "SS-Prop-Card-Back-7",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 222,
+        "height": 315,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-8": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-8_1774158049491.png?t=1774585404442",
+      "name": "SS-Prop-Card-Back-8",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 203,
+        "height": 299,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-9_1774158054532.png?t=1774585405109",
+      "name": "SS-Prop-Card-Back-9",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 211,
+        "height": 317,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-6": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-6_1774158038783.png?t=1774585406433",
+      "name": "SS-Prop-Card-Back-6",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 212,
+        "height": 308,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-3_1774158021135.png?t=1774585408004",
+      "name": "SS-Prop-Card-Back-3",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 212,
+        "height": 313,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-1_1774158019299.png?t=1774585409392",
+      "name": "SS-Prop-Card-Back-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 213,
+        "height": 335,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back-2_1774158019378.png?t=1774585409983",
+      "name": "SS-Prop-Card-Back-2",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 211,
+        "height": 312,
+        "format": "png"
+      }
+    },
+    "ss-prop-card-back": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Card-Back_1774158019367.png?t=1774585410845",
+      "name": "SS-Prop-Card-Back",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 211,
+        "height": 311,
+        "format": "png"
+      }
+    },
+    "ss-steam-capsule-prime": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Steam-Capsule-Prime_1773953124384.png?t=1774585444480",
+      "name": "SS-Steam-Capsule-Prime",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-15": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-15_1774763709937.png?t=1774764134939",
+      "name": "SS-Background-Cryo-Chamber-15",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-14": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-14_1774763694019.png?t=1774764136243",
+      "name": "SS-Background-Cryo-Chamber-14",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-12": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-12_1774763680899.png?t=1774764137536",
+      "name": "SS-Background-Cryo-Chamber-12",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-11": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-11_1774763634777.png?t=1774764138682",
+      "name": "SS-Background-Cryo-Chamber-11",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-5_1774763566295.png?t=1774764139975",
+      "name": "SS-Background-Cryo-Chamber-5",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-7": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-7_1774763576114.png?t=1774764141016",
+      "name": "SS-Background-Cryo-Chamber-7",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryo-chamber-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Cryo-Chamber-9_1774763598969.png?t=1774764142266",
+      "name": "SS-Background-Cryo-Chamber-9",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-prop-tall-ui": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Tall-UI_1774768569808.png?t=1774768573990",
+      "name": "SS-Prop-Tall-UI",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 240,
+        "height": 357,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-yes": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-Yes_1774996183358.png?t=1774996238571",
+      "name": "SS-Background-Command-Deck-Yes",
+      "asset_type": "background",
+      "metadata": {
+        "width": 688,
+        "height": 384,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-it": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-It_1775002380243.png?t=1775002412106",
+      "name": "SS-Background-Command-Deck-It",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-clean": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-Clean_1775026549278.png?t=1775026565664",
+      "name": "SS-Background-Command-Deck-Clean",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-nlc": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-NLC_1775027191919.png?t=1775027219522",
+      "name": "SS-Background-Command-Deck-NLC",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-wlc": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-WLC_1775027212685.png?t=1775027220180",
+      "name": "SS-Background-Command-Deck-WLC",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-lcp": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-LCP_1775028114466.png?t=1775028147450",
+      "name": "SS-Background-Command-Deck-LCP",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-command-deck-lcnp": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Command-Deck-LCNP_1775028135524.png?t=1775028760356",
+      "name": "SS-Background-Command-Deck-LCNP",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-command-deck-nlcf": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Command-Deck-NLCF_1775028726850.png?t=1775028762755",
+      "name": "SS-Command-Deck-NLCF",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-hallway-front-background-10": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Hallway-Front-Background-10_1774566770375.png?t=1775061170310",
+      "name": "SS-Hallway-Front-Background-10",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1920,
+        "height": 1080,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final_1775062603183.png?t=1775062766148",
+      "name": "SS-Background-CryoChamber-Final",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-2_1775062898889.png?t=1775063296908",
+      "name": "SS-Background-CryoChamber-Final-2",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-3_1775062982620.png?t=1775063321824",
+      "name": "SS-Background-CryoChamber-Final-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-4_1775062998202.png?t=1775063320498",
+      "name": "SS-Background-CryoChamber-Final-4",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-5_1775063261518.png?t=1775063318269",
+      "name": "SS-Background-CryoChamber-Final-5",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-6": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-6_1775063269144.png?t=1775063324912",
+      "name": "SS-Background-CryoChamber-Final-6",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-7": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-7_1775063281449.png?t=1775084205651",
+      "name": "SS-Background-CryoChamber-Final-7",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-9_1775063389649.png?t=1775084202903",
+      "name": "SS-Background-CryoChamber-Final-9",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-cryochamber-final-8": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-CryoChamber-Final-8_1775063362101.png?t=1775084204461",
+      "name": "SS-Background-CryoChamber-Final-8",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-10": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-10_1775083328364.png?t=1775084131100",
+      "name": "SS-Background-Debt-Contract-10",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-5_1775083291224.png?t=1775084131897",
+      "name": "SS-Background-Debt-Contract-5",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-7": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-7_1775083269479.png?t=1775084132597",
+      "name": "SS-Background-Debt-Contract-7",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-8": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-8_1775083254749.png?t=1775084133375",
+      "name": "SS-Background-Debt-Contract-8",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-9_1775083234015.png?t=1775084156608",
+      "name": "SS-Background-Debt-Contract-9",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-corporate-debt": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Corporate-Debt_1775077646905.png?t=1775084177830",
+      "name": "SS-Background-Corporate-Debt",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-legendary-node": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Legendary-Node_1775075241994.png?t=1775084179336",
+      "name": "SS-Prop-Expedition-Legendary-Node",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 473,
+        "height": 383,
+        "format": "png"
+      }
+    },
+    "ss-background-debt-contract-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/SS-Background-Debt-Contract-3_1775077957942.png?t=1775084180305",
+      "name": "SS-Background-Debt-Contract-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-legendary-node-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Legendary-Node-2_1775075242057.png?t=1775084183758",
+      "name": "SS-Prop-Expedition-Legendary-Node-2",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 496,
+        "height": 389,
+        "format": "png"
+      }
+    },
+    "coming_soon_card": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/Coming_Soon_Card_1775081673774.png?t=1775084186671",
+      "name": "Coming Soon Card",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 416,
+        "height": 624,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node-1_1775075173130.png?t=1775084188678",
+      "name": "SS-Prop-Expedition-Rare-Node-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 460,
+        "height": 321,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node-6": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node-6_1775075173183.png?t=1775084189330",
+      "name": "SS-Prop-Expedition-Rare-Node-6",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 460,
+        "height": 368,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node-3_1775075173249.png?t=1775084190057",
+      "name": "SS-Prop-Expedition-Rare-Node-3",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 482,
+        "height": 381,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node_1775075173062.png?t=1775084190878",
+      "name": "SS-Prop-Expedition-Rare-Node",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 487,
+        "height": 412,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-common-node-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-Common-Node-5_1775070140015.png?t=1775084192750",
+      "name": "SS-Expedition-Prop-Common-Node-5",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 446,
+        "height": 366,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node-5": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node-5_1775075172726.png?t=1775084193586",
+      "name": "SS-Prop-Expedition-Rare-Node-5",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 493,
+        "height": 430,
+        "format": "png"
+      }
+    },
+    "ss-prop-expedition-rare-node-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Prop-Expedition-Rare-Node-2_1775075173072.png?t=1775084194584",
+      "name": "SS-Prop-Expedition-Rare-Node-2",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 494,
+        "height": 390,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-common-node-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-Common-Node-4_1775070131444.png?t=1775084196033",
+      "name": "SS-Expedition-Prop-Common-Node-4",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 470,
+        "height": 377,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-common-node-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-Common-Node-3_1775070110429.png?t=1775084198003",
+      "name": "SS-Expedition-Prop-Common-Node-3",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 475,
+        "height": 360,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-uncommon-node-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-UnCommon-Node-2_1775070117571.png?t=1775084197330",
+      "name": "SS-Expedition-Prop-UnCommon-Node-2",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 472,
+        "height": 326,
+        "format": "png"
+      }
+    },
+    "character_selection_screen": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/Character_Selection_Screen_1775070528551.png?t=1775084198963",
+      "name": "Character Selection Screen",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-uncommon-node-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-UnCommon-Node-1_1775070104606.png?t=1775084200851",
+      "name": "SS-Expedition-Prop-UnCommon-Node-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 470,
+        "height": 358,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-common-node-2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-Common-Node-2_1775070104635.png?t=1775084201520",
+      "name": "SS-Expedition-Prop-Common-Node-2",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 431,
+        "height": 416,
+        "format": "png"
+      }
+    },
+    "ss-expedition-prop-common-node-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/prop/SS-Expedition-Prop-Common-Node-1_1775068834928.png?t=1775084202198",
+      "name": "SS-Expedition-Prop-Common-Node-1",
+      "asset_type": "prop",
+      "metadata": {
+        "width": 484,
+        "height": 406,
+        "format": "png"
+      }
+    },
+    "ss-background-valu-summary-hud": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/ss-background-valu-summary-hud_1775086887163.png?t=1775086902870",
+      "name": "ss-background-valu-summary-hud",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-valu-summary-hud-9": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/ss-background-valu-summary-hud-9_1775090012301.png?t=1775090040126",
+      "name": "ss-background-valu-summary-hud-9",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-valu-summary-hud-4": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/ss-background-valu-summary-hud-4_1775088215198.png?t=1775090040857",
+      "name": "ss-background-valu-summary-hud-4",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-valu-summary-hud-3": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/ss-background-valu-summary-hud-3_1775088210425.png?t=1775090041601",
+      "name": "ss-background-valu-summary-hud-3",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
+        "format": "png"
+      }
+    },
+    "ss-background-valu-summary-hud-1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/image-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/background/ss-background-valu-summary-hud-1_1775088203154.png?t=1775090043465",
+      "name": "ss-background-valu-summary-hud-1",
+      "asset_type": "background",
+      "metadata": {
+        "width": 1376,
+        "height": 768,
         "format": "png"
       }
     }

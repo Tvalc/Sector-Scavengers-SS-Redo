@@ -5,7 +5,6 @@ export interface OpeningPathConfig {
   label: string;
   description: string;
   voidEchoBonus: number;
-  energy: number;
   debt: number;
   startingCredits: number;   // added to meta.credits on path selection
   extractionBonus: number;   // flat credits added on each clean extract
@@ -13,12 +12,12 @@ export interface OpeningPathConfig {
 }
 
 // Sidegrade rationale:
-//   cold_extract  — lowest energy & biggest debt but compensated by the highest
-//                   starting cash injection and a void echo head-start.
+//   cold_extract  — biggest debt but compensated by the highest starting cash
+//                   injection and a void echo head-start.
 //   cut_and_run   — middle ground: modest void, average debt, small per-run
 //                   extraction bonus that compounds over many dives.
-//   duty_claim    — highest energy and largest crew but punishing debt and zero
-//                   starting cash; compensates over time via raw dive throughput.
+//   duty_claim    — largest crew but punishing debt and zero starting cash;
+//                   compensates over time via raw dive throughput.
 
 export const OPENING_PATH_CONFIG: Record<OpeningPathId, OpeningPathConfig> = {
   cold_extract: {
@@ -26,8 +25,7 @@ export const OPENING_PATH_CONFIG: Record<OpeningPathId, OpeningPathConfig> = {
     label: 'COLD EXTRACT',
     description: 'Selfish extract. High void. Fly solo.',
     voidEchoBonus: 3,
-    energy: 2,
-    debt: 12000,
+    debt: 1000000, // 1M base - LOW debt modifier makes this 800K
     startingCredits: 800,
     extractionBonus: 0,
     sidegrade: 'High void. Fly solo. Extra startup cash.',
@@ -37,8 +35,7 @@ export const OPENING_PATH_CONFIG: Record<OpeningPathId, OpeningPathConfig> = {
     label: 'CUT AND RUN',
     description: 'Partial rescue. Balanced start. 1 crew.',
     voidEchoBonus: 1,
-    energy: 3,
-    debt: 8000,
+    debt: 1000000, // 1M base - MEDIUM debt modifier keeps it at 1M
     startingCredits: 500,
     extractionBonus: 30,
     sidegrade: 'Balanced. Small extract bonus per run.',
@@ -48,11 +45,10 @@ export const OPENING_PATH_CONFIG: Record<OpeningPathId, OpeningPathConfig> = {
     label: 'DUTY CLAIM',
     description: 'Save everyone. Strong start. High debt.',
     voidEchoBonus: 0,
-    energy: 4,
-    debt: 15000,
+    debt: 1000000, // 1M base - HIGH debt modifier makes this 1.25M
     startingCredits: 200,
     extractionBonus: 0,
-    sidegrade: 'High energy. High debt. Strong crew.',
+    sidegrade: 'High debt. Strong crew. No startup cash.',
   },
 };
 

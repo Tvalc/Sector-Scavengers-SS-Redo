@@ -1,36 +1,54 @@
 // Extracted from game-store.ts — handles end-of-run billing cycle logic.
 
-import { MetaState, BillingResult } from '../types/state';
-import { BILLING_MISSED_PENALTY_RATE } from '../config/constants';
+import { MetaState, BillingResult, RunPath } from '../types/state';
+import { 
+  BILLING_MISSED_PENALTY_RATE, 
+  MAX_DEBT_BEFORE_GAME_OVER, 
+  MAX_MISSED_PAYMENTS,
+  BASE_BILLING_AMOUNT,
+  BILLING_CYCLE_RUNS
+} from '../config/constants';
 
 /**
- * Advance the billing countdown by one run and, if the bill is due, attempt
- * to collect payment. Returns an updated MetaState with credits, debt, and
- * lastBillingResult reflecting the outcome.
- *
- * Upkeep pressure: the effective bill for this cycle adds
- * `(activeCrewCount - 1) * upkeepPerAwakeCrew` on top of the base
- * `billingAmount`. The base is NOT permanently changed — this is a
- * per-cycle surcharge that reflects crew life-support contracts.
+ * Check if the game is over due to debt or missed payments.
  */
-export function processBilling(meta: MetaState): MetaState {
-  const newCountdown = meta.billingRunsUntilNext - 1;
-
-  // Bill not yet due
-  if (newCountdown > 0) {
-    return { ...meta, billingRunsUntilNext: newCountdown };
+export function checkGameOver(meta: MetaState): { gameOver: boolean; reason: string | null } {
+  if (meta.debt >= MAX_DEBT_BEFORE_GAME_OVER) {
+    return { gameOver: true, reason: 'Debt exceeded 10 million credits.' };
   }
+  if (meta.consecutiveMissedPayments >= MAX_MISSED_PAYMENTS) {
+    return { gameOver: true, reason: '3 consecutive missed payments.' };
+  }
+  return { gameOver: false, reason: null };
+}
 
-  // Bill is due — reset countdown
-  const resetCountdown = meta.billingCycleRuns;
+/**
+ * Process billing at the end of an expedition (win or collapse).
+ * Billing now fires once per expedition completion, not per individual ship.
+ *
+ * Upkeep pressure: the effective bill adds
+ * `activeCrewCount * upkeepPerAwakeCrew` on top of the base `billingAmount`.
+ * 
+ * LOSE CONDITIONS:
+ * - Debt exceeds 10 million credits
+ * - 3 consecutive missed payments
+ * 
+ * Missed payment penalty: debt doubles (100% penalty added).
+ */
+export function processBilling(meta: MetaState, path?: RunPath | null): MetaState {
+  // Billing now happens once per expedition end
+  // We don't use countdown anymore - billing triggers on expedition completion
 
-  // Compute crew upkeep surcharge
+  // Compute crew upkeep surcharge (50K per awake crew member)
   const activeCrewCount = (meta.leadId !== null ? 1 : 0) + meta.companionIds.length;
-  const upkeepSurcharge = Math.max(0, activeCrewCount - 1) * meta.upkeepPerAwakeCrew;
+  const upkeepSurcharge = activeCrewCount * meta.upkeepPerAwakeCrew;
+  
+  // If we have path data, use accumulated path credits for payment
+  const availableCredits = path ? path.pathCredits : meta.credits;
   const effectiveBillingAmount = meta.billingAmount + upkeepSurcharge;
 
-  if (meta.credits >= effectiveBillingAmount) {
-    // Paid successfully
+  if (availableCredits >= effectiveBillingAmount) {
+    // Paid successfully — reset missed payment counter
     const result: BillingResult = {
       paid: true,
       amount: effectiveBillingAmount,
@@ -38,24 +56,27 @@ export function processBilling(meta: MetaState): MetaState {
     };
     return {
       ...meta,
-      credits: meta.credits - effectiveBillingAmount,
+      // Path credits are consumed to pay debt; any remainder is lost (not kept)
       debt: Math.max(0, meta.debt - effectiveBillingAmount),
-      billingRunsUntilNext: resetCountdown,
+      billingRunsUntilNext: BILLING_CYCLE_RUNS,
       lastBillingResult: result,
+      consecutiveMissedPayments: 0, // Reset on successful payment
     };
   } else {
-    // Missed — add penalty percentage of effective amount to debt
+    // Missed — debt increases by billing amount plus penalty
     const penalty = Math.ceil(effectiveBillingAmount * BILLING_MISSED_PENALTY_RATE);
     const result: BillingResult = {
       paid: false,
       amount: effectiveBillingAmount,
       penaltyAdded: penalty,
     };
+    const newConsecutiveMissed = meta.consecutiveMissedPayments + 1;
     return {
       ...meta,
       debt: meta.debt + penalty,
-      billingRunsUntilNext: resetCountdown,
+      billingRunsUntilNext: BILLING_CYCLE_RUNS,
       lastBillingResult: result,
+      consecutiveMissedPayments: newConsecutiveMissed,
     };
   }
 }

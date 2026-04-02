@@ -1,45 +1,54 @@
-import { MakkoEngine } from '@makko/engine';
+import { MakkoEngine, combo } from '@makko/engine';
 import { SceneManager } from './scene/scene-manager';
 import { TitleScene } from './scenes/title-scene';
 import { IntroWakeScene } from './scenes/intro-wake';
-import { GameScene } from './scenes/game-scene';
+import { StationScene } from './scenes/station-scene';
+import { RunScene } from './scenes/run-scene';
 import { GameStore } from './app/game-store';
 
-// ── Global Store Instance ───────────────────────────────────────────────────
-
-const store = new GameStore();
-
-// ── Main Entry Point ─────────────────────────────────────────────────────────
-
 async function main() {
+  const canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+
   await MakkoEngine.initEngine({
     manifests: ['/sprites-manifest.json', '/static-asset-manifest.json'],
-    canvas: document.getElementById('gameCanvas') as HTMLCanvasElement,
+    canvas,
     width: 1920,
     height: 1080,
+    renderer: 'canvas2d',
   });
 
   const display = MakkoEngine.display;
-  display.setImageSmoothing(false);
+  display.setAutoFit('window');
 
-  // Create scene manager
+  // Initialise shared game store (loads persisted save)
+  const store = new GameStore();
+
+  // Register all scenes
   const sceneManager = new SceneManager();
-
-  // Register scenes in flow order (title → intro → game)
   await sceneManager.register(new TitleScene(store));
   await sceneManager.register(new IntroWakeScene(store));
-  await sceneManager.register(new GameScene(store));
+  await sceneManager.register(new StationScene(store));
+  await sceneManager.register(new RunScene(store));
 
-  // Always start at the title screen
+  // Start at title screen
   sceneManager.switchTo('title_scene');
 
-  // ── Scene Manager Game Loop ───────────────────────────────────────────────
+  // Capture Shift+F for fullscreen toggle globally
+  MakkoEngine.input.capture([combo('Shift', 'f')]);
 
   let lastTime = 0;
-
-  function gameLoop(currentTime: number): void {
+  function gameLoop(currentTime: number) {
     const dt = currentTime - lastTime;
     lastTime = currentTime;
+
+    // Toggle fullscreen on Shift+F
+    if (MakkoEngine.input.isKeyPressed(combo('Shift', 'f'))) {
+      if (MakkoEngine.display.isFullscreen) {
+        MakkoEngine.display.exitFullscreen();
+      } else {
+        MakkoEngine.display.requestFullscreen();
+      }
+    }
 
     // Handle input, update, and render for current scene
     sceneManager.handleInput();

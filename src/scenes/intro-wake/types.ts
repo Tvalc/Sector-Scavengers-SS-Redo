@@ -4,7 +4,7 @@
 
 import { IntroSpeaker } from '../../content/intro-narrative';
 
-export type Stage = 'previously' | 'opening' | 'choice_1' | 'bridge' | 'terminal_lines' | 'recap' | 'done';
+export type Stage = 'previously' | 'opening' | 'choice_1' | 'bridge' | 'terminal_lines' | 'fading_to_choice' | 'recap' | 'debt_contract' | 'done';
 
 export interface AlarmFlashState {
   active: boolean;

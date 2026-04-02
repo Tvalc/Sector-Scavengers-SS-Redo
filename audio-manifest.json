@@ -1,0 +1,17 @@
+{
+  "version": "1.0",
+  "audio": {
+    "salvage_run_Idea_2": {
+      "url": "https://api.makko.ai/storage/v1/object/public/audio-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/56147bc9-e158-4533-ab0c-4ed125685ec4.mp3?t=1774585359484",
+      "name": "salvage run Idea 2.mp3",
+      "format": "MPEG",
+      "duration": 75.075925
+    },
+    "salvage_run_Idea_1": {
+      "url": "https://api.makko.ai/storage/v1/object/public/audio-assets/0f84fe06-5c42-40c3-b563-1a28d18f37cc/8b737f8b-da69-4189-91b3-3114df67dcd3.mp3?t=1774585359958",
+      "name": "salvage run Idea 1.mp3",
+      "format": "MPEG",
+      "duration": 110.83755
+    }
+  }
+}

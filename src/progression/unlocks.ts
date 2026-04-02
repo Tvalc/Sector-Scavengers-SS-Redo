@@ -1,11 +1,13 @@
 import { MetaState } from '../types/state';
 
 // Cards unlocked at each extract milestone.
-const UNLOCK_THRESHOLDS: Array<{ minExtracts: number; cardIds: string[] }> = [
-  { minExtracts: 1, cardIds: ['shield', 'secure_extract', 'quick_extract'] },
-  { minExtracts: 2, cardIds: ['risky_scavenge'] },
-  { minExtracts: 3, cardIds: ['upgrade', 'analyze'] },
-  { minExtracts: 4, cardIds: ['patch_and_hold'] },
+export type UnlockThreshold = { minExtracts: number; cardIds: string[] };
+
+export const UNLOCK_THRESHOLDS: UnlockThreshold[] = [
+  { minExtracts: 1, cardIds: ['risky_scavenge', 'secure_extract', 'quick_extract'] },
+  { minExtracts: 3, cardIds: ['ancestor_memory', 'repair_bot', 'scavenge_bot'] },
+  { minExtracts: 5, cardIds: ['hull_surge', 'bulwark'] },
+  { minExtracts: 8, cardIds: ['overdrive_extract', 'last_stand'] },
 ];
 
 export function checkAndUnlock(meta: MetaState): MetaState {

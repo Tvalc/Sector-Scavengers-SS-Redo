@@ -1,26 +1,74 @@
 // Handlers for tutorial, repair slot, and module upgrade actions.
 
-import { GameState } from '../../types/state';
+import { GameState, TutorialPhase } from '../../types/state';
 import { ModuleId, getModuleDef } from '../../content/modules';
 import { SalvageTier } from '../../content/salvage';
+import type { CrewMemberId } from '../../content/crew';
 
 export function handleCompleteTutorial(state: GameState): GameState {
   return {
     ...state,
-    meta: { ...state.meta, tutorialCompleted: true, tutorialStep: 6 },
+    meta: { ...state.meta, tutorialCompleted: true, tutorialPhase: 'completed' as TutorialPhase },
   };
 }
 
-export function handleAdvanceTutorialStep(state: GameState): GameState {
+export function handleAdvanceTutorialPhase(state: GameState, phase: TutorialPhase): GameState {
   if (state.meta.tutorialCompleted) return state;
+  const flagUpdates: Partial<Pick<GameState['meta'], 'tutorialSeenExtraction' | 'tutorialSeenCollapse'>> = {};
+  if (phase === 'result-extracted') flagUpdates.tutorialSeenExtraction = true;
+  if (phase === 'result-collapsed') flagUpdates.tutorialSeenCollapse = true;
   return {
     ...state,
-    meta: { ...state.meta, tutorialStep: state.meta.tutorialStep + 1 },
+    meta: { ...state.meta, tutorialPhase: phase, ...flagUpdates },
   };
 }
 
 export function handleSetActiveRepair(state: GameState, shipId: string | null): GameState {
   return { ...state, meta: { ...state.meta, activeRepairShipId: shipId } };
+}
+
+/**
+ * Assign a crew member as captain of a claimed ship.
+ * Returns null if ship is not claimed or crew is already captaining another ship.
+ */
+export function handleAssignCaptain(
+  state: GameState,
+  shipId: string,
+  crewId: CrewMemberId,
+): GameState | null {
+  const ship = state.meta.ships.find((s) => s.id === shipId);
+  if (!ship || ship.status !== 'claimed') return null;
+
+  // Check if crew is already captaining another ship
+  const alreadyCaptain = state.meta.ships.some((s) => s.captainedBy === crewId);
+  if (alreadyCaptain) return null;
+
+  // Check if crew is awake (in leadId or companionIds)
+  const isAwake =
+    state.meta.leadId === crewId ||
+    state.meta.companionIds.includes(crewId);
+  if (!isAwake) return null;
+
+  const updatedShips = state.meta.ships.map((s) =>
+    s.id === shipId ? { ...s, captainedBy: crewId } : s,
+  );
+
+  return { ...state, meta: { ...state.meta, ships: updatedShips } };
+}
+
+/**
+ * Unassign captain from a ship.
+ */
+export function handleUnassignCaptain(state: GameState, shipId: string): GameState | null {
+  const ship = state.meta.ships.find((s) => s.id === shipId);
+  if (!ship || ship.status !== 'claimed') return null;
+  if (ship.captainedBy === null) return null;
+
+  const updatedShips = state.meta.ships.map((s) =>
+    s.id === shipId ? { ...s, captainedBy: null } : s,
+  );
+
+  return { ...state, meta: { ...state.meta, ships: updatedShips } };
 }
 
 export function handleUpgradeModule(state: GameState, moduleId: ModuleId): GameState | null {

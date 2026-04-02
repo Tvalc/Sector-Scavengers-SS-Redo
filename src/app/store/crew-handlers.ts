@@ -5,7 +5,8 @@ import { ItemSlot, getItemById } from '../../content/hardware';
 import { CrewMemberId } from '../../content/crew';
 import { AssignmentSlotId } from '../../content/crew-assignments';
 import { computeModuleEffects } from '../module-effects';
-import { WAKE_COST_POWER_CELLS, WAKE_DEBT_COST } from '../../content/cryo';
+import { WAKE_DEBT_COST } from '../../content/cryo';
+import { WAKE_ECHO_COST } from '../../config/constants';
 
 export function handleEquipItem(state: GameState, slot: ItemSlot, itemId: string): GameState {
   const { meta } = state;
@@ -50,8 +51,8 @@ export function handleWakeCrew(state: GameState, crewId: CrewMemberId): GameStat
   if (!meta.cryoPool.includes(crewId)) return state;
 
   const wakeMod = computeModuleEffects(meta.moduleLevels);
-  const effectiveWakeCost = Math.max(1, WAKE_COST_POWER_CELLS - wakeMod.wakeDiscount);
-  if (meta.powerCells < effectiveWakeCost) return state;
+  const effectiveWakeCost = Math.max(1, WAKE_ECHO_COST - wakeMod.wakeDiscount);
+  if (meta.voidEcho < effectiveWakeCost) return state;
 
   return {
     ...state,
@@ -59,7 +60,7 @@ export function handleWakeCrew(state: GameState, crewId: CrewMemberId): GameStat
       ...meta,
       cryoPool: meta.cryoPool.filter((id) => id !== crewId),
       companionIds: [...meta.companionIds, crewId],
-      powerCells: meta.powerCells - effectiveWakeCost,
+      voidEcho: meta.voidEcho - effectiveWakeCost,
       debt: meta.debt + WAKE_DEBT_COST,
     },
   };

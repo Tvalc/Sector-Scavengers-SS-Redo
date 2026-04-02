@@ -3,27 +3,24 @@
 import { ModuleId, MODULE_DEFS } from '../content/modules';
 
 export interface AggregatedModuleEffects {
-  /** Percentage bonus applied to salvage sale value (additive across levels). */
-  saleBonusPct: number;
+  /** Audit detection reduction percentage points (e.g., 15 = 15% reduction). */
+  auditDetectionReduction: number;
   /** Total power-cell reduction for waking crew (min effective cost: 1). */
   wakeDiscount: number;
   /** Extra repair progress steps per run (stacks with base +1). */
   repairSpeedBonus: number;
-  /** Extra energy capacity above MAX_ENERGY. */
-  energyCapBonus: number;
   /** Flat danger-chance reduction (0–1 range, stacks additively). */
   dangerChanceReduction: number;
-  /** Percentage reduction of recharge cost (additive across levels). */
-  marketDiscountPct: number;
+  /** Current level of salvage bay (0 if not built). Used for audit detection reduction. */
+  salvageBayLevel: number;
 }
 
 const ZERO: AggregatedModuleEffects = {
-  saleBonusPct:          0,
+  auditDetectionReduction: 0,
   wakeDiscount:          0,
   repairSpeedBonus:      0,
-  energyCapBonus:        0,
   dangerChanceReduction: 0,
-  marketDiscountPct:     0,
+  salvageBayLevel:       0,
 };
 
 /**
@@ -45,25 +42,24 @@ export function computeModuleEffects(
 
       const e = upgrade.effect;
       switch (e.type) {
-        case 'sale_bonus_pct':
-          result.saleBonusPct += e.pct;
-          break;
         case 'wake_discount':
           result.wakeDiscount += e.cells;
           break;
         case 'repair_speed':
           result.repairSpeedBonus += e.bonus;
           break;
-        case 'energy_cap_bonus':
-          result.energyCapBonus += e.amount;
-          break;
         case 'danger_chance_reduction':
           result.dangerChanceReduction += e.amount;
           break;
-        case 'market_discount':
-          result.marketDiscountPct += e.pct;
+        case 'audit_detection_reduction':
+          result.auditDetectionReduction += e.pct;
           break;
       }
+    }
+
+    // Track salvage bay level separately
+    if (def.id === 'salvage_bay') {
+      result.salvageBayLevel = purchasedLevel;
     }
   }
 

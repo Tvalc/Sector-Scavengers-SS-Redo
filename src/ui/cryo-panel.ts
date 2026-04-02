@@ -1,10 +1,40 @@
-// Cryo Management panel — wake/send crew, upkeep pressure summary.
+// Cryo Management panel — hero-style full screen layout paginated by crew member.
 
 import { MakkoEngine } from '@makko/engine';
+import type { ICharacter } from '@makko/engine';
 import { MetaState } from '../types/state';
-import { CrewMemberId, CREW_ROSTER } from '../content/crew';
-import { WAKE_COST_POWER_CELLS, WAKE_DEBT_COST } from '../content/cryo';
-import { AssignmentSlotId, ASSIGNMENT_SLOT_ORDER } from '../content/crew-assignments';
+import { CrewMemberId, CREW_ROSTER, CREW_ORDER, getCrewUnlockDescription } from '../content/crew';
+import { WAKE_ECHO_COST } from '../config/constants';
+import { AssignmentSlotId, ASSIGNMENT_SLOT_DEFS, ASSIGNMENT_SLOT_ORDER } from '../content/crew-assignments';
+import { SHIP_DEFS } from '../content/ships';
+import { feedbackLayer } from './feedback-layer';
+import {
+  SCREEN_W,
+  LEFT_ZONE,
+  RIGHT_ZONE,
+  NAV_Y,
+  ACCENT,
+  GOLD,
+  SUCCESS,
+  ERROR,
+  TEXT_PRIMARY,
+  TEXT_SECONDARY,
+  TEXT_MUTED,
+  BG,
+  BG_PANEL,
+  BORDER_DEFAULT,
+  LOCK_COLOR,
+  isOver,
+  wrapText,
+  renderNavigation,
+  renderTopBar,
+  renderLeftPanelBg,
+  renderRightPanelBg,
+  renderHeroFrame,
+  renderStatusBadge,
+  renderLevelPips,
+} from './panel-layout';
+import { setBounds } from './tutorial-bounds';
 
 export type CryoPanelAction =
   | { type: 'WAKE_CREW'; crewId: CrewMemberId }
@@ -12,310 +42,517 @@ export type CryoPanelAction =
   | { type: 'CLOSE_CRYO' }
   | { type: 'ASSIGN_CREW'; crewId: CrewMemberId; slot: AssignmentSlotId };
 
-// ── Panel geometry ────────────────────────────────────────────────────────────
-const PX  = 510;
-const PY  = 215;
-const PW  = 900;
-const PH  = 650;
-const PAD = 30;
+// ── Constants ───────────────────────────────────────────────────────────────
+const COLOR_ACTIVE = '#68d391';
+const COLOR_IN_CRYO = '#4a9eda';
 
-// Sections
-const ACTIVE_LABEL_Y = 300;
-const ACTIVE_START_Y = 322;
-const ACTIVE_ROW_H   = 68; // increased from 42 to fit assignment row
-
-// Cryo section position is computed dynamically from active crew count
-const CRYO_ROW_H = 46;
-
-// Slot picker geometry
-const SLOT_BTN_W  = 90;
-const SLOT_BTN_H  = 24;
-const SLOT_BTN_GAP = 4;
-const SLOT_ROW_Y_OFFSET = 36; // offset from rowY for the assignment row
-
-// Short labels for slot buttons
-const SLOT_LABELS: Record<AssignmentSlotId, string> = {
-  idle:       'IDLE',
-  repairs:    'REPAIRS',
-  scav_prep:  'SCAV',
-  medbay:     'MEDBAY',
-  market_ops: 'MARKET',
-};
-
-// Buttons
-const SEND_W   = 140;
-const SEND_H   = 30;
-const WAKE_W   = 80;
-const WAKE_H   = 30;
-const CLOSE_W  = 100;
-const CLOSE_H  = 36;
-
-// ── Wake confirmation state ───────────────────────────────────────────────────
-// Clicking [Wake] once sets pendingWakeId. A second click on the same button
-// (still hovered) fires WAKE_CREW. Mouse moving off the button resets it.
+// ── State ────────────────────────────────────────────────────────────────────
+let currentCryoPage = 0;
 let pendingWakeId: CrewMemberId | null = null;
+let crewSprite: ICharacter | null = null;
 
-// Standard press-tracking for other buttons
-let pressedBtnId: string | null = null;
-
-function isOver(mx: number, my: number, x: number, y: number, w: number, h: number): boolean {
-  return mx >= x && mx <= x + w && my >= y && my <= y + h;
+/** Reset the cryo page when opening the panel. */
+export function resetCryoPage(): void {
+  currentCryoPage = 0;
+  pendingWakeId = null;
 }
 
-function stdBtn(
-  id: string,
-  mx: number,
-  my: number,
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-): boolean {
-  const input = MakkoEngine.input;
-  const over = isOver(mx, my, x, y, w, h);
-  if (input.isMousePressed(0) && over) pressedBtnId = id;
-  if (input.isMouseReleased(0)) {
-    const hit = pressedBtnId === id && over;
-    if (pressedBtnId === id) pressedBtnId = null;
-    return hit;
-  }
-  return false;
+// ── Helper Functions ─────────────────────────────────────────────────────────
+
+function getCrewStatus(id: CrewMemberId, meta: MetaState): 'active' | 'cryo' | 'locked' {
+  if (meta.leadId === id || meta.companionIds.includes(id)) return 'active';
+  if (meta.cryoPool.includes(id)) return 'cryo';
+  return 'locked';
 }
+
+function getAssignmentForCrew(id: CrewMemberId, meta: MetaState): AssignmentSlotId {
+  return meta.crewAssignments[id] ?? 'idle';
+}
+
+function getCaptainShips(id: CrewMemberId, meta: MetaState): string[] {
+  return meta.ships
+    .filter(s => s.captainedBy === id)
+    .map(s => s.id);
+}
+
+function getRunsToNextLevel(runs: number): number {
+  if (runs < 3) return 3 - runs;
+  if (runs < 8) return 8 - runs;
+  return 0;
+}
+
+// ── Main Render Function ───────────────────────────────────────────────────
 
 export function renderCryoPanel(
   meta: MetaState,
   mx: number,
   my: number,
+  dt: number,
 ): CryoPanelAction | null {
   const display = MakkoEngine.display;
-  const input   = MakkoEngine.input;
+  const input = MakkoEngine.input;
+
   let action: CryoPanelAction | null = null;
 
-  // ── Panel background ────────────────────────────────────────────────────────
-  display.drawRect(PX, PY, PW, PH, { fill: '#080e1a', stroke: '#2b4a6e', lineWidth: 2 });
+  // Full screen clear
+  display.clear(BG);
 
-  // ── Header ──────────────────────────────────────────────────────────────────
-  display.drawText('CRYO MANAGEMENT', PX + PW / 2, PY + PAD + 4, {
-    font: 'bold 28px monospace', fill: '#63b3ed', align: 'center', baseline: 'top',
-  });
+  // Ensure page is in valid range
+  const totalCrew = CREW_ORDER.length;
+  currentCryoPage = Math.max(0, Math.min(currentCryoPage, totalCrew - 1));
 
-  // Sub-line
-  display.drawText(
-    `Power Cells: ${meta.powerCells}  |  Wake cost: ${WAKE_COST_POWER_CELLS} cells + \u20a1${WAKE_DEBT_COST} debt`,
-    PX + PW / 2,
-    PY + PAD + 40,
-    { font: '18px monospace', fill: '#718096', align: 'center', baseline: 'top' },
+  const crewId = CREW_ORDER[currentCryoPage];
+  const crew = CREW_ROSTER[crewId];
+  const status = getCrewStatus(crewId, meta);
+  const isLocked = status === 'locked';
+  const isLead = meta.leadId === crewId;
+
+  // Get crew progression data
+  const runsParticipated = meta.crewRunsParticipated[crewId] ?? 0;
+  const level = meta.crewLevels[crewId] ?? 1;
+
+  // Lazy-load sprite
+  if (!crewSprite) {
+    crewSprite = MakkoEngine.sprite('space_scav_1_scavcore');
+    if (crewSprite) {
+      crewSprite.play('space_scav_1_idle_visor_hud_default', true);
+    }
+  }
+
+  // Update sprite animation
+  if (crewSprite) {
+    crewSprite.update(dt);
+  }
+
+  // ── Top Bar ─────────────────────────────────────────────────────────────────
+  const topAction = renderTopBar(
+    display, input, mx, my,
+    'CRYO MANAGEMENT',
+    currentCryoPage,
+    totalCrew,
+    { pageLabel: 'Crew' }
   );
-
-  // ── Active Crew section ──────────────────────────────────────────────────────
-  display.drawText('AWAKE CREW', PX + PAD, ACTIVE_LABEL_Y, {
-    font: '14px monospace', fill: '#68d391', align: 'left', baseline: 'top',
-  });
-  display.drawLine(PX + PAD, ACTIVE_LABEL_Y + 16, PX + PW - PAD, ACTIVE_LABEL_Y + 16, {
-    stroke: '#1a3a2a', lineWidth: 1,
-  });
-
-  // Build active list: lead first, then companions
-  const activeList: Array<{ id: CrewMemberId; isLead: boolean }> = [];
-  if (meta.leadId !== null) activeList.push({ id: meta.leadId, isLead: true });
-  for (const id of meta.companionIds) activeList.push({ id, isLead: false });
-
-  if (activeList.length === 0) {
-    display.drawText('No crew awake.', PX + PAD + 8, ACTIVE_START_Y + 8, {
-      font: '18px monospace', fill: '#4a5568', align: 'left', baseline: 'top',
-    });
-  }
-
-  for (let i = 0; i < activeList.length; i++) {
-    const { id, isLead } = activeList[i];
-    const crew  = CREW_ROSTER[id];
-    const rowY  = ACTIVE_START_Y + i * ACTIVE_ROW_H;
-    const currentSlot: AssignmentSlotId = meta.crewAssignments[id] ?? 'idle';
-
-    // Name + lead tag
-    display.drawText(crew.name, PX + PAD + 8, rowY + 8, {
-      font: 'bold 18px monospace', fill: '#e2e8f0', align: 'left', baseline: 'top',
-    });
-    if (isLead) {
-      display.drawText('[LEAD]', PX + PAD + 100, rowY + 8, {
-        font: '16px monospace', fill: '#f6e05e', align: 'left', baseline: 'top',
-      });
-    }
-
-    // Role + passive description
-    display.drawText(`${crew.role} — ${crew.passiveDesc}`, PX + PAD + 220, rowY + 8, {
-      font: '16px monospace', fill: '#718096', align: 'left', baseline: 'top',
-    });
-
-    // [Send to Cryo] button — only for companions, not lead
-    if (!isLead) {
-      const sbx = PX + PW - PAD - SEND_W;
-      const sby = rowY + 6;
-      const sHover = isOver(mx, my, sbx, sby, SEND_W, SEND_H);
-      display.drawRect(sbx, sby, SEND_W, SEND_H, {
-        fill: sHover ? '#1a3a5a' : '#0a1a2e',
-        stroke: '#4a9eda',
-        lineWidth: 1,
-      });
-      display.drawText('[Send to Cryo]', sbx + SEND_W / 2, sby + SEND_H / 2, {
-        font: '14px monospace', fill: '#90cdf4', align: 'center', baseline: 'middle',
-      });
-      if (stdBtn(`send_${id}`, mx, my, sbx, sby, SEND_W, SEND_H)) {
-        action = { type: 'SEND_TO_CRYO', crewId: id };
-      }
-    }
-
-    // ── Assignment slot picker row ───────────────────────────────────────────
-    const slotRowY = rowY + SLOT_ROW_Y_OFFSET;
-    const slotStartX = PX + PAD + 8;
-
-    for (let s = 0; s < ASSIGNMENT_SLOT_ORDER.length; s++) {
-      const slot = ASSIGNMENT_SLOT_ORDER[s];
-      const btnX = slotStartX + s * (SLOT_BTN_W + SLOT_BTN_GAP);
-      const btnY = slotRowY;
-      const isActive = currentSlot === slot;
-      const over = isOver(mx, my, btnX, btnY, SLOT_BTN_W, SLOT_BTN_H);
-
-      let fill: string;
-      let stroke: string;
-      let textColor: string;
-
-      if (isActive) {
-        fill = '#276749';
-        stroke = '#9ae6b4';
-        textColor = '#9ae6b4';
-      } else if (over) {
-        fill = '#2d3748';
-        stroke = '#718096';
-        textColor = '#a0aec0';
-      } else {
-        fill = '#1a202c';
-        stroke = '#4a5568';
-        textColor = '#a0aec0';
-      }
-
-      display.drawRect(btnX, btnY, SLOT_BTN_W, SLOT_BTN_H, { fill, stroke, lineWidth: 1 });
-      display.drawText(SLOT_LABELS[slot], btnX + SLOT_BTN_W / 2, btnY + SLOT_BTN_H / 2, {
-        font: '12px monospace', fill: textColor, align: 'center', baseline: 'middle',
-      });
-
-      const btnId = `assign_${id}_${slot}`;
-      if (stdBtn(btnId, mx, my, btnX, btnY, SLOT_BTN_W, SLOT_BTN_H)) {
-        // Toggle off if already active slot — reassign to idle
-        const targetSlot: AssignmentSlotId = isActive && slot !== 'idle' ? 'idle' : slot;
-        action = { type: 'ASSIGN_CREW', crewId: id, slot: targetSlot };
-      }
-    }
-  }
-
-  // ── Upkeep pressure line ─────────────────────────────────────────────────────
-  const upkeepY = ACTIVE_START_Y + Math.max(1, activeList.length) * ACTIVE_ROW_H + 6;
-  const activeCount = activeList.length;
-  const pressure = Math.max(0, activeCount - 1) * meta.upkeepPerAwakeCrew;
-  if (pressure > 0) {
-    display.drawText(
-      `Current upkeep pressure: +\u20a1${pressure} per billing cycle`,
-      PX + PAD,
-      upkeepY,
-      { font: '15px monospace', fill: '#fc8181', align: 'left', baseline: 'top' },
-    );
-  } else {
-    display.drawText('No upkeep pressure.', PX + PAD, upkeepY, {
-      font: '15px monospace', fill: '#4a5568', align: 'left', baseline: 'top',
-    });
-  }
-
-  // ── Cryo Pool section — position dynamically below the active area ───────────
-  const cryoLabelY = upkeepY + 26;
-  const cryoStartY = cryoLabelY + 22;
-
-  display.drawText('IN CRYO', PX + PAD, cryoLabelY, {
-    font: '14px monospace', fill: '#4a9eda', align: 'left', baseline: 'top',
-  });
-  display.drawLine(PX + PAD, cryoLabelY + 16, PX + PW - PAD, cryoLabelY + 16, {
-    stroke: '#1a3a5a', lineWidth: 1,
-  });
-
-  if (meta.cryoPool.length === 0) {
-    display.drawText('Cryo pod is empty.', PX + PAD + 8, cryoStartY + 8, {
-      font: '18px monospace', fill: '#4a5568', align: 'left', baseline: 'top',
-    });
-  }
-
-  const canWake = meta.powerCells >= WAKE_COST_POWER_CELLS;
-
-  for (let i = 0; i < meta.cryoPool.length; i++) {
-    const id    = meta.cryoPool[i];
-    const crew  = CREW_ROSTER[id];
-    const rowY  = cryoStartY + i * CRYO_ROW_H;
-
-    // Name
-    display.drawText(crew.name, PX + PAD + 8, rowY + 6, {
-      font: 'bold 17px monospace', fill: '#90cdf4', align: 'left', baseline: 'top',
-    });
-    // Role + passive
-    display.drawText(`${crew.role} — ${crew.passiveDesc}`, PX + PAD + 130, rowY + 6, {
-      font: '15px monospace', fill: '#4a7a9e', align: 'left', baseline: 'top',
-    });
-
-    // [Wake] button with two-click confirmation
-    const wbx   = PX + PW - PAD - WAKE_W;
-    const wby   = rowY + 8;
-    const wOver = isOver(mx, my, wbx, wby, WAKE_W, WAKE_H);
-    const isPending = pendingWakeId === id;
-
-    // Reset pending if mouse moves away
-    if (isPending && !wOver) {
-      pendingWakeId = null;
-    }
-
-    const wFill   = !canWake ? '#1a1a1a'
-                  : isPending ? '#276749'
-                  : wOver    ? '#276749'
-                  : '#1a3a2a';
-    const wStroke = !canWake ? '#2d3748' : '#276749';
-    const wText   = !canWake ? '#4a5568'
-                  : isPending ? '#9ae6b4'
-                  : '#ffffff';
-    const wLabel  = isPending ? 'Confirm?' : '[Wake]';
-
-    display.drawRect(wbx, wby, WAKE_W, WAKE_H, { fill: wFill, stroke: wStroke, lineWidth: 1 });
-    display.drawText(wLabel, wbx + WAKE_W / 2, wby + WAKE_H / 2, {
-      font: '14px monospace', fill: wText, align: 'center', baseline: 'middle',
-    });
-
-    if (canWake) {
-      if (input.isMousePressed(0) && wOver) {
-        if (isPending) {
-          // Second press on same button → fire action on release (handled below)
-        } else {
-          // First press → mark as pending
-          pendingWakeId = id;
-        }
-      }
-      if (input.isMouseReleased(0) && wOver && isPending) {
-        action = { type: 'WAKE_CREW', crewId: id };
-        pendingWakeId = null;
-      }
-    }
-  }
-
-  // ── Close button ──────────────────────────────────────────────────────────────
-  const closeX = PX + PW - PAD - CLOSE_W;
-  const closeY = PY + PH - PAD - CLOSE_H;
-  const closeHover = isOver(mx, my, closeX, closeY, CLOSE_W, CLOSE_H);
-  display.drawRect(closeX, closeY, CLOSE_W, CLOSE_H, {
-    fill: closeHover ? '#2d3748' : '#1a202c',
-    stroke: '#4a5568',
-    lineWidth: 1,
-  });
-  display.drawText('[Close]', closeX + CLOSE_W / 2, closeY + CLOSE_H / 2, {
-    font: '18px monospace', fill: '#a0aec0', align: 'center', baseline: 'middle',
-  });
-  if (stdBtn('close_cryo', mx, my, closeX, closeY, CLOSE_W, CLOSE_H)) {
+  if (topAction === 'CLOSE') {
     action = { type: 'CLOSE_CRYO' };
-    pendingWakeId = null; // reset on close
+  }
+
+  // ── Left Zone: Crew Identity ───────────────────────────────────────────────
+  renderLeftZone(display, crewSprite, crewId, crew, level, status);
+
+  // ── Right Zone: Stats & Controls ─────────────────────────────────────────
+  const rightAction = renderRightZone(display, input, mx, my, meta, crewId, crew, status, isLead, level, runsParticipated);
+  if (rightAction) action = rightAction;
+
+  // ── Navigation ────────────────────────────────────────────────────────────
+  const navAction = renderNavigation(display, input, mx, my, currentCryoPage, totalCrew);
+  if (navAction !== null) {
+    currentCryoPage = navAction;
+    pendingWakeId = null; // Clear pending on page change
+  }
+
+  // ── Keyboard Input ─────────────────────────────────────────────────────────
+  if (input.isKeyPressed('Escape')) {
+    action = { type: 'CLOSE_CRYO' };
   }
 
   return action;
+}
+
+// ── Left Zone Renderer ───────────────────────────────────────────────────────
+
+function renderLeftZone(
+  display: typeof MakkoEngine.display,
+  crewSprite: ICharacter | null,
+  crewId: CrewMemberId,
+  crew: typeof CREW_ROSTER[CrewMemberId],
+  level: number,
+  status: 'active' | 'cryo' | 'locked',
+): void {
+  renderLeftPanelBg(display);
+
+  let y = LEFT_ZONE.y + 40;
+
+  // Sprite frame with glow
+  const frameX = LEFT_ZONE.x + 30;
+  const frameY = y;
+  const frameW = LEFT_ZONE.w - 60;
+  const frameH = 500;
+  renderHeroFrame(display, frameX, frameY, frameW, frameH);
+
+  // Render sprite centered in frame (anchor bottom-center)
+  if (crewSprite && status !== 'locked') {
+    const spriteX = frameX + frameW / 2;
+    const spriteY = frameY + frameH - 20;
+    crewSprite.draw(display, spriteX, spriteY, { scale: 2.2 });
+  }
+
+  y += frameH + 50;
+
+  // Crew name
+  display.drawText(crew.name.toUpperCase(), LEFT_ZONE.x + LEFT_ZONE.w / 2, y, {
+    font: 'bold 56px monospace',
+    fill: ACCENT,
+    align: 'center',
+    baseline: 'top',
+  });
+  y += 70;
+
+  // Role
+  display.drawText(crew.role.toUpperCase(), LEFT_ZONE.x + LEFT_ZONE.w / 2, y, {
+    font: '36px monospace',
+    fill: TEXT_SECONDARY,
+    align: 'center',
+    baseline: 'top',
+  });
+  y += 60;
+
+  // Status badge
+  const statusLabel = status === 'active' ? 'ACTIVE' : status === 'cryo' ? 'IN CRYO' : 'LOCKED';
+  const statusColor = status === 'active' ? COLOR_ACTIVE : status === 'cryo' ? COLOR_IN_CRYO : LOCK_COLOR;
+  renderStatusBadge(display, LEFT_ZONE.x + (LEFT_ZONE.w - 140) / 2, y, 140, 40, statusLabel, statusColor);
+  y += 60;
+
+  // Locked badge and unlock condition
+  if (status === 'locked') {
+    const unlockDesc = getCrewUnlockDescription(crewId);
+    const unlockLines = wrapText(unlockDesc, LEFT_ZONE.w - 80, '26px monospace');
+    for (const line of unlockLines) {
+      display.drawText(line, LEFT_ZONE.x + LEFT_ZONE.w / 2, y, {
+        font: '26px monospace',
+        fill: TEXT_MUTED,
+        align: 'center',
+        baseline: 'top',
+      });
+      y += 36;
+    }
+  }
+
+  // Set bounds for tutorial
+  setBounds('cryo-pool', { x: LEFT_ZONE.x, y: LEFT_ZONE.y, w: LEFT_ZONE.w, h: LEFT_ZONE.h });
+}
+
+// ── Right Zone Renderer ───────────────────────────────────────────────────────
+
+function renderRightZone(
+  display: typeof MakkoEngine.display,
+  input: typeof MakkoEngine.input,
+  mx: number,
+  my: number,
+  meta: MetaState,
+  crewId: CrewMemberId,
+  crew: typeof CREW_ROSTER[CrewMemberId],
+  status: 'active' | 'cryo' | 'locked',
+  isLead: boolean,
+  level: number,
+  runsParticipated: number,
+): CryoPanelAction | null {
+  renderRightPanelBg(display);
+
+  let action: CryoPanelAction | null = null;
+  let y = RIGHT_ZONE.y + 30;
+
+  // ── Status Row ─────────────────────────────────────────────────────────────
+  const statusLabel = status === 'active' ? 'ACTIVE' : status === 'cryo' ? 'IN CRYO' : 'LOCKED';
+  const statusColor = status === 'active' ? COLOR_ACTIVE : status === 'cryo' ? COLOR_IN_CRYO : TEXT_MUTED;
+
+  // Status pill
+  renderStatusBadge(display, RIGHT_ZONE.x + 40, y, 140, 44, statusLabel, statusColor);
+
+  // Upkeep cost if active
+  if (status === 'active') {
+    display.drawText(`₡${meta.upkeepPerAwakeCrew}/cycle upkeep`, RIGHT_ZONE.x + 200, y + 22, {
+      font: 'bold 26px monospace',
+      fill: ERROR,
+      align: 'left',
+      baseline: 'middle',
+    });
+  }
+  y += 80;
+
+  // ── Level Section ──────────────────────────────────────────────────────────
+  display.drawText('LEVEL', RIGHT_ZONE.x + 40, y, {
+    font: 'bold 30px monospace',
+    fill: TEXT_MUTED,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 48;
+
+  // Large level number
+  display.drawText(`${level}`, RIGHT_ZONE.x + 40, y, {
+    font: 'bold 72px monospace',
+    fill: ACCENT,
+    align: 'left',
+    baseline: 'top',
+  });
+
+  // Runs participated
+  display.drawText(`${runsParticipated} runs participated`, RIGHT_ZONE.x + 160, y + 24, {
+    font: '28px monospace',
+    fill: TEXT_SECONDARY,
+    align: 'left',
+    baseline: 'top',
+  });
+
+  // Progress hint
+  const runsToNext = getRunsToNextLevel(runsParticipated);
+  const progressText = level >= 3 ? 'MAX LEVEL' : `${runsToNext} more runs to next level`;
+  display.drawText(progressText, RIGHT_ZONE.x + 160, y + 60, {
+    font: '26px monospace',
+    fill: TEXT_MUTED,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 120;
+
+  // Level pips
+  renderLevelPips(display, RIGHT_ZONE.x + 40, y, level, 3);
+  y += 60;
+
+  // ── Passive Abilities Section ─────────────────────────────────────────────
+  display.drawText('PASSIVES', RIGHT_ZONE.x + 40, y, {
+    font: 'bold 30px monospace',
+    fill: TEXT_MUTED,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 48;
+
+  // L1 passive (always shown, full brightness)
+  display.drawText(`[Lv1] ${crew.passiveDesc}`, RIGHT_ZONE.x + 60, y, {
+    font: '26px monospace',
+    fill: SUCCESS,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 42;
+
+  // L2 passive
+  const l2Color = level >= 2 ? SUCCESS : LOCK_COLOR;
+  display.drawText(`[Lv2] ${crew.level2PassiveDesc}`, RIGHT_ZONE.x + 60, y, {
+    font: '26px monospace',
+    fill: l2Color,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 42;
+
+  // L3 passive
+  const l3Color = level >= 3 ? SUCCESS : LOCK_COLOR;
+  display.drawText(`[Lv3] ${crew.level3PassiveDesc}`, RIGHT_ZONE.x + 60, y, {
+    font: '26px monospace',
+    fill: l3Color,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 60;
+
+  // ── Assignment Section (only if active) ────────────────────────────────────
+  if (status === 'active') {
+    display.drawText('ASSIGNMENT', RIGHT_ZONE.x + 40, y, {
+      font: 'bold 30px monospace',
+      fill: TEXT_MUTED,
+      align: 'left',
+      baseline: 'top',
+    });
+    y += 55;
+
+    const currentAssignment = getAssignmentForCrew(crewId, meta);
+    const slotW = 140;
+    const slotH = 48;
+    const slotGap = 12;
+    let slotX = RIGHT_ZONE.x + 40;
+
+    for (const slotId of ASSIGNMENT_SLOT_ORDER) {
+      const slotDef = ASSIGNMENT_SLOT_DEFS[slotId];
+      const isActive = currentAssignment === slotId;
+
+      display.drawRoundRect(slotX, y, slotW, slotH, 4, {
+        fill: isActive ? '#1a3a4a' : '#0f172a',
+        stroke: isActive ? ACCENT : BORDER_DEFAULT,
+        lineWidth: isActive ? 2 : 1,
+      });
+      display.drawText(slotDef.label.toUpperCase(), slotX + slotW / 2, y + slotH / 2, {
+        font: 'bold 26px monospace',
+        fill: isActive ? ACCENT : TEXT_SECONDARY,
+        align: 'center',
+        baseline: 'middle',
+      });
+
+      // Click handling for assignment
+      const slotHover = isOver(mx, my, slotX, y, slotW, slotH);
+      if (slotHover && input.isMouseReleased(0)) {
+        action = { type: 'ASSIGN_CREW', crewId, slot: slotId };
+      }
+
+      slotX += slotW + slotGap;
+    }
+    y += 80;
+  }
+
+  // ── Cryo Controls ─────────────────────────────────────────────────────────
+  if (status === 'cryo') {
+    // Wake button with two-click confirm
+    const btnW = 240;
+    const btnH = 52;
+    const btnX = RIGHT_ZONE.x + 40;
+    const btnY = y;
+
+    const canAfford = meta.voidEcho >= WAKE_ECHO_COST;
+    const isPending = pendingWakeId === crewId;
+
+    if (canAfford) {
+      const btnColor = isPending ? '#1e4a3a' : '#0f3a2a';
+      const strokeColor = isPending ? SUCCESS : ACCENT;
+      const textColor = isPending ? SUCCESS : ACCENT;
+
+      display.drawRoundRect(btnX, btnY, btnW, btnH, 6, {
+        fill: btnColor,
+        stroke: strokeColor,
+        lineWidth: 2,
+      });
+      display.drawText(
+        isPending ? 'CONFIRM WAKE?' : `[Wake] (${WAKE_ECHO_COST} ⬡)`,
+        btnX + btnW / 2,
+        btnY + btnH / 2,
+        {
+          font: 'bold 26px monospace',
+          fill: textColor,
+          align: 'center',
+          baseline: 'middle',
+        }
+      );
+
+      const btnHover = isOver(mx, my, btnX, btnY, btnW, btnH);
+      if (btnHover && input.isMouseReleased(0)) {
+        if (isPending) {
+          action = { type: 'WAKE_CREW', crewId };
+          pendingWakeId = null;
+          feedbackLayer.spawn('THAWED', btnX + btnW / 2, btnY - 20, ACCENT);
+        } else {
+          pendingWakeId = crewId;
+        }
+      }
+
+      // Set bounds for tutorial
+      setBounds('cryo-wake-btn', { x: btnX, y: btnY, w: btnW, h: btnH });
+    } else {
+      // Disabled wake button
+      display.drawRoundRect(btnX, btnY, btnW, btnH, 6, {
+        fill: '#1a202c',
+        stroke: TEXT_MUTED,
+        lineWidth: 2,
+      });
+      display.drawText('NEED ECHO TO WAKE', btnX + btnW / 2, btnY + btnH / 2, {
+        font: 'bold 26px monospace',
+        fill: TEXT_MUTED,
+        align: 'center',
+        baseline: 'middle',
+      });
+    }
+
+    // Echo display
+    display.drawText(`Echo: ${meta.voidEcho}`, btnX + btnW + 20, btnY + btnH / 2, {
+      font: '26px monospace',
+      fill: '#9f7aea',
+      align: 'left',
+      baseline: 'middle',
+    });
+    y += 90;
+
+  } else if (status === 'active') {
+    // Send to Cryo or Lead badge
+    const btnW = 200;
+    const btnH = 52;
+    const btnX = RIGHT_ZONE.x + 40;
+    const btnY = y;
+
+    if (isLead) {
+      // Lead badge (disabled)
+      display.drawRoundRect(btnX, btnY, btnW, btnH, 6, {
+        fill: '#1a202c',
+        stroke: TEXT_MUTED,
+        lineWidth: 2,
+      });
+      display.drawText('LEAD — Cannot Cryo', btnX + btnW / 2, btnY + btnH / 2, {
+        font: 'bold 26px monospace',
+        fill: TEXT_MUTED,
+        align: 'center',
+        baseline: 'middle',
+      });
+    } else {
+      // Send to Cryo button
+      const btnHover = isOver(mx, my, btnX, btnY, btnW, btnH);
+      display.drawRoundRect(btnX, btnY, btnW, btnH, 6, {
+        fill: btnHover ? '#3a1a1a' : '#2a1515',
+        stroke: ERROR,
+        lineWidth: 2,
+      });
+      display.drawText('Send to Cryo', btnX + btnW / 2, btnY + btnH / 2, {
+        font: 'bold 26px monospace',
+        fill: ERROR,
+        align: 'center',
+        baseline: 'middle',
+      });
+
+      if (btnHover && input.isMouseReleased(0)) {
+        action = { type: 'SEND_TO_CRYO', crewId };
+        feedbackLayer.spawn('FROZEN', btnX + btnW / 2, btnY - 20, COLOR_IN_CRYO);
+      }
+    }
+    y += 90;
+  }
+
+  // ── Ship Assignment Section ────────────────────────────────────────────────
+  y = Math.max(y, RIGHT_ZONE.y + RIGHT_ZONE.h - 160);
+
+  display.drawText('SHIPS', RIGHT_ZONE.x + 40, y, {
+    font: 'bold 30px monospace',
+    fill: TEXT_MUTED,
+    align: 'left',
+    baseline: 'top',
+  });
+  y += 45;
+
+  const captainShipIds = getCaptainShips(crewId, meta);
+  if (captainShipIds.length > 0) {
+    for (const shipId of captainShipIds) {
+      const ship = SHIP_DEFS.find(s => s.id === shipId);
+      const shipName = ship?.name ?? shipId;
+
+      display.drawText(`Captain of: ${shipName}`, RIGHT_ZONE.x + 60, y, {
+        font: '28px monospace',
+        fill: GOLD,
+        align: 'left',
+        baseline: 'top',
+      });
+      y += 38;
+    }
+  } else {
+    display.drawText('Not assigned to any ship.', RIGHT_ZONE.x + 60, y, {
+      font: '28px monospace',
+      fill: TEXT_MUTED,
+      align: 'left',
+      baseline: 'top',
+    });
+  }
+
+  return action;
+}
+
+// ── Tutorial Highlight Bounds Getters ─────────────────────────────────────────
+
+export function getCryoWakeBtnBounds(_index: number): { x: number; y: number; w: number; h: number } {
+  // Return bounds for the wake button on current page
+  const btnW = 240;
+  const btnH = 52;
+  const btnX = RIGHT_ZONE.x + 40;
+  // Approximate Y position (after status, level, passives, assignment)
+  const btnY = RIGHT_ZONE.y + 30 + 70 + 100 + 50 + 60 + 60 + 45;
+
+  return { x: btnX, y: btnY, w: btnW, h: btnH };
+}
+
+export function getCryoPoolSectionBounds(): { x: number; y: number; w: number; h: number } {
+  return { x: LEFT_ZONE.x, y: LEFT_ZONE.y, w: LEFT_ZONE.w, h: LEFT_ZONE.h };
 }

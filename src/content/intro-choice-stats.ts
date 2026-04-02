@@ -1,16 +1,18 @@
 import { OPENING_PATH_CONFIG } from './opening-paths';
 import { INTRO_OUTCOMES } from './intro-narrative';
 
+export type SurvivorsCount = 0 | 'some' | 'many';
+
 export interface IntroChoiceStats {
   choiceId: string;
   label: string;
   credits: number;
   voidEcho: number;
-  energy: number;
   debt: number;
   debtPressure: 'low' | 'medium' | 'high';
   crew: string[];
   shipState: 'damaged' | 'partially_repaired' | 'stabilized';
+  survivorsSaved: SurvivorsCount;
 }
 
 const DEBT_MULTIPLIERS: Record<string, number> = {
@@ -21,9 +23,9 @@ const DEBT_MULTIPLIERS: Record<string, number> = {
 
 const SALVAGE_BONUSES: Record<string, number> = {
   low: 0,
-  medium: 200,
-  high: 400,
-  max: 800,
+  medium: 20000,
+  high: 40000,
+  max: 80000,
 };
 
 const CHOICE_LABELS: Record<string, string> = {
@@ -53,11 +55,11 @@ export function getIntroChoiceStats(choiceId: string): IntroChoiceStats | null {
     label: CHOICE_LABELS[choiceId] ?? choiceId,
     credits: finalCredits,
     voidEcho: pathConfig.voidEchoBonus,
-    energy: pathConfig.energy,
     debt: finalDebt,
     debtPressure: outcome.debtModifier,
     crew: crewNames,
     shipState: outcome.shipStateStart,
+    survivorsSaved: outcome.survivorsSaved,
   };
 }
 

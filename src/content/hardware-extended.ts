@@ -1,0 +1,378 @@
+import type { HardwareItem, LootPoolDef } from './hardware.ts';
+
+// Extended hardware definitions — 38 new items to reach 50 total
+// Target: 18 hull / 16 scanner / 16 utility across 3 rarities
+
+export const EXTENDED_HARDWARE: HardwareItem[] = [
+  // ═══════════════════════════════════════════════════════════════════════════
+  // HULL SLOT (14 new items → 18 total)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── Hull Common (5 new) ────────────────────────────────────────────────────
+  {
+    id: 'reinforced_plating',
+    name: 'Reinforced Plating',
+    slot: 'hull',
+    rarity: 'common',
+    effect: { type: 'breach_chance_down', reduction: 0.04 },
+    description: 'Basic reinforcement. Danger chances −4%.',
+    lootPool: { type: 'doctrine', doctrines: ['cooperative'] },
+  },
+  {
+    id: 'composite_layer',
+    name: 'Composite Layer',
+    slot: 'hull',
+    rarity: 'common',
+    effect: { type: 'hull_max_bonus', amount: 5 },
+    description: 'Composite fiber layer. Hull max +5.',
+    lootPool: { type: 'card_ids', ids: ['hull_patch', 'patch_and_hold', 'shared_repair'] },
+  },
+  {
+    id: 'patch_kit',
+    name: 'Patch Kit',
+    slot: 'hull',
+    rarity: 'common',
+    effect: { type: 'hull_regen_per_round', amount: 1 },
+    description: 'Auto-repair nanobots. Hull +1 per round.',
+    lootPool: { type: 'card_ids', ids: ['repair', 'hull_patch', 'mutual_aid'] },
+  },
+  {
+    id: 'ceramic_shielding',
+    name: 'Ceramic Shielding',
+    slot: 'hull',
+    rarity: 'common',
+    effect: { type: 'danger_reduction_at_hull', threshold: 60, reduction: 0.05 },
+    description: 'Ceramic heat shielding. Danger −5% when hull > 60.',
+    lootPool: { type: 'card_ids', ids: ['bulwark', 'group_effort', 'solidarity'] },
+  },
+  {
+    id: 'buffer_plate',
+    name: 'Buffer Plate',
+    slot: 'hull',
+    rarity: 'common',
+    effect: { type: 'hull_max_bonus', amount: 8 },
+    description: 'Shock-absorbing plates. Hull max +8.',
+    lootPool: { type: 'card_ids', ids: ['shield', 'patch_and_hold', 'collective_hull'] },
+  },
+
+  // ── Hull Uncommon (6 new) ──────────────────────────────────────────────────
+  {
+    id: 'extended_tanks',
+    name: 'Extended Tanks',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'upgrade_no_hull_cost' },
+    description: 'Auxiliary fuel tanks. Upgrade card deals no hull damage.',
+    lootPool: { type: 'doctrine', doctrines: ['corporate', 'cooperative'] },
+  },
+  {
+    id: 'reactive_plating',
+    name: 'Reactive Plating',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'hull_on_shield_block', amount: 2 },
+    description: 'Reactive armor. +2 hull when a shield blocks damage.',
+    lootPool: { type: 'card_ids', ids: ['shield', 'team_shield', 'bulwark', 'hull_surge', 'shield_wall_prep'] },
+  },
+  {
+    id: 'layered_armor',
+    name: 'Layered Armor',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'breach_chance_down', reduction: 0.08 },
+    description: 'Multi-layer defense. Danger chances −8%.',
+    lootPool: { type: 'doctrine', doctrines: ['cooperative', 'corporate'] },
+  },
+  {
+    id: 'regenerative_plating',
+    name: 'Regenerative Plating',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'hull_regen_per_round', amount: 3 },
+    description: 'Self-healing alloy. Hull +3 per round.',
+    lootPool: { type: 'doctrine', doctrines: ['cooperative', 'smuggler'] },
+  },
+  {
+    id: 'fortress_plating',
+    name: 'Fortress Plating',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'hull_high_danger_reduction', threshold: 80, reduction: 0.10 },
+    description: 'Heavy fortress plating. Danger −10% when hull > 80.',
+    lootPool: { type: 'card_ids', ids: ['bulwark', 'fortress_protocol', 'adaptive_defense', 'hull_buffer'] },
+  },
+  {
+    id: 'hull_weave',
+    name: 'Hull Weave',
+    slot: 'hull',
+    rarity: 'uncommon',
+    effect: { type: 'hull_max_bonus', amount: 12 },
+    description: 'Nano-weave reinforcement. Hull max +12.',
+    lootPool: { type: 'rarity', rarities: ['common', 'uncommon'] },
+  },
+
+  // ── Hull Rare (3 new) ─────────────────────────────────────────────────────
+  {
+    id: 'titanium_lattice',
+    name: 'Titanium Lattice',
+    slot: 'hull',
+    rarity: 'rare',
+    effect: { type: 'hull_max_bonus', amount: 40 },
+    description: 'Titanium molecular lattice. Hull max +40.',
+    lootPool: { type: 'all_eligible' },
+  },
+  {
+    id: 'nanite_armor',
+    name: 'Nanite Armor',
+    slot: 'hull',
+    rarity: 'rare',
+    effect: { type: 'hull_regen_per_round', amount: 5 },
+    description: 'Living nanite armor. Hull +5 per round.',
+    lootPool: { type: 'all_eligible' },
+  },
+  {
+    id: 'imperium_plating',
+    name: 'Imperium Plating',
+    slot: 'hull',
+    rarity: 'rare',
+    effect: { type: 'breach_chance_down', reduction: 0.15 },
+    description: 'Elite defense plating. Danger chances −15%.',
+    lootPool: { type: 'all_eligible' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // SCANNER SLOT (13 new items → 16 total)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── Scanner Common (5 new) ─────────────────────────────────────────────────
+  {
+    id: 'surplus_scanner',
+    name: 'Surplus Scanner',
+    slot: 'scanner',
+    rarity: 'common',
+    effect: { type: 'scavenge_bonus_flat', amount: 300 },
+    description: 'Military surplus scanner. Scavenge +₡300.',
+    lootPool: { type: 'doctrine', doctrines: ['smuggler'] },
+  },
+  {
+    id: 'survey_kit',
+    name: 'Survey Kit',
+    slot: 'scanner',
+    rarity: 'common',
+    effect: { type: 'scavenge_danger_reduction', amount: 0.03 },
+    description: 'Basic survey equipment. Scavenge danger −3%.',
+    lootPool: { type: 'card_ids', ids: ['risky_scavenge', 'quick_loot', 'shadow_run'] },
+  },
+  {
+    id: 'prospector_lens',
+    name: 'Prospector Lens',
+    slot: 'scanner',
+    rarity: 'common',
+    effect: { type: 'relic_bonus_chance', chance: 0.05 },
+    description: 'Enhanced detection. +5% relic find chance.',
+    lootPool: { type: 'card_ids', ids: ['salvage_grab', 'salvage_protocol', 'opportunist'] },
+  },
+  {
+    id: 'targeting_array',
+    name: 'Targeting Array',
+    slot: 'scanner',
+    rarity: 'common',
+    effect: { type: 'breach_chance_down', reduction: 0.03 },
+    description: 'Early warning array. Danger chances −3%.',
+    lootPool: { type: 'doctrine', doctrines: ['corporate'] },
+  },
+  {
+    id: 'cargo_scanner',
+    name: 'Cargo Scanner',
+    slot: 'scanner',
+    rarity: 'common',
+    effect: { type: 'scavenge_bonus_flat', amount: 400 },
+    description: 'Cargo analysis scanner. Scavenge +₡400.',
+    lootPool: { type: 'card_ids', ids: ['off_books', 'street_deal', 'quick_loot'] },
+  },
+
+  // ── Scanner Uncommon (6 new) ────────────────────────────────────────────────
+  {
+    id: 'void_resonator',
+    name: 'Void Resonator',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'void_echo_on_collapse', amount: 1 },
+    description: 'Void echo resonator. +1 voidEcho on collapse.',
+    lootPool: { type: 'card_ids', ids: ['void_siphon', 'echo_extract', 'void_shield', 'ancestor_memory'] },
+  },
+  {
+    id: 'echo_battery',
+    name: 'Echo Battery',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'void_echo_start', amount: 1 },
+    description: 'Echo storage battery. Start each dive with +1 voidEcho.',
+    lootPool: { type: 'card_ids', ids: ['void_siphon', 'echo_extract', 'death_defiance', 'ancestor_memory'] },
+  },
+  {
+    id: 'med_scanner',
+    name: 'Med Scanner',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'scavenge_bonus_flat', amount: 500 },
+    description: 'Medical/scavenging dual scanner. +₡500 scavenge, danger −3%.',
+    lootPool: { type: 'doctrine', doctrines: ['smuggler', 'cooperative'] },
+  },
+  {
+    id: 'advanced_array',
+    name: 'Advanced Array',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'scavenge_bonus_flat', amount: 1000 },
+    description: 'Advanced detection array. Scavenge +₡1000.',
+    lootPool: { type: 'doctrine', doctrines: ['smuggler', 'corporate'] },
+  },
+  {
+    id: 'salvage_tuner',
+    name: 'Salvage Tuner',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'relic_bonus_chance', chance: 0.12 },
+    description: 'Tuned for salvage. +12% relic find chance.',
+    lootPool: { type: 'rarity', rarities: ['common', 'uncommon'] },
+  },
+  {
+    id: 'danger_scanner',
+    name: 'Danger Scanner',
+    slot: 'scanner',
+    rarity: 'uncommon',
+    effect: { type: 'breach_chance_down', reduction: 0.06 },
+    description: 'Hazard detection system. Danger chances −6%.',
+    lootPool: { type: 'doctrine', doctrines: ['corporate', 'cooperative'] },
+  },
+
+  // ── Scanner Rare (2 new) ───────────────────────────────────────────────────
+  {
+    id: 'echo_amplifier',
+    name: 'Echo Amplifier',
+    slot: 'scanner',
+    rarity: 'rare',
+    effect: { type: 'void_echo_on_extract', amount: 1 },
+    description: 'Echo amplification array. +1 voidEcho on each extract.',
+    lootPool: { type: 'all_eligible' },
+  },
+  {
+    id: 'quantum_scanner',
+    name: 'Quantum Scanner',
+    slot: 'scanner',
+    rarity: 'rare',
+    effect: { type: 'scavenge_bonus_flat', amount: 2500 },
+    description: 'Quantum-grade scanner. Scavenge +₡2500.',
+    lootPool: { type: 'all_eligible' },
+  },
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // UTILITY SLOT (11 new items → 16 total)
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // ── Utility Common (4 new) ─────────────────────────────────────────────────
+  {
+    id: 'battery_pack',
+    name: 'Battery Pack',
+    slot: 'utility',
+    rarity: 'common',
+    effect: { type: 'starting_energy_bonus', amount: 0 },
+    description: 'Extended battery. Minor power boost.',
+    lootPool: { type: 'card_ids', ids: ['risky_scavenge', 'distress_response', 'ancestor_memory'] },
+  },
+  {
+    id: 'shield_capacitor',
+    name: 'Shield Capacitor',
+    slot: 'utility',
+    rarity: 'common',
+    effect: { type: 'shield_start_bonus', amount: 1 },
+    description: 'Shield power capacitor. Start with +1 shield.',
+    lootPool: { type: 'card_ids', ids: ['shield', 'team_shield', 'bulwark'] },
+  },
+  {
+    id: 'cargo_expander',
+    name: 'Cargo Expander',
+    slot: 'utility',
+    rarity: 'common',
+    effect: { type: 'scavenge_bonus_flat', amount: 200 },
+    description: 'Expanded cargo bays. Scavenge +₡200.',
+    lootPool: { type: 'card_ids', ids: ['quick_loot', 'salvage_grab', 'off_books'] },
+  },
+  {
+    id: 'filter_array',
+    name: 'Filter Array',
+    slot: 'utility',
+    rarity: 'common',
+    effect: { type: 'breach_chance_down', reduction: 0.03 },
+    description: 'Environmental filter. Danger chances −3%.',
+    lootPool: { type: 'card_ids', ids: ['analyze', 'protocol_scan', 'risk_assessment'] },
+  },
+
+  // ── Utility Uncommon (5 new) ────────────────────────────────────────────────
+  {
+    id: 'bot_overclocker',
+    name: 'Bot Overclocker',
+    slot: 'utility',
+    rarity: 'uncommon',
+    effect: { type: 'bot_credit_bonus_per_bot', amount: 1000 },
+    description: 'Bot performance overclock. +₡1000 credit value per bot deployed.',
+    lootPool: { type: 'card_ids', ids: ['repair_bot', 'scavenge_bot', 'bot_swarm', 'calculated_scrap', 'bot_army'] },
+  },
+  {
+    id: 'extraction_boost',
+    name: 'Extraction Boost',
+    slot: 'utility',
+    rarity: 'uncommon',
+    effect: { type: 'extract_bonus_flat', amount: 150 },
+    description: 'Optimized extraction protocols. Extract +₡150.',
+    lootPool: { type: 'doctrine', doctrines: ['corporate'] },
+  },
+  {
+    id: 'shield_matrix',
+    name: 'Shield Matrix',
+    slot: 'utility',
+    rarity: 'uncommon',
+    effect: { type: 'shield_gain_bonus', amount: 1 },
+    description: 'Shield generation matrix. All shield gains +1.',
+    lootPool: { type: 'card_ids', ids: ['shield', 'team_shield', 'mass_shields', 'bulwark', 'shield_wall_prep', 'void_shield'] },
+  },
+  {
+    id: 'void_capacitor',
+    name: 'Void Capacitor',
+    slot: 'utility',
+    rarity: 'uncommon',
+    effect: { type: 'void_echo_start', amount: 1 },
+    description: 'Void energy capacitor. Start with +1 voidEcho.',
+    lootPool: { type: 'card_ids', ids: ['void_siphon', 'echo_extract', 'void_shield', 'death_defiance'] },
+  },
+  {
+    id: 'reinforced_frame',
+    name: 'Reinforced Frame',
+    slot: 'utility',
+    rarity: 'uncommon',
+    effect: { type: 'hull_max_bonus', amount: 10 },
+    description: 'Structural reinforcement. Hull max +10.',
+    lootPool: { type: 'doctrine', doctrines: ['cooperative', 'smuggler'] },
+  },
+
+  // ── Utility Rare (2 new) ──────────────────────────────────────────────────
+  {
+    id: 'capacitor_array',
+    name: 'Capacitor Array',
+    slot: 'utility',
+    rarity: 'rare',
+    effect: { type: 'shield_gain_and_danger_reduction', shieldBonus: 1, dangerReductionAtThreshold: 0.10, threshold: 5 },
+    description: 'Advanced capacitor array. Shield gains +1. If shields ≥ 5, danger −10%.',
+    lootPool: { type: 'all_eligible' },
+  },
+  {
+    id: 'universal_rig',
+    name: 'Universal Rig',
+    slot: 'utility',
+    rarity: 'rare',
+    effect: { type: 'extract_bonus_flat', amount: 300 },
+    description: 'Universal extraction rig. Extract +₡300.',
+    lootPool: { type: 'all_eligible' },
+  },
+];

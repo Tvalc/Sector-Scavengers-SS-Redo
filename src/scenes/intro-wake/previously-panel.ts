@@ -44,13 +44,14 @@ function renderStatsBlock(display: typeof MakkoEngine.display, meta: any): void 
   const labelX = display.width / 2 - 200;
   const valueX = display.width / 2 + 50;
 
+  const formatNum = (n: number) => n.toLocaleString('en-US');
   const stats = [
-    { label: 'Runs completed:', value: `${meta.totalRuns}` },
-    { label: 'Extracts:', value: `${meta.totalExtracts}` },
-    { label: 'Credits:', value: `₡${meta.credits}` },
-    { label: 'Debt:', value: `₡${meta.debt}` },
+    { label: 'Runs completed:', value: `${formatNum(meta.totalRuns)}` },
+    { label: 'Extracts:', value: `${formatNum(meta.totalExtracts)}` },
+    { label: 'Credits:', value: `₡${formatNum(meta.credits)}` },
+    { label: 'Debt:', value: `₡${formatNum(meta.debt)}` },
     { label: 'Survivors:', value: getSurvivorsLabel(meta.survivorsSaved), color: getSurvivorsColor(meta.survivorsSaved) },
-    { label: 'Crew awake:', value: meta.awakenedCrew.length === 0 ? 'None' : meta.awakenedCrew.map((c: string) => c.toUpperCase()).join(', ') },
+    { label: 'Crew awake:', value: getCrewLabel(meta.leadId, meta.companionIds) },
   ];
 
   for (let i = 0; i < stats.length; i++) {
@@ -102,8 +103,9 @@ function renderOpeningPath(display: typeof MakkoEngine.display, pathId: OpeningP
   });
 
   // Path stats
-  const extractionText = pathConfig.extractionBonus > 0 ? `+${pathConfig.extractionBonus} extract bonus` : '0 extract bonus';
-  const pathStats = `${pathConfig.energy} energy • +${pathConfig.voidEchoBonus} void echo • ${extractionText}`;
+  const formatNum = (n: number) => n.toLocaleString('en-US');
+  const extractionText = pathConfig.extractionBonus > 0 ? `+${formatNum(pathConfig.extractionBonus)} extract bonus` : '0 extract bonus';
+  const pathStats = `+${formatNum(pathConfig.voidEchoBonus)} void echo • ${extractionText}`;
   display.drawText(pathStats, display.width / 2, 720, {
     font: '20px monospace',
     fill: '#e2e8f0',
@@ -123,4 +125,13 @@ function getSurvivorsColor(survivors: number | 'some' | 'many'): string {
   if (survivors === 0) return '#e53e3e';
   if (survivors === 'some') return '#f6ad55';
   return '#68d391';
+}
+
+function getCrewLabel(leadId: string | null, companionIds: string[]): string {
+  const crewIds = [
+    ...(leadId !== null ? [leadId] : []),
+    ...companionIds,
+  ];
+  if (crewIds.length === 0) return 'None';
+  return crewIds.map((c) => c.toUpperCase()).join(', ');
 }

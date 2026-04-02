@@ -37,7 +37,8 @@ export function renderWrappedText(
   maxWidth: number,
   lineHeight: number,
   color: string,
-  font: string = '24px monospace'
+  font: string = '24px monospace',
+  alpha: number = 1
 ): void {
   const lines = wrapText(text, maxWidth, font);
 
@@ -47,6 +48,7 @@ export function renderWrappedText(
       fill: color,
       align: 'left',
       baseline: 'top',
+      alpha,
     });
   }
 }

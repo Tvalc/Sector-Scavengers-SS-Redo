@@ -2,237 +2,618 @@ import { MakkoEngine } from '@makko/engine';
 import { RunState } from '../types/state';
 import { SalvageEntry, SALVAGE_DEFS } from '../content/salvage';
 import { getItemById } from '../content/hardware';
+import { CORE_CARDS, CardRarity } from '../content/cards';
+import { MAX_DEBT_BEFORE_GAME_OVER, MAX_MISSED_PAYMENTS, BILLING_MISSED_PENALTY_RATE } from '../config/constants';
 
-export type ResultAction = 'CONTINUE';
-
-export interface RunDelta {
-  creditsBefore: number;
-  debtBefore: number;
-  voidBefore: number;
-  inventoryCountBefore: number;
+export interface BillingReportInfo {
+  billingAmount: number;
+  upkeepPerAwakeCrew: number;
+  awakeCrewCount: number;
+  totalBill: number;
+  creditsEarned: number;
+  paid: boolean;
+  penalty: number;
+  consecutiveMissedPayments: number;
+  currentDebt: number;
+  isCollapse: boolean;
 }
 
-// Base panel geometry — height expands to fit salvage rows
-const PW = 800;
-const BASE_PH = 400;
-const PX = 960 - PW / 2;
-const PY = 540 - BASE_PH / 2 - 60; // shift up a bit to leave room below
+export interface ExtractionReportInfo {
+  success: boolean;
+  breachOccurred: boolean;
+  breachDamage: number;
+  baseSalvageValue: number;
+  extractionBonusPercent: number;
+  bonusAmount: number;
+  finalValue: number;
+  salvageDeclared: SalvageEntry[];
+  salvageKept: SalvageEntry[];
+}
 
-const BTN_W = 220;
-const BTN_H = 56;
-const BTN_X = 960 - BTN_W / 2;
+const COLORS = {
+  background: '#0d1117',
+  titleExtract: '#68d391',
+  titleCollapse: '#fc8181',
+  label: '#8b949e',
+  value: '#e6edf3',
+  creditPositive: '#68d391',
+  creditNegative: '#fc8181',
+  echoColor: '#9f7aea',
+  salvageHeader: '#63b3ed',
+  itemHeader: '#f6e05e',
+  deltaUp: '#68d391',
+  deltaDown: '#fc8181',
+  deltaNeutral: '#8b949e',
+  billingPaid: '#68d391',
+  billingUnpaid: '#fc8181',
+  billingLabel: '#8b949e',
+  billingValue: '#e6edf3',
+  pathCredits: '#63b3ed',
+  victory: '#68d391',
+  warning: '#f6e05e',
+  danger: '#fc8181',
+  separator: '#21262d',
+  button: '#21262d',
+  buttonHover: '#30363d',
+  buttonBorder: '#484f58',
+  buttonText: '#e6edf3',
+  sectionBg: '#161b22',
+  sectionBorder: '#21262d',
+  amber: '#f59e0b',
+};
 
-// Height of the delta block when delta !== null
-const DELTA_BLOCK_H = 140; // 20 (label) + 4×30 (lines)
-
-// Press-tracking for Continue button
 let pressedContinue = false;
 
-/**
- * Render the post-run result panel.
- *
- * @param run           The final RunState (phase must be 'extracted' or 'collapsed').
- * @param creditsEarned Total credits banked this run. 0 for collapses.
- * @param voidEchoGain  VoidEcho gained this run (including walker tier multipliers).
- * @param salvage       Salvage entries from the ended run (run.salvage snapshot).
- * @param itemsFound    Hardware item ids discovered this run (run.itemsFound snapshot).
- * @param mx            Mouse X in game coordinates.
- * @param my            Mouse Y in game coordinates.
- * @param delta         Optional pre-run snapshot for delta readout. Pass null to omit.
- */
+function formatCredits(n: number): string {
+  if (n >= 1000000) return `₡${(n / 1000000).toFixed(2)}M`;
+  if (n >= 1000) return `₡${(n / 1000).toFixed(1)}K`;
+  return `₡${n.toLocaleString('en-US')}`;
+}
+
+const formatNum = (n: number) => n.toLocaleString('en-US');
+
 export function renderResult(
-  run: RunState,
-  creditsEarned: number,
-  voidEchoGain: number,
+  lastRun: RunState,
+  haulValue: number,
+  echo: number,
   salvage: SalvageEntry[],
   itemsFound: string[],
   mx: number,
   my: number,
-  delta: RunDelta | null = null,
-): ResultAction | null {
+  delta: { haulValueBefore: number; debtBefore: number; voidBefore: number; inventoryCountBefore: number } | null,
+  debtCleared: boolean | null,
+  isPathContinuing: boolean,
+  pathCredits: number,
+  billingReport: BillingReportInfo | null,
+  extractionReport?: ExtractionReportInfo | null,
+): 'CONTINUE' | null {
   const display = MakkoEngine.display;
   const input = MakkoEngine.input;
+  const collapsed = lastRun.phase === 'collapsed';
 
-  const extracted = run.phase === 'extracted';
-  const accentColor = extracted ? '#48bb78' : '#fc8181';
-  const title = extracted ? 'EXTRACTED' : 'COLLAPSED';
+  // Full-screen background
+  display.drawRect(0, 0, 1920, 1080, { fill: COLORS.background });
 
-  // Dynamic panel height — leave room for delta block, salvage rows, and items row
-  const deltaExtraH = delta !== null ? DELTA_BLOCK_H : 0;
-  const salvageRowCount = salvage.filter((e) => e.quantity > 0).length;
-  const salvageBlockH = salvageRowCount > 0
-    ? 30 + salvageRowCount * 28
-    : 28;
-  const itemsBlockH = itemsFound.length > 0 ? 32 : 0;
-  const PH = BASE_PH + deltaExtraH + salvageBlockH + itemsBlockH;
-  const BTN_Y = PY + PH - 80;
+  let y = 60;
+  const centerX = 960;
+  const leftX = 580;
 
-  // ── Panel ──────────────────────────────────────────────────────────────────
-  display.drawRect(PX, PY, PW, PH, { fill: '#0d1117', stroke: accentColor, lineWidth: 2 });
-
-  // ── Title ──────────────────────────────────────────────────────────────────
-  display.drawText(title, 960, PY + 70, {
-    font: 'bold 48px monospace', fill: accentColor, align: 'center', baseline: 'middle',
+  // ── Title ──────────────────────────────────────────────────────────────
+  const titleText = collapsed ? 'COLLAPSED' : 'EXTRACTED';
+  const titleColor = collapsed ? COLORS.titleCollapse : COLORS.titleExtract;
+  display.drawText(titleText, centerX, y, {
+    font: 'bold 64px monospace',
+    fill: titleColor,
+    align: 'center',
+    baseline: 'top',
   });
+  y += 80;
 
-  // ── Sub-stats ──────────────────────────────────────────────────────────────
-  const stats: string[] = [
-    `Hull remaining:  ${run.hull}`,
-    `Credits banked:  \u20a1${creditsEarned}`,
-    `VoidEcho gained: +${voidEchoGain}`,
-  ];
+  // Separator
+  display.drawRect(580, y, 760, 2, { fill: COLORS.separator });
+  y += 20;
 
-  for (let i = 0; i < stats.length; i++) {
-    display.drawText(stats[i], 960, PY + 160 + i * 44, {
-      font: '24px monospace', fill: '#e2e8f0', align: 'center', baseline: 'middle',
+  // ── Extraction Report ─────────────────────────────────────────────────
+  if (extractionReport && !collapsed) {
+    y += 4;
+    const reportBoxH = extractionReport.breachOccurred ? 140 : 100;
+    display.drawRect(560, y - 4, 800, reportBoxH, {
+      fill: COLORS.sectionBg,
+      stroke: extractionReport.success ? COLORS.titleExtract : COLORS.titleCollapse,
+      lineWidth: 2,
     });
-  }
-
-  // ── Delta block (only when delta provided) ─────────────────────────────────
-  const afterStatsY = PY + 160 + stats.length * 44 + 16;
-
-  if (delta !== null) {
-    const dY = afterStatsY + 10;
-
-    display.drawText('WHAT CHANGED:', 960, dY, {
-      font: '16px monospace', fill: '#4a5568', align: 'center', baseline: 'top',
+    
+    display.drawText('EXTRACTION REPORT', leftX, y, {
+      font: 'bold 16px monospace',
+      fill: extractionReport.success ? COLORS.titleExtract : COLORS.titleCollapse,
+      baseline: 'top',
     });
+    y += 28;
 
-    // Credits line
-    const creditsNow = extracted ? delta.creditsBefore + creditsEarned : delta.creditsBefore;
-    const creditsDiff = creditsNow - delta.creditsBefore;
-    const creditsSign = creditsDiff >= 0 ? '+' : '';
-    const creditsColor = creditsDiff > 0 ? '#68d391' : creditsDiff < 0 ? '#fc8181' : '#718096';
-    display.drawText(
-      `Credits: \u20a1${delta.creditsBefore} \u2192 \u20a1${creditsNow}  (${creditsSign}${creditsDiff})`,
-      960, dY + 20 + 30 * 0,
-      { font: '20px monospace', fill: creditsColor, align: 'center', baseline: 'top' },
-    );
+    // Base salvage value
+    display.drawText('Base salvage value:', leftX + 16, y, {
+      font: '14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(extractionReport.baseSalvageValue), leftX + 740, y, {
+      font: '14px monospace',
+      fill: COLORS.value,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 22;
 
-    // Debt line
-    const debtNow = delta.debtBefore + run.debtIncrease;
-    const debtDiff = debtNow - delta.debtBefore;
-    const debtSign = debtDiff >= 0 ? '+' : '';
-    const debtColor = debtDiff > 0 ? '#fc8181' : debtDiff < 0 ? '#68d391' : '#718096';
-    display.drawText(
-      `Debt: \u20a1${delta.debtBefore} \u2192 \u20a1${debtNow}  (${debtSign}${debtDiff})`,
-      960, dY + 20 + 30 * 1,
-      { font: '20px monospace', fill: debtColor, align: 'center', baseline: 'top' },
-    );
-
-    // Void Echo line
-    const voidNow = delta.voidBefore + voidEchoGain;
-    display.drawText(
-      `Void Echo: ${delta.voidBefore} \u2192 ${voidNow}  (+${voidEchoGain})`,
-      960, dY + 20 + 30 * 2,
-      { font: '20px monospace', fill: '#9f7aea', align: 'center', baseline: 'top' },
-    );
-
-    // Salvage line
-    const totalSalvageQty = salvage.reduce((sum, e) => sum + e.quantity, 0);
-    if (totalSalvageQty > 0) {
-      if (extracted) {
-        display.drawText(
-          `Salvage: +${totalSalvageQty} item${totalSalvageQty !== 1 ? 's' : ''} banked`,
-          960, dY + 20 + 30 * 3,
-          { font: '20px monospace', fill: '#68d391', align: 'center', baseline: 'top' },
-        );
-      } else {
-        display.drawText(
-          `Salvage: ${totalSalvageQty} item${totalSalvageQty !== 1 ? 's' : ''} lost`,
-          960, dY + 20 + 30 * 3,
-          { font: '20px monospace', fill: '#fc8181', align: 'center', baseline: 'top' },
-        );
-      }
+    // Extraction bonus
+    if (extractionReport.extractionBonusPercent > 0) {
+      display.drawText(`Extraction bonus (${extractionReport.extractionBonusPercent}%):`, leftX + 16, y, {
+        font: '14px monospace',
+        fill: COLORS.label,
+        baseline: 'top',
+      });
+      display.drawText(`+${formatCredits(extractionReport.bonusAmount)}`, leftX + 740, y, {
+        font: '14px monospace',
+        fill: COLORS.creditPositive,
+        align: 'right',
+        baseline: 'top',
+      });
+      y += 22;
     }
+
+    // Breach warning
+    if (extractionReport.breachOccurred) {
+      display.drawText(`⚠ HULL BREACH: −${extractionReport.breachDamage} hull`, leftX + 16, y, {
+        font: '14px monospace',
+        fill: COLORS.titleCollapse,
+        baseline: 'top',
+      });
+      y += 22;
+    }
+
+    // Final value
+    display.drawText('Final extraction value:', leftX + 16, y, {
+      font: 'bold 14px monospace',
+      fill: COLORS.creditPositive,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(extractionReport.finalValue), leftX + 740, y, {
+      font: 'bold 16px monospace',
+      fill: COLORS.creditPositive,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 36;
   }
 
-  // ── Salvage section ────────────────────────────────────────────────────────
-  const salvageSectionY = afterStatsY + deltaExtraH;
-
-  // Section divider
-  display.drawLine(PX + 40, salvageSectionY, PX + PW - 40, salvageSectionY, {
-    stroke: '#2d3748', lineWidth: 1,
+  // ── Haul Value ─────────────────────────────────────────────────────────
+  display.drawText('HAUL VALUE', leftX, y, {
+    font: '16px monospace',
+    fill: COLORS.label,
+    baseline: 'top',
   });
+  display.drawText(formatCredits(haulValue), leftX + 760, y, {
+    font: 'bold 20px monospace',
+    fill: COLORS.creditPositive,
+    align: 'right',
+    baseline: 'top',
+  });
+  y += 36;
 
-  if (extracted) {
-    const activeSalvage = salvage.filter((e) => e.quantity > 0);
-
-    if (activeSalvage.length === 0) {
-      display.drawText('No salvage recovered.', 960, salvageSectionY + 20, {
-        font: '20px monospace', fill: '#4a5568', align: 'center', baseline: 'top',
-      });
-    } else {
-      display.drawText('Salvage banked:', 960, salvageSectionY + 4, {
-        font: '16px monospace', fill: '#718096', align: 'center', baseline: 'top',
-      });
-      for (let i = 0; i < activeSalvage.length; i++) {
-        const e = activeSalvage[i];
-        const def = SALVAGE_DEFS[e.tier];
-        const total = e.quantity * e.valueEach;
-        display.drawText(
-          `${def.label}: ${e.quantity} \u00d7 \u20a1${e.valueEach} = \u20a1${total}`,
-          960,
-          salvageSectionY + 26 + i * 28,
-          { font: '20px monospace', fill: def.color, align: 'center', baseline: 'top' },
-        );
-      }
-    }
-  } else {
-    // Collapsed — salvage is lost
-    const totalItems = salvage.reduce((sum, e) => sum + e.quantity, 0);
-    if (totalItems > 0) {
-      display.drawText(
-        `Salvage lost \u2014 ${totalItems} item${totalItems !== 1 ? 's' : ''} abandoned.`,
-        960,
-        salvageSectionY + 16,
-        { font: '20px monospace', fill: '#fc8181', align: 'center', baseline: 'top' },
-      );
-    } else {
-      display.drawText('No salvage to recover.', 960, salvageSectionY + 16, {
-        font: '20px monospace', fill: '#4a5568', align: 'center', baseline: 'top',
-      });
-    }
+  // ── Echo Gained ────────────────────────────────────────────────────────
+  if (echo > 0) {
+    display.drawText('VOID ECHO GAINED', leftX, y, {
+      font: '16px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(`+${formatNum(echo)}`, leftX + 760, y, {
+      font: 'bold 20px monospace',
+      fill: COLORS.echoColor,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 36;
   }
 
-  // ── Items found section ────────────────────────────────────────────────────
+  // ── Salvage Breakdown ──────────────────────────────────────────────────
+  if (extractionReport && (extractionReport.salvageDeclared.length > 0 || extractionReport.salvageKept.length > 0)) {
+    y += 8;
+    const declaredCount = extractionReport.salvageDeclared.length;
+    const keptCount = extractionReport.salvageKept.length;
+    const boxH = (declaredCount + keptCount) * 26 + 70;
+    
+    display.drawRect(560, y - 4, 800, boxH, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+
+    // Declared salvage (sold to Company)
+    if (declaredCount > 0) {
+      display.drawText('SALVAGE SOLD TO COMPANY', leftX, y, {
+        font: 'bold 14px monospace',
+        fill: COLORS.creditPositive,
+        baseline: 'top',
+      });
+      y += 26;
+
+      for (const entry of extractionReport.salvageDeclared) {
+        const def = SALVAGE_DEFS[entry.tier];
+        const tierLabel = def ? def.label : entry.tier;
+        const tierColor = def ? def.color : COLORS.value;
+        const lineText = `${tierLabel} ×${entry.quantity}  (${formatCredits(entry.valueEach * entry.quantity)})`;
+        display.drawText(lineText, leftX + 16, y, {
+          font: '16px monospace',
+          fill: tierColor,
+          baseline: 'top',
+        });
+        y += 24;
+      }
+      y += 8;
+    }
+
+    // Kept salvage (for base/hidden)
+    if (keptCount > 0) {
+      display.drawText('SALVAGE KEPT FOR BASE', leftX, y, {
+        font: 'bold 14px monospace',
+        fill: COLORS.amber,
+        baseline: 'top',
+      });
+      y += 26;
+
+      for (const entry of extractionReport.salvageKept) {
+        const def = SALVAGE_DEFS[entry.tier];
+        const tierLabel = def ? def.label : entry.tier;
+        const tierColor = def ? def.color : COLORS.value;
+        const lineText = `${tierLabel} ×${entry.quantity}  (${formatCredits(entry.valueEach * entry.quantity)})`;
+        display.drawText(lineText, leftX + 16, y, {
+          font: '16px monospace',
+          fill: tierColor,
+          baseline: 'top',
+        });
+        y += 24;
+      }
+      y += 8;
+    }
+    y += 12;
+  } else if (salvage.length > 0) {
+    // Fallback: show all salvage if no extraction report
+    y += 8;
+    display.drawRect(560, y - 4, 800, salvage.length * 28 + 32, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+    display.drawText('SALVAGE RECOVERED', leftX, y, {
+      font: 'bold 14px monospace',
+      fill: COLORS.salvageHeader,
+      baseline: 'top',
+    });
+    y += 28;
+
+    for (const entry of salvage) {
+      const def = SALVAGE_DEFS[entry.tier];
+      const tierLabel = def ? def.label : entry.tier;
+      const tierColor = def ? def.color : COLORS.value;
+      const lineText = `${tierLabel} ×${entry.quantity}  (${formatCredits(entry.valueEach * entry.quantity)})`;
+      display.drawText(lineText, leftX + 16, y, {
+        font: '16px monospace',
+        fill: tierColor,
+        baseline: 'top',
+      });
+      y += 26;
+    }
+    y += 12;
+  }
+
+  // ── Items Found ────────────────────────────────────────────────────────
   if (itemsFound.length > 0) {
-    const itemsSectionY = BTN_Y - itemsBlockH - 14;
-    if (extracted) {
-      const names = itemsFound
-        .map((id) => getItemById(id)?.name ?? id)
-        .join(', ');
-      display.drawText(`Items found: ${names}`, 960, itemsSectionY, {
-        font: '20px monospace', fill: '#f6ad55', align: 'center', baseline: 'top',
+    y += 4;
+    display.drawRect(560, y - 4, 800, itemsFound.length * 26 + 32, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+    display.drawText('HARDWARE DISCOVERED', leftX, y, {
+      font: 'bold 14px monospace',
+      fill: COLORS.itemHeader,
+      baseline: 'top',
+    });
+    y += 26;
+
+    for (const itemId of itemsFound) {
+      const item = getItemById(itemId);
+      const itemName = item ? item.name : itemId;
+      display.drawText(`◆ ${itemName}`, leftX + 16, y, {
+        font: '16px monospace',
+        fill: COLORS.value,
+        baseline: 'top',
       });
+      y += 24;
+    }
+    y += 12;
+  }
+
+  // ── Delta Comparison ──────────────────────────────────────────────────
+  if (delta !== null) {
+    y += 4;
+    const debtChange = -delta.debtBefore; // Negative debt change = good
+    const voidChange = echo - delta.voidBefore;
+    const invChange = itemsFound.length; // Approximation
+
+    display.drawRect(560, y - 4, 800, 88, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+    display.drawText('RUN SUMMARY', leftX, y, {
+      font: 'bold 14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    y += 24;
+
+    // Debt change — show delta.debtBefore as reference; current debt from billingReport or lastRun
+    display.drawText('Debt before this run:', leftX + 16, y, {
+      font: '14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(delta.debtBefore), leftX + 740, y, {
+      font: '14px monospace',
+      fill: COLORS.deltaNeutral,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 22;
+
+    display.drawText('Echo before this run:', leftX + 16, y, {
+      font: '14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(`${formatNum(delta.voidBefore)}`, leftX + 740, y, {
+      font: '14px monospace',
+      fill: COLORS.deltaNeutral,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 28;
+  }
+
+  // ── Path Credits ──────────────────────────────────────────────────────
+  if (isPathContinuing && pathCredits > 0) {
+    y += 4;
+    display.drawRect(560, y - 4, 800, 36, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+    display.drawText('EXPEDITION CREDITS', leftX, y, {
+      font: '16px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(pathCredits), leftX + 760, y, {
+      font: 'bold 20px monospace',
+      fill: COLORS.pathCredits,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 44;
+  }
+
+  // ── Debt Payment Summary ─────────────────────────────────────────────
+  if (!collapsed && extractionReport && delta) {
+    y += 4;
+    const debtPaid = Math.min(extractionReport.finalValue, delta.debtBefore);
+    const debtRemaining = Math.max(0, delta.debtBefore - extractionReport.finalValue);
+    
+    display.drawRect(560, y - 4, 800, 80, {
+      fill: COLORS.sectionBg,
+      stroke: COLORS.sectionBorder,
+      lineWidth: 1,
+    });
+    display.drawText('DEBT PAYMENT', leftX, y, {
+      font: 'bold 14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    y += 26;
+
+    display.drawText('Debt before extraction:', leftX + 16, y, {
+      font: '14px monospace',
+      fill: COLORS.label,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(delta.debtBefore), leftX + 740, y, {
+      font: '14px monospace',
+      fill: COLORS.creditNegative,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 22;
+
+    display.drawText('Paid from extraction:', leftX + 16, y, {
+      font: '14px monospace',
+      fill: COLORS.creditPositive,
+      baseline: 'top',
+    });
+    display.drawText(`−${formatCredits(debtPaid)}`, leftX + 740, y, {
+      font: '14px monospace',
+      fill: COLORS.creditPositive,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 22;
+
+    display.drawText('Remaining debt:', leftX + 16, y, {
+      font: 'bold 14px monospace',
+      fill: debtRemaining > 0 ? COLORS.creditNegative : COLORS.creditPositive,
+      baseline: 'top',
+    });
+    display.drawText(formatCredits(debtRemaining), leftX + 740, y, {
+      font: 'bold 14px monospace',
+      fill: debtRemaining > 0 ? COLORS.creditNegative : COLORS.creditPositive,
+      align: 'right',
+      baseline: 'top',
+    });
+    y += 36;
+  }
+
+  // ── Billing Report ────────────────────────────────────────────────────
+  if (billingReport !== null) {
+    y += 4;
+    if (billingReport.isCollapse) {
+      // Simplified collapse billing
+      const collapseLines = [
+        `Outstanding debt: ${formatCredits(billingReport.currentDebt)}`,
+        `Consecutive missed payments: ${billingReport.consecutiveMissedPayments}/${MAX_MISSED_PAYMENTS}`,
+      ];
+      const boxH = collapseLines.length * 24 + 40;
+      display.drawRect(560, y - 4, 800, boxH, {
+        fill: COLORS.sectionBg,
+        stroke: COLORS.danger,
+        lineWidth: 2,
+      });
+      display.drawText('BILLING — COLLAPSED', leftX, y, {
+        font: 'bold 14px monospace',
+        fill: COLORS.danger,
+        baseline: 'top',
+      });
+      y += 26;
+
+      for (const line of collapseLines) {
+        display.drawText(line, leftX + 16, y, {
+          font: '14px monospace',
+          fill: COLORS.billingValue,
+          baseline: 'top',
+        });
+        y += 22;
+      }
+      y += 14;
     } else {
-      display.drawText('Items lost.', 960, itemsSectionY, {
-        font: '20px monospace', fill: '#fc8181', align: 'center', baseline: 'top',
+      // Full billing report
+      const lines: Array<{ label: string; value: string; color: string }> = [
+        { label: 'Base billing:', value: formatCredits(billingReport.billingAmount), color: COLORS.billingValue },
+        { label: `Crew upkeep (${billingReport.awakeCrewCount} crew):`, value: formatCredits(billingReport.awakeCrewCount * billingReport.upkeepPerAwakeCrew), color: COLORS.billingValue },
+        { label: 'Total bill:', value: formatCredits(billingReport.totalBill), color: COLORS.billingValue },
+        { label: 'Credits earned:', value: formatCredits(billingReport.creditsEarned), color: COLORS.creditPositive },
+      ];
+
+      if (billingReport.paid) {
+        lines.push({ label: 'Status:', value: 'PAID', color: COLORS.billingPaid });
+      } else {
+        lines.push({ label: 'Status:', value: 'MISSED', color: COLORS.billingUnpaid });
+        lines.push({ label: 'Penalty added:', value: formatCredits(billingReport.penalty), color: COLORS.creditNegative });
+      }
+
+      lines.push({ label: 'Current debt:', value: formatCredits(billingReport.currentDebt), color: billingReport.currentDebt > 0 ? COLORS.creditNegative : COLORS.creditPositive });
+      lines.push({ label: 'Consecutive missed:', value: `${formatNum(billingReport.consecutiveMissedPayments)}/${formatNum(MAX_MISSED_PAYMENTS)}`, color: billingReport.consecutiveMissedPayments > 0 ? COLORS.warning : COLORS.billingValue });
+
+      const boxH = lines.length * 22 + 36;
+      display.drawRect(560, y - 4, 800, boxH, {
+        fill: COLORS.sectionBg,
+        stroke: billingReport.paid ? COLORS.sectionBorder : COLORS.danger,
+        lineWidth: billingReport.paid ? 1 : 2,
       });
+      display.drawText('BILLING REPORT', leftX, y, {
+        font: 'bold 14px monospace',
+        fill: COLORS.label,
+        baseline: 'top',
+      });
+      y += 26;
+
+      for (const line of lines) {
+        display.drawText(line.label, leftX + 16, y, {
+          font: '14px monospace',
+          fill: COLORS.billingLabel,
+          baseline: 'top',
+        });
+        display.drawText(line.value, leftX + 740, y, {
+          font: 'bold 14px monospace',
+          fill: line.color,
+          align: 'right',
+          baseline: 'top',
+        });
+        y += 22;
+      }
+      y += 14;
     }
   }
 
-  // ── Continue button ────────────────────────────────────────────────────────
-  const hover =
-    mx >= BTN_X && mx <= BTN_X + BTN_W &&
-    my >= BTN_Y && my <= BTN_Y + BTN_H;
+  // ── Debt Cleared Banner ───────────────────────────────────────────────
+  if (debtCleared === true) {
+    y += 4;
+    display.drawRect(480, y, 960, 60, {
+      fill: '#0a2e1a',
+      stroke: COLORS.victory,
+      lineWidth: 2,
+    });
+    display.drawText('★ DEBT CLEARED — BALANCE SETTLED ★', centerX, y + 30, {
+      font: 'bold 24px monospace',
+      fill: COLORS.victory,
+      align: 'center',
+      baseline: 'middle',
+    });
+    y += 72;
+  }
 
-  display.drawRect(BTN_X, BTN_Y, BTN_W, BTN_H, {
-    fill: hover ? '#276749' : '#1c4532',
-    stroke: accentColor,
-    lineWidth: 1,
+  // ── Game Over Warning ─────────────────────────────────────────────────
+  const isGameOver =
+    (billingReport !== null && billingReport.currentDebt >= MAX_DEBT_BEFORE_GAME_OVER) ||
+    (billingReport !== null && billingReport.consecutiveMissedPayments >= MAX_MISSED_PAYMENTS);
+
+  if (isGameOver) {
+    y += 4;
+    display.drawRect(480, y, 960, 50, {
+      fill: '#2e0a0a',
+      stroke: COLORS.danger,
+      lineWidth: 2,
+    });
+    display.drawText('⚠ CRITICAL: DEBT THRESHOLD BREACHED — CONSIDER RESTRUCTURING ⚠', centerX, y + 25, {
+      font: 'bold 16px monospace',
+      fill: COLORS.danger,
+      align: 'center',
+      baseline: 'middle',
+    });
+    y += 60;
+  }
+
+  // ── Continue Button ───────────────────────────────────────────────────
+  const btnW = 260;
+  const btnH = 52;
+  const btnX = centerX - btnW / 2;
+  const btnY = 980;
+
+  const hover = mx >= btnX && mx <= btnX + btnW && my >= btnY && my <= btnY + btnH;
+
+  display.drawRect(btnX, btnY, btnW, btnH, {
+    fill: hover ? COLORS.buttonHover : COLORS.button,
+    stroke: COLORS.buttonBorder,
+    lineWidth: 2,
   });
-  display.drawText('[Continue]', 960, BTN_Y + BTN_H / 2, {
-    font: '24px monospace', fill: '#ffffff', align: 'center', baseline: 'middle',
+
+  const btnLabel = isPathContinuing ? '[Continue Expedition]' : '[Return to Hub]';
+  display.drawText(btnLabel, centerX, btnY + btnH / 2, {
+    font: 'bold 18px monospace',
+    fill: COLORS.buttonText,
+    align: 'center',
+    baseline: 'middle',
   });
 
-  if (input.isMousePressed(0) && hover) pressedContinue = true;
+  // ── Click Handling ────────────────────────────────────────────────────
+  if (input.isMousePressed(0) && hover) {
+    pressedContinue = true;
+  }
 
-  let action: ResultAction | null = null;
   if (input.isMouseReleased(0)) {
-    if (pressedContinue && hover) action = 'CONTINUE';
+    if (hover && pressedContinue) {
+      pressedContinue = false;
+      return 'CONTINUE';
+    }
     pressedContinue = false;
   }
 
-  return action;
+  return null;
 }

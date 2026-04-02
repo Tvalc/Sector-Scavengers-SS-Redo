@@ -1,9 +1,15 @@
-export type VoidBranchId = 'survivor' | 'risk_taker' | 'void_walker';
+export type VoidBranchId = 'survivor' | 'risk_taker' | 'void_walker' | 'insurgent' | 'archivist';
 
 export type VoidEffect =
   | { type: 'starting_shields'; value: number }
   | { type: 'scavenge_bonus'; value: number }
-  | { type: 'echo_multiplier'; value: number };
+  | { type: 'echo_multiplier'; value: number }
+  | { type: 'debt_reduction_per_run'; amount: number }
+  | { type: 'signal_extra_choice' }
+  | { type: 'smuggler_card_weight_bonus' }
+  | { type: 'map_preview_rounds'; count: number }
+  | { type: 'lore_always_visible' }
+  | { type: 'debt_clear_echo_bonus'; multiplier: number };
 
 export interface VoidTier {
   id: string;
@@ -52,8 +58,8 @@ export const VOID_TIERS: VoidTier[] = [
     tier: 1,
     cost: 3,
     label: 'Greedy Hands I',
-    description: 'Scavenge yields +10 extra credits.',
-    effect: { type: 'scavenge_bonus', value: 10 },
+    description: 'Scavenge yields +\u20a1500 extra credits.',
+    effect: { type: 'scavenge_bonus', value: 500 },
   },
   {
     id: 'risk_taker_2',
@@ -61,8 +67,8 @@ export const VOID_TIERS: VoidTier[] = [
     tier: 2,
     cost: 6,
     label: 'Greedy Hands II',
-    description: 'Scavenge yields +15 extra credits.',
-    effect: { type: 'scavenge_bonus', value: 15 },
+    description: 'Scavenge yields +\u20a11000 extra credits.',
+    effect: { type: 'scavenge_bonus', value: 1000 },
   },
   {
     id: 'risk_taker_3',
@@ -70,8 +76,8 @@ export const VOID_TIERS: VoidTier[] = [
     tier: 3,
     cost: 10,
     label: 'Greedy Hands III',
-    description: 'Scavenge yields +20 extra credits.',
-    effect: { type: 'scavenge_bonus', value: 20 },
+    description: 'Scavenge yields +\u20a11500 extra credits.',
+    effect: { type: 'scavenge_bonus', value: 1500 },
   },
 
   // Void Walker — echo multiplier on collapse
